@@ -19,14 +19,17 @@
 
 ## 🖥️ 效果预览
 
-每张测试图（电影《欢迎来龙餐馆》海报）产出「原图 ↔ 还原图」对照：
+每张测试图（电影《欢迎来龙餐馆》海报）产出「原图 ↔ 还原图」对照，两套还原路径并排展示：
 
 | 01.jpg（2000×2800） | 02.webp（2000×2800） | 03.jpg（800×1142） |
 | :---: | :---: | :---: |
 | ![原图 01](docs/demo/01-original.png) | ![原图 02](docs/demo/02-original.png) | ![原图 03](docs/demo/03-original.png) |
-| ![还原 01](docs/demo/01-recreated.png) | ![还原 02](docs/demo/02-recreated.png) | ![还原 03](docs/demo/03-recreated.png) |
+| ![SVG 还原 01](docs/demo/01-recreated.png) | ![SVG 还原 02](docs/demo/02-recreated.png) | ![SVG 还原 03](docs/demo/03-recreated.png) |
+| ![GPT-image2 还原 01](docs/demo/gpt2-01.png) | ![GPT-image2 还原 02](docs/demo/gpt2-02.png) | ![GPT-image2 还原 03](docs/demo/gpt2-03.png) |
 
-> 上排为原图缩略图，下排为模型**仅凭理解文本**（无原图输入）重构的 SVG 渲染图。
+> **上排**：原图缩略图。
+> **中排**：DeepSeek 视觉模型**仅凭理解文本**（无原图输入）重构的 SVG 渲染图（本仓库验证的核心能力）。
+> **下排**：**这是基于 `deepseek-v4-flash-vision-exp` 模型的理解能力，使用 GPT-image2 还原的图**——DeepSeek 本身无原生图片生成，此排演示「DeepSeek 理解 → GPT-image2 生成」的组合创作链路（原图见 `imggen/`，3 张，各 2.7–5 MB）。
 > 完整三列对比（含理解全文、耗时与 token 统计）见 `reports/<最新>/report.md`。
 
 ## 📖 背景
