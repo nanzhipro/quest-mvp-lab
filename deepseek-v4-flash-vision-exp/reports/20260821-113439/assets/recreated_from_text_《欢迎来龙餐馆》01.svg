@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" width="800" height="1200">
+  <!-- 天空背景 -->
+  <rect x="0" y="0" width="800" height="1200" fill="#87CEEB"/>
+  
+  <!-- 地面 -->
+  <rect x="0" y="850" width="800" height="350" fill="#C4A265"/>
+  
+  <!-- 远处建筑 -->
+  <rect x="0" y="200" width="120" height="650" fill="#D4C5A0"/>
+  <rect x="120" y="180" width="100" height="670" fill="#C9B896"/>
+  <rect x="220" y="220" width="130" height="630" fill="#BFB08A"/>
+  <rect x="350" y="190" width="110" height="660" fill="#D8C9A5"/>
+  <rect x="460" y="210" width="140" height="640" fill="#C5B694"/>
+  <rect x="600" y="170" width="200" height="680" fill="#D0C19E"/>
+  
+  <!-- 建筑窗户 -->
+  <g fill="#8A7B5E" opacity="0.6">
+    <rect x="15" y="250" width="20" height="25"/>
+    <rect x="50" y="250" width="20" height="25"/>
+    <rect x="85" y="250" width="20" height="25"/>
+    <rect x="15" y="310" width="20" height="25"/>
+    <rect x="50" y="310" width="20" height="25"/>
+    <rect x="85" y="310" width="20" height="25"/>
+    <rect x="15" y="370" width="20" height="25"/>
+    <rect x="50" y="370" width="20" height="25"/>
+    <rect x="135" y="240" width="18" height="22"/>
+    <rect x="170" y="240" width="18" height="22"/>
+    <rect x="135" y="300" width="18" height="22"/>
+    <rect x="170" y="300" width="18" height="22"/>
+    <rect x="240" y="270" width="20" height="25"/>
+    <rect x="280" y="270" width="20" height="25"/>
+    <rect x="240" y="330" width="20" height="25"/>
+    <rect x="280" y="330" width="20" height="25"/>
+    <rect x="370" y="250" width="20" height="25"/>
+    <rect x="405" y="250" width="20" height="25"/>
+    <rect x="370" y="310" width="20" height="25"/>
+    <rect x="405" y="310" width="20" height="25"/>
+    <rect x="480" y="260" width="22" height="25"/>
+    <rect x="520" y="260" width="22" height="25"/>
+    <rect x="480" y="320" width="22" height="25"/>
+    <rect x="520" y="320" width="22" height="25"/>
+    <rect x="620" y="230" width="20" height="25"/>
+    <rect x="660" y="230" width="20" height="25"/>
+    <rect x="700" y="230" width="20" height="25"/>
+    <rect x="620" y="290" width="20" height="25"/>
+    <rect x="660" y="290" width="20" height="25"/>
+    <rect x="700" y="290" width="20" height="25"/>
+  </g>
+  
+  <!-- 黄底蓝字广告牌 -->
+  <rect x="560" y="300" width="180" height="100" fill="#FFD700"/>
+  <text x="650" y="335" font-family="Arial" font-size="14" fill="#1E5FBF" text-anchor="middle">718 9283 718 2938</text>
+  <rect x="580" y="350" width="140" height="30" fill="#1E5FBF" opacity="0.8"/>
+  
+  <!-- 电线杆和电线 -->
+  <rect x="300" y="100" width="6" height="550" fill="#555"/>
+  <line x1="306" y1="120" x2="500" y2="115" stroke="#555" stroke-width="2"/>
+  <line x1="306" y1="130" x2="620" y2="125" stroke="#555" stroke-width="2"/>
+  <line x1="306" y1="140" x2="100" y2="135" stroke="#555" stroke-width="2"/>
+  <line x1="306" y1="150" x2="700" y2="145" stroke="#555" stroke-width="2"/>
+  
+  <!-- 红绿灯 -->
+  <rect x="20" y="400" width="30" height="80" fill="#333" rx="5"/>
+  <circle cx="35" cy="418" r="10" fill="#FF0000"/>
+  <circle cx="35" cy="440" r="10" fill="#333"/>
+  <circle cx="35" cy="462" r="10" fill="#00CC00"/>
+  <!-- 黄色三角警告 -->
+  <polygon points="15,490 55,490 35,520" fill="#FFD700"/>
+  <polygon points="23,498 47,498 35,515" fill="#333"/>
+  <!-- 箭头指示牌 -->
+  <rect x="5" y="530" width="60" height="20" fill="#fff" stroke="#333" stroke-width="2"/>
+  <polygon points="20,540 10,535 10,545" fill="#333"/>
+  <line x1="20" y1="540" x2="55" y2="540" stroke="#333" stroke-width="2"/>
+  
+  <!-- 白色货车 -->
+  <rect x="180" y="680" width="350" height="180" fill="#FFFFFF" rx="10"/>
+  <rect x="180" y="680" width="350" height="40" fill="#F5F5F5" rx="10"/>
+  <!-- 红色波浪涂装 -->
+  <path d="M180,720 Q220,700 260,720 Q300,740 340,720 Q380,700 420,720 Q460,740 500,720 L530,720 L530,750 L180,750 Z" fill="#E63946" opacity="0.8"/>
+  
+  <!-- 繁体龍字 -->
+  <text x="400" y="790" font-family="'SimSun','STKaiti',serif" font-size="60" fill="#E63946" font-weight="bold">龍</text>
+  
+  <!-- CHINE 英文字 -->
+  <text x="250" y="790" font-family="Arial" font-size="28" fill="#E63946" font-weight="bold">CHINE</text>
+  
+  <!-- 车轮 -->
+  <circle cx="240" cy="860" r="35" fill="#333"/>
+  <circle cx="240" cy="860" r="20" fill="#666"/>
+  <circle cx="240" cy="860" r="8" fill="#999"/>
+  <circle cx="450" cy="860" r="35" fill="#333"/>
+  <circle cx="450" cy="860" r="20" fill="#666"/>
+  <circle cx="450" cy="860" r="8" fill="#999"/>
+  
+  <!-- 车窗 -->
+  <rect x="200" y="690" width="80" height="50" fill="#87CEEB" rx="5"/>
+  <rect x="300" y="690" width="60" height="50" fill="#87CEEB" rx="5"/>
+  
+  <!-- 人物1：左侧女性（浅紫色上衣，蓝色花纹长裙） -->
+  <g>
+    <circle cx="80" cy="600" r="20" fill="#F5C6A0"/>
+    <path d="M60,580 Q80,565 100,580" fill="#4A2A1A"/>
+    <rect x="58" y="620" width="44" height="60" fill="#B8A9D9" rx="5"/>
+    <rect x="52" y="680" width="56" height="80" fill="#4A6FA5" rx="3"/>
+    <path d="M55,680 L80,700 L105,680 L100,760 L60,760 Z" fill="#3D5A8A" opacity="0.7"/>
+    <rect x="50" y="620" width="10" height="50" fill="#B8A9D9" rx="3"/>
+    <rect x="100" y="620" width="10" height="50" fill="#B8A9D9" rx="3"/>
+    <!-- 左手塑料袋 -->
+    <rect x="45" y="670" width="20" height="30" fill="none" stroke="#AAA" stroke-width="1.5" rx="3"/>
+    <circle cx="50" cy="685" r="4" fill="#E63946"/>
+    <circle cx="58" cy="690" r="4" fill="#2A9D8F"/>
+    <circle cx="54" cy="695" r="3" fill="#E9C46A"/>
+    <!-- 脸 -->
+    <circle cx="80" cy="595" r="3" fill="#333"/>
+    <circle cx="92" cy="595" r="3" fill="#333"/>
+    <path d="M78,605 Q86,612 94,605" fill="none" stroke="#C0392B" stroke-width="2"/>
+  </g>
+  
+  <!-- 人物2：车内男性（浅蓝色Polo衫，拿瓶子） -->
+  <g>
+    <circle cx="240" cy="640" r="18" fill="#F5C6A0"/>
+    <path d="M222,625 Q240,610 258,625" fill="#3D3D3D"/>
+    <rect x="218" y="658" width="44" height="40" fill="#A8D8EA" rx="5"/>
+    <!-- 手臂拿瓶子 -->
+    <line x1="262" y1="670" x2="285" y2="660" stroke="#F5C6A0" stroke-width="8" stroke-linecap="round"/>
+    <rect x="278" y="645" width="12" height="28" fill="#4A2A1A" rx="3"/>
+    <rect x="280" y="640" width="8" height="8" fill="#2C5F2D"/>
+    <circle cx="240" cy="635" r="3" fill="#333"/>
+    <circle cx="252" cy="635" r="3" fill="#333"/>
+    <path d="M236,648 Q245,655 254,648" fill="none" stroke="#C0392B" stroke-width="2"/>
+  </g>
+  
+  <!-- 人物3：车顶女孩（绿色格子衫，牛仔裤，盘腿坐） -->
+  <g>
+    <circle cx="380" cy="570" r="20" fill="#F5C6A0"/>
+    <path d="M360,555 Q380,535 400,555" fill="#FFB347"/>
+    <path d="M365,558 L395,558 L390,548 L370,548 Z" fill="#FFB347"/>
+    <!-- 绿色格子衫 -->
+    <rect x="355" y="590" width="50" height="55" fill="#2D6A4F" rx="4"/>
+    <line x1="370" y1="590" x2="370" y2="645" stroke="#1B4332" stroke-width="2"/>
+    <line x1="390" y1="590" x2="390" y2="645" stroke="#1B4332" stroke-width="2"/>
+    <line x1="355" y1="605" x2="405" y2="605" stroke="#1B4332" stroke-width="2"/>
+    <line x1="355" y1="625" x2="405" y2="625" stroke="#1B4332" stroke-width="2"/>
+    <!-- 牛仔裤（盘腿） -->
+    <path d="M355,645 L340,680 L370,690 Q380,670 385,660 L385,680 L410,690 L405,645 Z" fill="#4682B4"/>
+    <!-- 白凉鞋 -->
+    <ellipse cx="345" cy="690" rx="12" ry="6" fill="#FFF"/>
+    <ellipse cx="405" cy="690" rx="12" ry="6" fill="#FFF"/>
+    <!-- 红色小物件 -->
+    <rect x="370" y="630" width="12" height="8" fill="#E63946" rx="2"/>
+    <!-- 脸 -->
+    <circle cx="380" cy="565" r="3" fill="#333"/>
+    <circle cx="392" cy="565" r="3" fill="#333"/>
+    <path d="M375,578 Q386,586 397,578" fill="none" stroke="#C0392B" stroke-width="2"/>
+  </g>
+  
+  <!-- 人物4：右侧青少年（红色T恤，托菜筐） -->
+  <g>
+    <circle cx="520" cy="600" r="18" fill="#D4A574"/>
+    <path d="M502,585 Q520,568 538,585" fill="#2C2C2C"/>
+    <rect x="500" y="618" width="40" height="55" fill="#E63946" rx="4"/>
+    <rect x="498" y="673" width="44" height="70" fill="#2C3E50" rx="3"/>
+    <!-- 手臂托筐 -->
+    <line x1="500" y1="635" x2="475" y2="650" stroke="#D4A574" stroke-width="7" stroke-linecap="round"/>
+    <line x1="540" y1="635" x2="555" y2="650" stroke="#D4A574" stroke-width="7" stroke-linecap="round"/>
+    <!-- 灰色塑料筐 -->
+    <rect x="460" y="630" width="110" height="35" fill="#999" rx="4"/>
+    <rect x="460" y="640" width="110" height="8" fill="#777"/>
+    <!-- 绿色圆白菜 -->
+    <circle cx="475" cy="630" r="8" fill="#4CAF50"/>
+    <circle cx="495" cy="628" r="9" fill="#66BB6A"/>
+    <circle cx="515" cy="630" r="8" fill="#4CAF50"/>
+    <circle cx="535" cy="628" r="9" fill="#66BB6A"/>
+    <circle cx="550" cy="630" r="8" fill="#4CAF50"/>
+    <!-- 脸 -->
+    <circle cx="520" cy="595" r="3" fill="#333"/>
+    <circle cx="532" cy="595" r="3" fill="#333"/>
+    <path d="M515,608 Q526,616 537,608" fill="none" stroke="#C0392B" stroke-width="2"/>
+  </g>
+  
+  <!-- 人物5：最右侧男性（深色衬衫马甲，抱纸箱） -->
+  <g>
+    <circle cx="650" cy="580" r="18" fill="#F5C6A0"/>
+    <path d="M632,565 Q650,548 668,565" fill="#4A2A1A"/>
+    <rect x="630" y="598" width="40" height="55" fill="#2C3E50" rx="4"/>
+    <rect x="628" y="598" width="44" height="60" fill="#1A252F" rx="3"/>
+    <rect x="632" y="655" width="36" height="80" fill="#2C3E50" rx="3"/>
+    <!-- 绿纸箱 -->
+    <rect x="600" y="600" width="55" height="45" fill="#2E7D32" rx="3"/>
+    <text x="617" y="625" font-family="Arial" font-size="10" fill="#FFF" text-anchor="middle">AR</text>
+    <!-- 手臂抱箱 -->
+    <line x1="630" y1="610" x2="605" y2="620" stroke="#F5C6A0" stroke-width="7" stroke-linecap="round"/>
+    <!-- 右手扶木棍 -->
+    <line x1="670" y1="610" x2="690" y2="700" stroke="#8B6914" stroke-width="5" stroke-linecap="round"/>
+    <line x1="670" y1="610" x2="690" y2="700" stroke="#8B6914" stroke-width="5" stroke-linecap="round"/>
+    <line x1="675" y1="615" x2="685" y2="615" stroke="#F5C6A0" stroke-width="6" stroke-linecap="round"/>
+    <!-- 脸 -->
+    <circle cx="650" cy="575" r="3" fill="#333"/>
+    <circle cx="662" cy="575" r="3" fill="#333"/>
+    <path d="M645,588 Q656,596 667,588" fill="none" stroke="#C0392B" stroke-width="2"/>
+  </g>
+  
+  <!-- 标题区域背景 -->
+  <rect x="0" y="0" width="800" height="160" fill="#1A1A2E" opacity="0.85"/>
+  
+  <!-- 顶部导演文字 -->
+  <text x="400" y="35" font-family="'SimSun',serif" font-size="18" fill="#FFD700" text-anchor="middle">文牧野 导演作品</text>
+  
+  <!-- 英文标题 -->
+  <text x="400" y="70" font-family="Arial" font-size="20" fill="#FFF" text-anchor="middle" font-weight="bold">ONCE UPON A TIME IN THE MIDDLE EAST</text>
+  
+  <!-- 中文标题 -->
+  <text x="400" y="110" font-family="'SimSun','STKaiti',serif" font-size="42" fill="#FFD700" text-anchor="middle" font-weight="bold">欢迎来 龙餐馆</text>
+  
+  <!-- 阿拉伯文 -->
+  <text x="400" y="140" font-family="Arial" font-size="14" fill="#FFF" text-anchor="middle">مرحبا بكم في مطعم التنين</text>
+  
+  <!-- 右侧领衔主演标牌 -->
+  <rect x="680" y="50" width="100" height="80" fill="#FFD700" rx="5"/>
+  <text x="730" y="80" font-family="'SimSun',serif" font-size="16" fill="#1A1A2E" text-anchor="middle" font-weight="bold">领衔主演</text>
+  <text x="730" y="110" font-family="'SimSun',serif" font-size="20" fill="#1A1A2E" text-anchor="middle" font-weight="bold">沈腾</text>
+  
+  <!-- 演员名单横条 -->
+  <rect x="80" y="160" width="640" height="35" fill="#1A1A2E" opacity="0.7" rx="5"/>
+  <text x="400" y="183" font-family="'SimSun',serif" font-size="16" fill="#FFD700" text-anchor="middle">蒋奇明 · 奥马尔·谢里夫 · 宁浩 · 文牧野 · 郎群力 · 钟伟</text>
+  
+  <!-- 底部黑色区域 -->
+  <rect x="0" y="1100" width="800" height="100" fill="#1A1A2E"/>
+  
+  <!-- 全国热映 -->
+  <text x="400" y="1135" font-family="'SimSun',serif" font-size="28" fill="#FFF" text-anchor="middle" font-weight="bold">全国热映</text>
+  
+  <!-- IMAX特制拍摄 -->
+  <rect x="310" y="1150" width="180" height="25" fill="#FFF" rx="3"/>
+  <text x="400" y="1168" font-family="Arial" font-size="14" fill="#1A1A2E" text-anchor="middle" font-weight="bold">IMAX 特制拍摄</text>
+  
+  <!-- 底部小字 -->
+  <text x="400" y="1192" font-family="Arial" font-size="10" fill="#888" text-anchor="middle">联合出品 · 出品人 · 制作人 名单</text>
+  
+</svg>

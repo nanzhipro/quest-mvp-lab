@@ -1,0 +1,38 @@
+[package]
+name = "pdf-inspector-mvp"
+version = "0.1.0"
+edition = "2021"
+description = "Minimal Rust re-implementation of firecrawl/pdf-inspector: PDF classification, positioned text extraction, reading-order layout, Markdown conversion, and embedded-image OCR via macOS Vision."
+license = "MIT"
+readme = "README.md"
+
+# The binary is `pdfx`; the library is `pdf_inspector_mvp`.
+[[bin]]
+name = "pdfx"
+path = "src/bin/pdfx.rs"
+
+[dependencies]
+# Same core parser as upstream pdf-inspector (lopdf 0.42).
+lopdf = "0.42"
+thiserror = "2"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+# Used to rebuild PNG scanlines (predictor-deflated images) for the OCR stage.
+flate2 = "1"
+
+# macOS Vision OCR via the objc2 family (pure-Rust bindings, no Objective-C
+# in the repo). The OCR backend is behind a trait, so non-macOS builds simply
+# fall back to the null backend.
+[target.'cfg(target_os = "macos")'.dependencies]
+objc2 = "0.6"
+objc2-foundation = "0.3"
+objc2-vision = "0.3"
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+lto = "thin"

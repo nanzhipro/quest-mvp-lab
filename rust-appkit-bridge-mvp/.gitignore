@@ -1,0 +1,14 @@
+# rust-appkit-bridge-mvp — 项目专属忽略层（Layer 2）
+
+# 桥接 dylib 产物（swift-lib/build.sh 生成）
+swift-lib/libSwiftBridge.dylib
+
+# Rust 构建产物
+rust/target/
+swift-host/rust-core/target/
+
+# Demo 宿主二进制（swift-host/build.sh 生成）
+swift-host/rust-host-demo
+
+# macOS 杂项
+.DS_Store

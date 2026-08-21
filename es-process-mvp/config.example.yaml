@@ -1,0 +1,9 @@
+# es-process-mvp 策略配置示例。
+#
+# `bundleIds` 列表中的进程（按代码签名标识 / bundleId 匹配）纳入管控：
+#   其打开 PDF 文件（.pdf）的 AUTH_OPEN 一律 DENY，其余（非 PDF / 未列出）默认 ALLOW。
+#
+# 用法：
+#   sudo ./ESProcessMvp.app/Contents/MacOS/es-process-mvp ./config.example.yaml
+bundleIds:
+  - com.tencent.xinWeChat

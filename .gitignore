@@ -1,0 +1,35 @@
+# ──────────────────────────────────────────────────────────────
+# quest-mvp-lab — 共享忽略层（Layer 1：适用于所有子项目）
+# 层次模型：全局 ~/.gitignore_global < 本文件 < 各项目 .gitignore
+# 若某子项目日后独立成仓，需把本文件的通用模式并入其自有 .gitignore
+# ──────────────────────────────────────────────────────────────
+
+# macOS 系统杂项
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 编辑器 / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Xcode
+xcuserdata/
+DerivedData/
+*.xccheckout
+
+# 构建缓存（Rust / Swift 通用）
+target/
+.build/
+
+# ── 企业数据资产护栏（禁止入库）──
+# 签名证书 / 密钥 / 描述文件一律不得进入 quest-mvp-lab 任何项目
+*.p12
+*.cer
+*.pem
+*.key
+*.provisionprofile
+*.mobileprovision
+*.pfx

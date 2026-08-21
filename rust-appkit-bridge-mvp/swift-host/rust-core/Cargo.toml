@@ -1,0 +1,11 @@
+[package]
+name = "rust-core"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+# staticlib：Swift 宿主直接链接，无 rpath 问题（cua_driver_abi.h 同思路的 C ABI）
+crate-type = ["staticlib"]
+
+[dependencies]
+libc = "0.2"

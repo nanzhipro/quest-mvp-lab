@@ -1,0 +1,25 @@
+# Project layer (Layer 2) — applies to this project only.
+# Shared layer: quest-mvp-lab/.gitignore (Layer 1). Global: ~/.gitignore_global.
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+
+# Agent working area (E2E test scratch)
+sandbox/
+temp/
+
+# Secrets guard (defense in depth — the real key lives in ~/.config/aicode/api_key, never in this repo)
+.env
+api_key
+*.env
+flappy
+example

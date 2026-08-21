@@ -1,0 +1,8 @@
+# m7-chart — 项目专属忽略层（Layer 2）
+
+# Rust 构建产物
+/target/
+
+# 注意：Cargo.lock 必须提交（二进制 crate，锁定依赖保证可复现构建）
+# macOS 杂项
+.DS_Store

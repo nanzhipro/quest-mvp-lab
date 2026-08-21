@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-coding-agent-mvp"
+version = "0.1.0"
+description = "Minimal AI coding agent CLI on top of any OpenAI-compatible chat API (stdlib only, zero runtime deps)"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.scripts]
+aicode = "aicode.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+src = ["src", "tests", "scripts"]
+# Agent scratch dirs (sandbox/, temp/, example/) contain generated code — never linted.
+extend-exclude = ["sandbox", "temp", "example"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests intentionally exercise CJK text (fullwidth punctuation) for salvage fidelity.
+"tests/*" = ["RUF001"]

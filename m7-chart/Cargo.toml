@@ -1,0 +1,13 @@
+[package]
+name = "m7-chart"
+version = "0.1.0"
+edition = "2024"
+description = "Magnificent 7 one-month stock trend chart, built with GPUI Component"
+
+[dependencies]
+gpui = { version = "0.2.2", features = ["runtime_shaders"] }
+gpui-component = "0.5.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+ureq = "2"
+chrono = "0.4"

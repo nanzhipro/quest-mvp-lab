@@ -1,0 +1,349 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" width="800" height="1200">
+  <!-- 背景 - 建筑外墙 -->
+  <rect x="0" y="0" width="800" height="1200" fill="#E8D5B7"/>
+  
+  <!-- 建筑上部墙面 -->
+  <rect x="0" y="0" width="800" height="500" fill="#D4C4A8"/>
+  
+  <!-- 建筑纹理线条 -->
+  <line x1="0" y1="100" x2="800" y2="100" stroke="#C8B898" stroke-width="2"/>
+  <line x1="0" y1="200" x2="800" y2="200" stroke="#C8B898" stroke-width="2"/>
+  <line x1="0" y1="300" x2="800" y2="300" stroke="#C8B898" stroke-width="2"/>
+  
+  <!-- 门框 -->
+  <rect x="150" y="480" width="500" height="300" fill="#5A4A3A" rx="5"/>
+  <rect x="170" y="500" width="460" height="280" fill="#3D2E1F"/>
+  
+  <!-- 门体 -->
+  <rect x="190" y="520" width="200" height="260" fill="#8B6F47"/>
+  <rect x="410" y="520" width="200" height="260" fill="#8B6F47"/>
+  <circle cx="380" cy="650" r="5" fill="#D4A017"/>
+  
+  <!-- 门口地面 -->
+  <rect x="100" y="780" width="600" height="40" fill="#A0927A"/>
+  
+  <!-- 左侧花篮 -->
+  <rect x="80" y="650" width="60" height="120" fill="#8B4513"/>
+  <ellipse cx="110" cy="650" rx="45" ry="30" fill="#4CAF50"/>
+  <circle cx="95" cy="635" r="8" fill="#FF6B9D"/>
+  <circle cx="125" cy="640" r="7" fill="#FFD700"/>
+  <circle cx="110" cy="625" r="6" fill="#FF4444"/>
+  
+  <!-- 右侧花篮 -->
+  <rect x="660" y="650" width="60" height="120" fill="#8B4513"/>
+  <ellipse cx="690" cy="650" rx="45" ry="30" fill="#4CAF50"/>
+  <circle cx="675" cy="635" r="8" fill="#FF6B9D"/>
+  <circle cx="705" cy="640" r="7" fill="#FFD700"/>
+  <circle cx="690" cy="625" r="6" fill="#FF4444"/>
+  
+  <!-- 红色大招牌 -->
+  <rect x="100" y="40" width="600" height="70" fill="#CC0000" rx="10"/>
+  <rect x="100" y="40" width="600" height="70" fill="none" stroke="#990000" stroke-width="3" rx="10"/>
+  
+  <!-- 招牌文字：欢迎来龙餐馆 -->
+  <text x="400" y="90" text-anchor="middle" font-family="'SimSun','STZhongsong',serif" font-size="48" fill="#FFD700" font-weight="bold">欢迎来龙餐馆</text>
+  
+  <!-- 英文片名 -->
+  <text x="400" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#333" font-weight="bold" letter-spacing="2">ONCE UPON A TIME IN THE MIDDLE EAST</text>
+  
+  <!-- 阿拉伯文 -->
+  <text x="400" y="122" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">في زمن من الزمان في الشرق الأوسط</text>
+  
+  <!-- 龍字 -->
+  <rect x="680" y="50" width="40" height="50" fill="#FFD700" rx="5"/>
+  <text x="700" y="87" text-anchor="middle" font-family="'SimSun',serif" font-size="32" fill="#CC0000" font-weight="bold">龍</text>
+  
+  <!-- 红色横幅 -->
+  <rect x="120" y="135" width="560" height="40" fill="#CC0000"/>
+  <text x="260" y="162" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#FFF" font-weight="bold">CHINESE RESTAURANT</text>
+  <text x="540" y="162" text-anchor="middle" font-family="'SimSun',serif" font-size="18" fill="#FFD700" font-weight="bold">正宗中国味</text>
+  
+  <!-- 灯笼 -->
+  <!-- 灯笼1 -->
+  <line x1="220" y1="175" x2="220" y2="195" stroke="#333" stroke-width="2"/>
+  <ellipse cx="220" cy="220" rx="25" ry="30" fill="#CC0000"/>
+  <rect x="205" y="190" width="30" height="8" fill="#FFD700" rx="3"/>
+  <text x="220" y="225" text-anchor="middle" font-family="'SimSun',serif" font-size="14" fill="#FFD700">开</text>
+  <line x1="220" y1="250" x2="220" y2="265" stroke="#FFD700" stroke-width="1"/>
+  
+  <!-- 灯笼2 -->
+  <line x1="340" y1="175" x2="340" y2="195" stroke="#333" stroke-width="2"/>
+  <ellipse cx="340" cy="220" rx="25" ry="30" fill="#CC0000"/>
+  <rect x="325" y="190" width="30" height="8" fill="#FFD700" rx="3"/>
+  <text x="340" y="225" text-anchor="middle" font-family="'SimSun',serif" font-size="14" fill="#FFD700">业</text>
+  <line x1="340" y1="250" x2="340" y2="265" stroke="#FFD700" stroke-width="1"/>
+  
+  <!-- 灯笼3 -->
+  <line x1="460" y1="175" x2="460" y2="195" stroke="#333" stroke-width="2"/>
+  <ellipse cx="460" cy="220" rx="25" ry="30" fill="#CC0000"/>
+  <rect x="445" y="190" width="30" height="8" fill="#FFD700" rx="3"/>
+  <text x="460" y="225" text-anchor="middle" font-family="'SimSun',serif" font-size="14" fill="#FFD700">大</text>
+  <line x1="460" y1="250" x2="460" y2="265" stroke="#FFD700" stroke-width="1"/>
+  
+  <!-- 灯笼4 -->
+  <line x1="580" y1="175" x2="580" y2="195" stroke="#333" stroke-width="2"/>
+  <ellipse cx="580" cy="220" rx="25" ry="30" fill="#CC0000"/>
+  <rect x="565" y="190" width="30" height="8" fill="#FFD700" rx="3"/>
+  <text x="580" y="225" text-anchor="middle" font-family="'SimSun',serif" font-size="14" fill="#FFD700">吉</text>
+  <line x1="580" y1="250" x2="580" y2="265" stroke="#FFD700" stroke-width="1"/>
+  
+  <!-- 上方文字：导演和主演 -->
+  <text x="30" y="145" font-family="'SimSun',serif" font-size="14" fill="#333" font-weight="bold">文牧野 导演作品</text>
+  <text x="770" y="145" text-anchor="end" font-family="'SimSun',serif" font-size="14" fill="#333" font-weight="bold">沈腾 领衔主演</text>
+  
+  <!-- 后排人物 - 从左到右 -->
+  
+  <!-- 人物1：深色西装男士 -->
+  <g>
+    <ellipse cx="180" cy="680" rx="35" ry="40" fill="#FFDAB9"/>
+    <path d="M145,680 Q145,620 180,600 Q215,620 215,680" fill="#2C3E50"/>
+    <rect x="155" y="600" width="50" height="30" fill="#FFF"/>
+    <line x1="180" y1="610" x2="180" y2="640" stroke="#CC0000" stroke-width="3"/>
+    <!-- 领带 -->
+    <polygon points="180,610 175,630 180,650 185,630" fill="#CC0000"/>
+    <!-- 头发 -->
+    <ellipse cx="180" cy="595" rx="32" ry="18" fill="#3D2E1F"/>
+    <!-- 眼睛 -->
+    <circle cx="170" cy="655" r="4" fill="#333"/>
+    <circle cx="190" cy="655" r="4" fill="#333"/>
+    <!-- 嘴 -->
+    <path d="M168,670 Q180,680 192,670" fill="none" stroke="#CC6666" stroke-width="2"/>
+  </g>
+  
+  <!-- 人物2：浅卡其衬衫男士（沈腾） -->
+  <g>
+    <ellipse cx="280" cy="680" rx="35" ry="40" fill="#FFDAB9"/>
+    <path d="M245,680 Q245,620 280,600 Q315,620 315,680" fill="#D2B48C"/>
+    <rect x="260" y="610" width="40" height="30" fill="#FFF"/>
+    <!-- 头发 -->
+    <ellipse cx="280" cy="595" rx="30" ry="16" fill="#2C2C2C"/>
+    <!-- 眼睛 -->
+    <circle cx="270" cy="655" r="4" fill="#333"/>
+    <circle cx="290" cy="655" r="4" fill="#333"/>
+    <!-- 笑容 -->
+    <path d="M268,670 Q280,685 292,670" fill="none" stroke="#CC6666" stroke-width="2"/>
+  </g>
+  
+  <!-- 人物3：白厨师服男士，举勺 -->
+  <g>
+    <ellipse cx="380" cy="670" rx="35" ry="42" fill="#FFDAB9"/>
+    <path d="M345,670 Q345,605 380,585 Q415,605 415,670" fill="#FFF"/>
+    <rect x="360" y="595" width="40" height="35" fill="#FFFAF0"/>
+    <!-- 厨师帽 -->
+    <rect x="355" y="555" width="50" height="35" fill="#FFF" rx="5"/>
+    <ellipse cx="380" cy="555" rx="30" ry="12" fill="#FFF"/>
+    <line x1="365" y1="565" x2="365" y2="590" stroke="#DDD" stroke-width="1"/>
+    <line x1="380" y1="565" x2="380" y2="590" stroke="#DDD" stroke-width="1"/>
+    <line x1="395" y1="565" x2="395" y2="590" stroke="#DDD" stroke-width="1"/>
+    <!-- 眼睛 -->
+    <circle cx="370" cy="645" r="4" fill="#333"/>
+    <circle cx="390" cy="645" r="4" fill="#333"/>
+    <!-- 嘴 -->
+    <path d="M368,660 Q380,672 392,660" fill="none" stroke="#CC6666" stroke-width="2"/>
+    <!-- 举起的勺子 -->
+    <line x1="410" y1="580" x2="440" y2="530" stroke="#C0C0C0" stroke-width="4"/>
+    <ellipse cx="443" cy="525" rx="12" ry="8" fill="#C0C0C0"/>
+  </g>
+  
+  <!-- 人物4：深色外套红衣，头巾 -->
+  <g>
+    <ellipse cx="480" cy="680" rx="35" ry="40" fill="#FFDAB9"/>
+    <path d="M445,680 Q445,620 480,600 Q515,620 515,680" fill="#2C3E50"/>
+    <rect x="460" y="608" width="40" height="25" fill="#CC0000"/>
+    <!-- 头巾 -->
+    <path d="M445,595 Q445,580 480,575 Q515,580 515,595" fill="#333"/>
+    <ellipse cx="480" cy="598" rx="32" ry="17" fill="#FFDAB9"/>
+    <path d="M448,590 Q480,580 512,590" fill="none" stroke="#333" stroke-width="4"/>
+    <!-- 眼睛 -->
+    <circle cx="470" cy="655" r="4" fill="#333"/>
+    <circle cx="490" cy="655" r="4" fill="#333"/>
+    <!-- 嘴 -->
+    <path d="M468,670 Q480,682 492,670" fill="none" stroke="#CC6666" stroke-width="2"/>
+    <!-- 扶头的手 -->
+    <circle cx="505" cy="610" r="8" fill="#FFDAB9"/>
+  </g>
+  
+  <!-- 人物5：红色外套白色厨师帽 -->
+  <g>
+    <ellipse cx="580" cy="680" rx="35" ry="40" fill="#FFDAB9"/>
+    <path d="M545,680 Q545,620 580,600 Q615,620 615,680" fill="#CC0000"/>
+    <rect x="560" y="608" width="40" height="30" fill="#FFF"/>
+    <!-- 厨师帽 -->
+    <rect x="555" y="570" width="50" height="35" fill="#FFF" rx="5"/>
+    <ellipse cx="580" cy="570" rx="28" ry="10" fill="#FFF"/>
+    <!-- 眼睛 -->
+    <circle cx="570" cy="655" r="4" fill="#333"/>
+    <circle cx="590" cy="655" r="4" fill="#333"/>
+    <!-- 嘴 -->
+    <path d="M568,668 Q580,680 592,668" fill="none" stroke="#CC6666" stroke-width="2"/>
+    <!-- 手势 -->
+    <circle cx="615" cy="640" r="7" fill="#FFDAB9"/>
+  </g>
+  
+  <!-- 前排儿童 - 红色制服 -->
+  
+  <!-- 儿童1：抱大葱 -->
+  <g>
+    <ellipse cx="200" cy="800" rx="20" ry="22" fill="#FFDAB9"/>
+    <path d="M180,800 Q180,770 200,760 Q220,770 220,800" fill="#CC0000"/>
+    <!-- 厨师帽 -->
+    <rect x="190" y="745" width="25" height="18" fill="#FFF" rx="3"/>
+    <!-- 大葱 -->
+    <rect x="185" y="770" width="8" height="45" fill="#4CAF50"/>
+    <rect x="200" y="775" width="8" height="40" fill="#4CAF50"/>
+    <rect x="210" y="768" width="8" height="42" fill="#66BB6A"/>
+    <!-- 眼睛 -->
+    <circle cx="193" cy="790" r="3" fill="#333"/>
+    <circle cx="207" cy="790" r="3" fill="#333"/>
+    <path d="M194,800 Q200,806 206,800" fill="none" stroke="#CC6666" stroke-width="1.5"/>
+  </g>
+  
+  <!-- 儿童2：抱白鸭 -->
+  <g>
+    <ellipse cx="270" cy="800" rx="20" ry="22" fill="#FFDAB9"/>
+    <path d="M250,800 Q250,770 270,760 Q290,770 290,800" fill="#CC0000"/>
+    <rect x="260" y="745" width="25" height="18" fill="#FFF" rx="3"/>
+    <!-- 白鸭 -->
+    <ellipse cx="270" cy="780" rx="15" ry="12" fill="#FFF"/>
+    <circle cx="270" cy="772" r="8" fill="#FFF"/>
+    <polygon points="262,772 255,768 258,774" fill="#FFA500"/>
+    <!-- 眼睛 -->
+    <circle cx="263" cy="790" r="3" fill="#333"/>
+    <circle cx="277" cy="790" r="3" fill="#333"/>
+    <path d="M264,800 Q270,806 276,800" fill="none" stroke="#CC6666" stroke-width="1.5"/>
+  </g>
+  
+  <!-- 儿童3：抱白鸭 -->
+  <g>
+    <ellipse cx="330" cy="800" rx="20" ry="22" fill="#FFDAB9"/>
+    <path d="M310,800 Q310,770 330,760 Q350,770 350,800" fill="#CC0000"/>
+    <rect x="320" y="745" width="25" height="18" fill="#FFF" rx="3"/>
+    <!-- 白鸭 -->
+    <ellipse cx="330" cy="780" rx="15" ry="12" fill="#FFF"/>
+    <circle cx="330" cy="772" r="8" fill="#FFF"/>
+    <polygon points="322,772 315,768 318,774" fill="#FFA500"/>
+    <!-- 眼睛 -->
+    <circle cx="323" cy="790" r="3" fill="#333"/>
+    <circle cx="337" cy="790" r="3" fill="#333"/>
+    <path d="M324,800 Q330,806 336,800" fill="none" stroke="#CC6666" stroke-width="1.5"/>
+  </g>
+  
+  <!-- 儿童4：抱茄子 -->
+  <g>
+    <ellipse cx="400" cy="800" rx="20" ry="22" fill="#FFDAB9"/>
+    <path d="M380,800 Q380,770 400,760 Q420,770 420,800" fill="#CC0000"/>
+    <rect x="390" y="745" width="25" height="18" fill="#FFF" rx="3"/>
+    <!-- 茄子 -->
+    <ellipse cx="400" cy="785" rx="10" ry="18" fill="#7B1FA2"/>
+    <ellipse cx="400" cy="770" rx="6" ry="5" fill="#4CAF50"/>
+    <!-- 眼睛 -->
+    <circle cx="393" cy="790" r="3" fill="#333"/>
+    <circle cx="407" cy="790" r="3" fill="#333"/>
+    <path d="M394,800 Q400,806 406,800" fill="none" stroke="#CC6666" stroke-width="1.5"/>
+  </g>
+  
+  <!-- 儿童5：浅蓝上衣 -->
+  <g>
+    <ellipse cx="460" cy="800" rx="20" ry="22" fill="#FFDAB9"/>
+    <path d="M440,800 Q440,770 460,760 Q480,770 480,800" fill="#64B5F6"/>
+    <!-- 眼睛 -->
+    <circle cx="453" cy="790" r="3" fill="#333"/>
+    <circle cx="467" cy="790" r="3" fill="#333"/>
+    <path d="M454,800 Q460,806 466,800" fill="none" stroke="#CC6666" stroke-width="1.5"/>
+  </g>
+  
+  <!-- 儿童6：抱大白菜 -->
+  <g>
+    <ellipse cx="530" cy="800" rx="20" ry="22" fill="#FFDAB9"/>
+    <path d="M510,800 Q510,770 530,760 Q550,770 550,800" fill="#CC0000"/>
+    <rect x="520" y="745" width="25" height="18" fill="#FFF" rx="3"/>
+    <!-- 大白菜 -->
+    <ellipse cx="530" cy="785" rx="14" ry="18" fill="#FFF"/>
+    <path d="M520,775 Q530,760 540,775" fill="#4CAF50"/>
+    <path d="M518,785 Q530,770 542,785" fill="#66BB6A"/>
+    <!-- 眼睛 -->
+    <circle cx="523" cy="790" r="3" fill="#333"/>
+    <circle cx="537" cy="790" r="3" fill="#333"/>
+    <path d="M524,800 Q530,806 536,800" fill="none" stroke="#CC6666" stroke-width="1.5"/>
+  </g>
+  
+  <!-- 更多儿童（后排填充） -->
+  <g>
+    <ellipse cx="240" cy="810" rx="15" ry="18" fill="#FFDAB9"/>
+    <path d="M225,810 Q225,788 240,780 Q255,788 255,810" fill="#CC0000"/>
+    <rect x="233" y="768" width="18" height="14" fill="#FFF" rx="2"/>
+    <circle cx="235" cy="802" r="2" fill="#333"/>
+    <circle cx="245" cy="802" r="2" fill="#333"/>
+  </g>
+  
+  <g>
+    <ellipse cx="360" cy="810" rx="15" ry="18" fill="#FFDAB9"/>
+    <path d="M345,810 Q345,788 360,780 Q375,788 375,810" fill="#CC0000"/>
+    <rect x="353" y="768" width="18" height="14" fill="#FFF" rx="2"/>
+    <circle cx="355" cy="802" r="2" fill="#333"/>
+    <circle cx="365" cy="802" r="2" fill="#333"/>
+  </g>
+  
+  <g>
+    <ellipse cx="500" cy="810" rx="15" ry="18" fill="#FFDAB9"/>
+    <path d="M485,810 Q485,788 500,780 Q515,788 515,810" fill="#CC0000"/>
+    <rect x="493" y="768" width="18" height="14" fill="#FFF" rx="2"/>
+    <circle cx="495" cy="802" r="2" fill="#333"/>
+    <circle cx="505" cy="802" r="2" fill="#333"/>
+  </g>
+  
+  <g>
+    <ellipse cx="570" cy="810" rx="15" ry="18" fill="#FFDAB9"/>
+    <path d="M555,810 Q555,788 570,780 Q585,788 585,810" fill="#CC0000"/>
+    <rect x="563" y="768" width="18" height="14" fill="#FFF" rx="2"/>
+    <circle cx="565" cy="802" r="2" fill="#333"/>
+    <circle cx="575" cy="802" r="2" fill="#333"/>
+  </g>
+  
+  <g>
+    <ellipse cx="610" cy="800" rx="15" ry="18" fill="#FFDAB9"/>
+    <path d="M595,800 Q595,778 610,770 Q625,778 625,800" fill="#CC0000"/>
+    <rect x="603" y="758" width="18" height="14" fill="#FFF" rx="2"/>
+    <circle cx="605" cy="792" r="2" fill="#333"/>
+    <circle cx="615" cy="792" r="2" fill="#333"/>
+  </g>
+  
+  <!-- 地面 -->
+  <rect x="0" y="840" width="800" height="360" fill="#B8A88A"/>
+  
+  <!-- 彩纸屑 -->
+  <rect x="100" y="350" width="8" height="3" fill="#FF4444" transform="rotate(30 104 351)"/>
+  <rect x="200" y="380" width="8" height="3" fill="#FFD700" transform="rotate(-20 204 381)"/>
+  <rect x="300" y="420" width="8" height="3" fill="#4CAF50" transform="rotate(45 304 421)"/>
+  <rect x="450" y="360" width="8" height="3" fill="#FF6B9D" transform="rotate(-40 454 361)"/>
+  <rect x="550" y="400" width="8" height="3" fill="#64B5F6" transform="rotate(25 554 401)"/>
+  <rect x="150" y="500" width="8" height="3" fill="#FFD700" transform="rotate(-15 154 501)"/>
+  <rect x="650" y="450" width="8" height="3" fill="#FF4444" transform="rotate(50 654 451)"/>
+  <rect x="350" y="550" width="8" height="3" fill="#9C27B0" transform="rotate(35 354 551)"/>
+  <rect x="500" y="520" width="8" height="3" fill="#FF9800" transform="rotate(-30 504 521)"/>
+  <rect x="700" y="550" width="8" height="3" fill="#4CAF50" transform="rotate(20 704 551)"/>
+  <rect x="80" y="600" width="8" height="3" fill="#FF6B9D" transform="rotate(-45 84 601)"/>
+  <rect x="720" y="600" width="8" height="3" fill="#FFD700" transform="rotate(40 724 601)"/>
+  
+  <!-- 地面彩屑 -->
+  <rect x="120" y="860" width="6" height="3" fill="#FF4444" transform="rotate(20 123 861)"/>
+  <rect x="250" y="880" width="6" height="3" fill="#FFD700" transform="rotate(-30 253 881)"/>
+  <rect x="380" y="870" width="6" height="3" fill="#4CAF50" transform="rotate(45 383 871)"/>
+  <rect x="500" y="890" width="6" height="3" fill="#FF6B9D" transform="rotate(-15 503 891)"/>
+  <rect x="600" y="870" width="6" height="3" fill="#64B5F6" transform="rotate(30 603 871)"/>
+  <rect x="180" y="900" width="6" height="3" fill="#FF9800" transform="rotate(-40 183 901)"/>
+  <rect x="420" y="910" width="6" height="3" fill="#9C27B0" transform="rotate(25 423 911)"/>
+  <rect x="320" y="920" width="6" height="3" fill="#FFD700" transform="rotate(-20 323 921)"/>
+  <rect x="680" y="900" width="6" height="3" fill="#FF4444" transform="rotate(35 683 901)"/>
+  
+  <!-- 底部信息区域 -->
+  <rect x="0" y="1050" width="800" height="150" fill="#1A1A1A"/>
+  
+  <!-- 上映信息 -->
+  <text x="400" y="1085" text-anchor="middle" font-family="'SimSun',serif" font-size="20" fill="#FFD700" font-weight="bold">正在点映 预售开启</text>
+  <text x="400" y="1115" text-anchor="middle" font-family="'SimSun',serif" font-size="18" fill="#FFF">8月11日全国上映 IMAX 特制拍摄</text>
+  
+  <!-- 演职人员信息 -->
+  <text x="400" y="1150" text-anchor="middle" font-family="'SimSun',serif" font-size="10" fill="#AAA">编剧: 文牧野 主演: 沈腾 导演: 文牧野 制片人: XXX 摄影指导: XXX</text>
+  <text x="400" y="1170" text-anchor="middle" font-family="'SimSun',serif" font-size="10" fill="#888">出品公司: XXXXXXXX 发行公司: XXXXXXXX 联合出品: XXXX</text>
+</svg>

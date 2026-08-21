@@ -1,0 +1,12 @@
+# es-mvp — 项目专属忽略层（Layer 2）
+
+# Demo .app 产物（可经 make 重建，禁止携带企业签名/描述文件入库）
+*.app
+
+# 签名材料（双保险，勿移除）
+*.provisionprofile
+*.p12
+*.cer
+
+# macOS 杂项
+.DS_Store

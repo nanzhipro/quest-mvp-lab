@@ -1,0 +1,196 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" width="800" height="1200">
+  <!-- 背景墙面 -->
+  <rect x="0" y="0" width="800" height="1200" fill="#8B1A1A"/>
+  
+  <!-- 墙面裂纹装饰 -->
+  <path d="M50,80 L120,150 L90,220 L180,280" stroke="#6B1010" stroke-width="3" fill="none"/>
+  <path d="M650,100 L700,180 L680,260 L750,320" stroke="#6B1010" stroke-width="3" fill="none"/>
+  <path d="M300,50 L350,120 L320,190" stroke="#6B1010" stroke-width="2" fill="none"/>
+  <path d="M550,400 L600,460 L570,520" stroke="#6B1010" stroke-width="2" fill="none"/>
+  <path d="M100,500 L160,550 L140,600" stroke="#6B1010" stroke-width="2" fill="none"/>
+
+  <!-- 巨大黄色折扇 -->
+  <g transform="translate(400, 380)">
+    <!-- 扇面 -->
+    <path d="M-200,0 Q-220,-280 0,-320 Q220,-280 200,0 Z" fill="#F5C518" stroke="#DAA520" stroke-width="3"/>
+    <!-- 扇骨线 -->
+    <line x1="0" y1="0" x2="0" y2="-320" stroke="#DAA520" stroke-width="2"/>
+    <line x1="0" y1="0" x2="-100" y2="-300" stroke="#DAA520" stroke-width="2"/>
+    <line x1="0" y1="0" x2="100" y2="-300" stroke="#DAA520" stroke-width="2"/>
+    <line x1="0" y1="0" x2="-180" y2="-240" stroke="#DAA520" stroke-width="2"/>
+    <line x1="0" y1="0" x2="180" y2="-240" stroke="#DAA520" stroke-width="2"/>
+    <line x1="0" y1="0" x2="-210" y2="-150" stroke="#DAA520" stroke-width="2"/>
+    <line x1="0" y1="0" x2="210" y2="-150" stroke="#DAA520" stroke-width="2"/>
+    
+    <!-- 扇面上的龙 -->
+    <path d="M-60,-250 Q-40,-270 -20,-250 Q-10,-240 0,-250 Q10,-240 20,-250 Q40,-270 60,-250 L80,-230 L60,-220 L40,-230 Q20,-220 0,-230 Q-20,-220 -40,-230 L-60,-220 L-80,-230 Z" fill="#D32F2F"/>
+    <path d="M-70,-240 Q-50,-260 -30,-240 Q-10,-230 10,-240 Q30,-230 50,-240 Q70,-260 90,-240" stroke="#D32F2F" stroke-width="3" fill="none"/>
+    <circle cx="-80" cy="-255" r="5" fill="#D32F2F"/>
+    <circle cx="80" cy="-255" r="5" fill="#D32F2F"/>
+    <!-- 祥云 -->
+    <ellipse cx="-100" cy="-180" rx="30" ry="12" fill="#E8A000" opacity="0.6"/>
+    <ellipse cx="100" cy="-180" rx="30" ry="12" fill="#E8A000" opacity="0.6"/>
+    <ellipse cx="-50" cy="-160" rx="20" ry="8" fill="#E8A000" opacity="0.4"/>
+    <ellipse cx="50" cy="-160" rx="20" ry="8" fill="#E8A000" opacity="0.4"/>
+  </g>
+
+  <!-- 餐桌 -->
+  <rect x="80" y="680" width="640" height="60" rx="8" fill="#8B5E3C"/>
+  <rect x="80" y="740" width="640" height="80" fill="#6B3A1F"/>
+  <rect x="80" y="740" width="640" height="10" fill="#5A2D15"/>
+
+  <!-- 桌面上的食物 -->
+  <!-- 烤鸡盘 -->
+  <ellipse cx="400" cy="670" rx="80" ry="25" fill="#FFF8E7" stroke="#DDD" stroke-width="2"/>
+  <ellipse cx="400" cy="668" rx="60" ry="18" fill="#D2691E"/>
+  <!-- 烤鸡主体 -->
+  <ellipse cx="400" cy="655" rx="45" ry="20" fill="#C8860A"/>
+  <ellipse cx="400" cy="650" rx="35" ry="15" fill="#E8A030"/>
+  <!-- 鸡腿 -->
+  <path d="M360,660 Q340,655 335,670 Q340,675 355,665" fill="#C8860A"/>
+  <path d="M440,660 Q460,655 465,670 Q460,675 445,665" fill="#C8860A"/>
+  
+  <!-- 红色酱汁浇下 -->
+  <path d="M400,590 Q410,620 405,645 Q400,655 395,645 Q390,620 400,590" fill="#C0392B" opacity="0.8"/>
+  <path d="M395,600 Q385,625 390,640 Q393,650 398,640 Q403,625 395,600" fill="#E74C3C" opacity="0.6"/>
+
+  <!-- 左边菜品 -->
+  <ellipse cx="220" cy="675" rx="55" ry="20" fill="#FFF8E7" stroke="#DDD" stroke-width="2"/>
+  <ellipse cx="220" cy="672" rx="40" ry="14" fill="#FF6347"/>
+  <ellipse cx="220" cy="668" rx="30" ry="10" fill="#FF7F50"/>
+  <!-- 绿色配菜 -->
+  <ellipse cx="220" cy="662" rx="15" ry="5" fill="#228B22"/>
+  <ellipse cx="210" cy="665" rx="8" ry="4" fill="#2E8B57"/>
+  <ellipse cx="230" cy="665" rx="8" ry="4" fill="#2E8B57"/>
+
+  <!-- 右边菜品 -->
+  <ellipse cx="580" cy="675" rx="55" ry="20" fill="#FFF8E7" stroke="#DDD" stroke-width="2"/>
+  <ellipse cx="580" cy="672" rx="40" ry="14" fill="#F39C12"/>
+  <ellipse cx="580" cy="668" rx="30" ry="10" fill="#F5B041"/>
+  <!-- 绿色装饰 -->
+  <ellipse cx="570" cy="660" rx="10" ry="4" fill="#27AE60"/>
+  <ellipse cx="590" cy="660" rx="10" ry="4" fill="#27AE60"/>
+
+  <!-- 远处小菜 -->
+  <ellipse cx="320" cy="678" rx="35" ry="12" fill="#FFF8E7" stroke="#DDD" stroke-width="1.5"/>
+  <ellipse cx="320" cy="676" rx="25" ry="8" fill="#E74C3C"/>
+  <ellipse cx="480" cy="678" rx="35" ry="12" fill="#FFF8E7" stroke="#DDD" stroke-width="1.5"/>
+  <ellipse cx="480" cy="676" rx="25" ry="8" fill="#E67E22"/>
+
+  <!-- 厨师人物 -->
+  <g transform="translate(400, 480)">
+    <!-- 身体/厨师服 -->
+    <rect x="-70" y="80" width="140" height="160" rx="20" fill="#F5F5F5"/>
+    <!-- 围裙 -->
+    <path d="M-55,110 L55,110 L50,280 L-50,280 Z" fill="#D32F2F"/>
+    <path d="M-55,110 L0,100 L55,110" fill="#D32F2F"/>
+    <!-- 围裙带子 -->
+    <line x1="-60" y1="95" x2="-70" y2="80" stroke="#D32F2F" stroke-width="4"/>
+    <line x1="60" y1="95" x2="70" y2="80" stroke="#D32F2F" stroke-width="4"/>
+
+    <!-- 领巾 -->
+    <path d="M-25,80 Q0,95 25,80 Q30,90 25,100 Q0,110 -25,100 Q-30,90 -25,80" fill="#2C3E50"/>
+    <path d="M-10,100 Q0,120 10,100" stroke="#2C3E50" stroke-width="2" fill="none"/>
+
+    <!-- 头 -->
+    <ellipse cx="0" cy="40" rx="45" ry="45" fill="#FDBCB4"/>
+    <!-- 耳朵 -->
+    <ellipse cx="-40" cy="45" rx="8" ry="12" fill="#F0A89E"/>
+    <ellipse cx="40" cy="45" rx="8" ry="12" fill="#F0A89E"/>
+
+    <!-- 闭着的眼睛（享受表情） -->
+    <path d="M-22,38 Q-15,33 -8,38" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M8,38 Q15,33 22,38" stroke="#333" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- 微笑的嘴 -->
+    <path d="M-12,55 Q0,70 12,55" stroke="#C0392B" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+    <!-- 眉毛 -->
+    <path d="M-25,28 Q-18,22 -8,28" stroke="#333" stroke-width="2" fill="none"/>
+    <path d="M8,28 Q18,22 25,28" stroke="#333" stroke-width="2" fill="none"/>
+
+    <!-- 鼻子 -->
+    <path d="M0,42 Q5,48 0,52" stroke="#E8A09A" stroke-width="2" fill="none"/>
+
+    <!-- 厨师帽 -->
+    <path d="M-35,20 Q-40,-10 -30,-30 Q-20,-50 0,-55 Q20,-50 30,-30 Q40,-10 35,20 Z" fill="#FFFFFF" stroke="#DDD" stroke-width="1"/>
+    <rect x="-35" y="10" width="70" height="15" rx="5" fill="#FFFFFF" stroke="#DDD" stroke-width="1"/>
+    <!-- 帽子上的八字 -->
+    <text x="0" y="-20" text-anchor="middle" font-size="14" fill="#D32F2F" font-family="serif">八一</text>
+
+    <!-- 左臂（拿锅） -->
+    <path d="M-70,120 Q-110,140 -120,180" stroke="#F5F5F5" stroke-width="25" fill="none" stroke-linecap="round"/>
+    <!-- 左手 -->
+    <circle cx="-120" cy="185" r="15" fill="#FDBCB4"/>
+    <!-- 锅 -->
+    <rect x="-155" y="180" width="60" height="35" rx="5" fill="#7F8C8D"/>
+    <rect x="-155" y="180" width="60" height="8" fill="#95A5A6"/>
+    <line x1="-145" y1="180" x2="-145" y2="165" stroke="#7F8C8D" stroke-width="4"/>
+    <line x1="-105" y1="180" x2="-105" y2="165" stroke="#7F8C8D" stroke-width="4"/>
+    <line x1="-145" y1="165" x2="-105" y2="165" stroke="#7F8C8D" stroke-width="4"/>
+
+    <!-- 右臂（拿汤勺） -->
+    <path d="M70,120 Q110,140 130,175" stroke="#F5F5F5" stroke-width="25" fill="none" stroke-linecap="round"/>
+    <!-- 右手 -->
+    <circle cx="130" cy="180" r="15" fill="#FDBCB4"/>
+    <!-- 汤勺手柄 -->
+    <line x1="130" y1="180" x2="115" y2="240" stroke="#95A5A6" stroke-width="6" stroke-linecap="round"/>
+    <!-- 汤勺头 -->
+    <ellipse cx="110" cy="250" rx="20" ry="12" fill="#95A5A6"/>
+    <ellipse cx="110" cy="245" rx="14" ry="7" fill="#C0392B"/>
+  </g>
+
+  <!-- 顶部英文片名 -->
+  <text x="400" y="45" text-anchor="middle" font-size="20" fill="#F5C518" font-family="serif" font-weight="bold" letter-spacing="3">ONCE UPON A TIME IN THE MIDDLE EAST</text>
+
+  <!-- 中文片名区域 -->
+  <rect x="200" y="60" width="400" height="90" rx="10" fill="#1A1A1A" opacity="0.7"/>
+  
+  <!-- 白色小字 欢迎来 -->
+  <text x="400" y="85" text-anchor="middle" font-size="18" fill="#FFFFFF" font-family="sans-serif">欢迎来</text>
+  
+  <!-- 红色中文片名 -->
+  <text x="400" y="125" text-anchor="middle" font-size="48" fill="#D32F2F" font-family="serif" font-weight="bold">欢迎来龙餐馆</text>
+
+  <!-- 阿拉伯文 -->
+  <text x="400" y="150" text-anchor="middle" font-size="12" fill="#F5C518" font-family="serif">مرحبا بمطعم التنين</text>
+
+  <!-- 左侧导演信息 -->
+  <text x="50" y="180" font-size="14" fill="#FFFFFF" font-family="sans-serif">文牧野</text>
+  <text x="50" y="200" font-size="14" fill="#FFFFFF" font-family="sans-serif">导演作品</text>
+
+  <!-- 右侧主演信息 -->
+  <text x="750" y="180" text-anchor="end" font-size="14" fill="#FFFFFF" font-family="sans-serif">沈腾</text>
+  <text x="750" y="200" text-anchor="end" font-size="14" fill="#FFFFFF" font-family="sans-serif">领衔主演</text>
+
+  <!-- 定档信息框 -->
+  <rect x="150" y="830" width="500" height="80" rx="10" fill="#1A1A1A" opacity="0.8"/>
+  <text x="400" y="855" text-anchor="middle" font-size="18" fill="#F5C518" font-family="sans-serif">8月8日-10日 14:00-21:00 超前点映</text>
+  <text x="400" y="885" text-anchor="middle" font-size="22" fill="#FFFFFF" font-family="sans-serif" font-weight="bold">8月11日全国上映</text>
+
+  <!-- IMAX信息 -->
+  <rect x="250" y="925" width="300" height="40" rx="8" fill="#1A1A1A" opacity="0.8"/>
+  <text x="400" y="945" text-anchor="middle" font-size="14" fill="#FFFFFF" font-family="sans-serif">IMAX「特制」拍摄</text>
+  <text x="400" y="960" text-anchor="middle" font-size="10" fill="#F5C518" font-family="sans-serif">IMAX</text>
+
+  <!-- 底部主创名单 -->
+  <rect x="30" y="990" width="740" height="180" rx="10" fill="#1A1A1A" opacity="0.85"/>
+  
+  <text x="50" y="1015" font-size="11" fill="#CCCCCC" font-family="sans-serif">领衔主演：沈腾</text>
+  <text x="50" y="1035" font-size="11" fill="#CCCCCC" font-family="sans-serif">特别出演：蒋奇明</text>
+  <text x="50" y="1055" font-size="11" fill="#CCCCCC" font-family="sans-serif">主演：奥马尔·谢里夫 李雪琴 张弛</text>
+  <text x="50" y="1075" font-size="11" fill="#CCCCCC" font-family="sans-serif">监制：宁浩</text>
+  <text x="50" y="1095" font-size="11" fill="#CCCCCC" font-family="sans-serif">导演：文牧野</text>
+  <text x="50" y="1115" font-size="11" fill="#CCCCCC" font-family="sans-serif">摄影指导：王博学</text>
+  <text x="50" y="1135" font-size="11" fill="#CCCCCC" font-family="sans-serif">美术指导：李淼</text>
+  <text x="50" y="1155" font-size="11" fill="#CCCCCC" font-family="sans-serif">声音指导：王丹戎 祝岩峰</text>
+  
+  <text x="400" y="1015" font-size="11" fill="#CCCCCC" font-family="sans-serif">出品公司：坏猴子影业 阿里影业</text>
+  <text x="400" y="1035" font-size="11" fill="#CCCCCC" font-family="sans-serif">联合出品：中国电影股份有限公司</text>
+  <text x="400" y="1055" font-size="11" fill="#CCCCCC" font-family="sans-serif">发行公司：联瑞影业</text>
+  <text x="400" y="1075" font-size="11" fill="#CCCCCC" font-family="sans-serif">制作公司：坏猴子影业</text>
+  <text x="400" y="1095" font-size="11" fill="#CCCCCC" font-family="sans-serif">编剧：文牧野 钟伟</text>
+  <text x="400" y="1115" font-size="11" fill="#CCCCCC" font-family="sans-serif">剪辑指导：张一博</text>
+  <text x="400" y="1135" font-size="11" fill="#CCCCCC" font-family="sans-serif">造型指导：黄璐</text>
+  <text x="400" y="1155" font-size="11" fill="#CCCCCC" font-family="sans-serif">配乐：黄英华</text>
+</svg>
