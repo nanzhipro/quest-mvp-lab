@@ -42,7 +42,7 @@ Tests/FluidMotionDemoTests/       # @testable import FluidMotionDemo
 
 ```bash
 swift build            # 构建（metallib 作为资源自动打包）
-swift run              # 启动 GUI
+swift run              # 启动 GUI（--panel <spring|hero|mesh|liquid|haptics|glass> 定位面板，供截图）
 swift test             # 3 项测试
 scripts/compile_shaders.sh   # 仅修改 .metal 后重跑
 ```

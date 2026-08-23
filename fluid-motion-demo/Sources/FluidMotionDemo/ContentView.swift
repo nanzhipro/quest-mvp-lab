@@ -72,7 +72,11 @@ enum Panel: String, CaseIterable, Identifiable {
 }
 
 struct ContentView: View {
-    @State private var selection: Panel? = .spring
+    @State private var selection: Panel?
+
+    init(initialPanel: Panel? = nil) {
+        _selection = State(initialValue: initialPanel ?? .spring)
+    }
 
     var body: some View {
         NavigationSplitView {
