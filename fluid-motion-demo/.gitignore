@@ -1,0 +1,6 @@
+# SwiftPM 构建产物（共享层 .gitignore 已含 .build/，此处为项目自足补充）
+.build/
+.swiftpm/
+DerivedData/
+*.app
+Package.resolved

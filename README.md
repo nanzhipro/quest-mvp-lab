@@ -14,6 +14,7 @@ Each experiment lives in its own directory with a self-contained README.
 | [`ai-coding-agent-mvp/`](ai-coding-agent-mvp/) | Minimal agentic coding CLI: tool-use loop over an OpenAI-compatible endpoint | Python 3.9+ · stdlib only | Done — 54 tests green, live E2E verified |
 | [`pdf-inspector-mvp/`](pdf-inspector-mvp/) | Minimal Rust re-implementation of firecrawl/pdf-inspector: classify, positioned extraction, reading order, Markdown, embedded-image OCR (macOS Vision). Self-check loop: path inside Figure 11-2 on printed page 257 is invisible to the text layer, recovered only by OCR | Rust · lopdf · objc2/Vision | Done — 38 tests green, `pdfx verify` all PASS |
 | [`deepseek-v4-flash-vision-exp/`](deepseek-v4-flash-vision-exp/) | DeepSeek vision model (`deepseek-v4-flash-vision-exp`) capability validation: understanding / creation / generation probe on local movie posters; base64 + Files API dual image paths; text-driven SVG recreation loop (image → text → SVG → PNG) with XML validation; single-file 3-column compare report. Reproducible via `SPEC.md` | Rust · reqwest · TDD (34 tests) | Done — full pipeline PASS, no image-file generation (text-output understanding model) |
+| [`fluid-motion-demo/`](fluid-motion-demo/) | Apple 平台顶级动效交互落地：弹簧按钮 / Hero 转场 / MeshGradient 活背景 / Metal 液体折射着色器 / 触觉同步 / Liquid Glass 质感。验证「灵动动效设计语言」DESIGN.md 的六配方 | SwiftUI · Metal · SwiftPM | Done — 3 tests + 实测渲染验证（MeshGradient 彩色占比 86%） |
 
 ## Conventions
 
