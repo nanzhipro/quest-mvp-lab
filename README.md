@@ -15,6 +15,7 @@ Each experiment lives in its own directory with a self-contained README.
 | [`pdf-inspector-mvp/`](pdf-inspector-mvp/) | Minimal Rust re-implementation of firecrawl/pdf-inspector: classify, positioned extraction, reading order, Markdown, embedded-image OCR (macOS Vision). Self-check loop: path inside Figure 11-2 on printed page 257 is invisible to the text layer, recovered only by OCR | Rust · lopdf · objc2/Vision | Done — 38 tests green, `pdfx verify` all PASS |
 | [`deepseek-v4-flash-vision-exp/`](deepseek-v4-flash-vision-exp/) | DeepSeek vision model (`deepseek-v4-flash-vision-exp`) capability validation: understanding / creation / generation probe on local movie posters; base64 + Files API dual image paths; text-driven SVG recreation loop (image → text → SVG → PNG) with XML validation; single-file 3-column compare report. Reproducible via `SPEC.md` | Rust · reqwest · TDD (34 tests) | Done — full pipeline PASS, no image-file generation (text-output understanding model) |
 | [`fluid-motion-demo/`](fluid-motion-demo/) | Apple 平台顶级动效交互落地：弹簧按钮 / Hero 转场 / MeshGradient 活背景 / Metal 液体折射着色器 / 触觉同步 / Liquid Glass 质感。验证「灵动动效设计语言」DESIGN.md 的六配方 | SwiftUI · Metal · SwiftPM | Done — 3 tests + 实测渲染验证（MeshGradient 彩色占比 86%） |
+| [`gmail-mcp-mvp/`](gmail-mcp-mvp/) | OAuth 认证的本地 MCP server 读取 Gmail：直连 GA Gmail REST API（无 Developer Preview 门槛），Desktop client + loopback 授权，只读 3 工具镜像官方 Gmail MCP 命名，Hermes stdio 一键接入 | Python 3.13 · FastMCP(mcp<2) · google-api-python-client · uv | Done — 14 tests（含 MCP wire 协议全链路）ALL PASS，等待真实 token 后 E2E |
 
 ## Conventions
 

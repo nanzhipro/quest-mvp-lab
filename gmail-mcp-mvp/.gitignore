@@ -1,0 +1,12 @@
+# --- secrets: never commit OAuth credentials or tokens ---
+secrets/
+*.json
+
+# --- python ---
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# --- macOS/editor ---
+.DS_Store

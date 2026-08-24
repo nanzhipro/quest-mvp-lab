@@ -1,0 +1,18 @@
+[project]
+name = "gmail-mcp-mvp"
+version = "0.1.0"
+description = "OAuth-authenticated local MCP server that reads Gmail via the GA Gmail REST API (no Developer Preview gate)."
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.2,<2.0",
+    "google-api-python-client>=2.100",
+    "google-auth>=2.20",
+    "google-auth-oauthlib>=1.2",
+]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
