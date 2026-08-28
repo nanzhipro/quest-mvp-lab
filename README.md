@@ -9,6 +9,7 @@ Each experiment lives in its own directory with a self-contained README.
 | ------- | ----------------- | ----- | ------ |
 | [`es-mvp/`](es-mvp/) | Directory-scoped AUTH_OPEN enforcement via Endpoint Security muting inversion (ObjC / Rust / Swift comparison) | ObjC · Rust · Swift | Done — real-device conclusions in `SPEC.md` §9 |
 | [`es-process-mvp/`](es-process-mvp/) | Process-scoped PDF-open DENY enforcement via process muting inversion + bundleId policy matching (YAML config, two-client discovery + monitor) | Swift | Done — 27 tests + real-device e2e ALL PASS |
+| [`es-procattr-mvp/`](es-procattr-mvp/) | ESF process attribution for AI agents: process gene (pid,pidversion + argv + signing + responsible) → process chain (lineage) + file behavior chain; `(pid,pidversion)` process tree aligned to Santa, argv-based interpreter identity, NOTIFY-only single client | Swift · stdlib-only | Done — 30 tests + real-device e2e ALL PASS |
 | [`m7-chart/`](m7-chart/) | Multi-line stock trend chart (Magnificent 7) with GPUI Component | Rust · gpui 0.2.2 · gpui-component | Done |
 | [`rust-appkit-bridge-mvp/`](rust-appkit-bridge-mvp/) | 7-layer Rust ↔ AppKit bridging (Swift dylib + Rust demo + Swift host) | Rust · Swift · ObjC | Done — `make verify` all green |
 | [`ai-coding-agent-mvp/`](ai-coding-agent-mvp/) | Minimal agentic coding CLI: tool-use loop over an OpenAI-compatible endpoint | Python 3.9+ · stdlib only | Done — 54 tests green, live E2E verified |

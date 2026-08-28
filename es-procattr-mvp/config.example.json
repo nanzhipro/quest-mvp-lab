@@ -1,0 +1,10 @@
+{
+  "roots": [
+    {"pathContains": "hermes-agent"}
+  ],
+  "report": {
+    "snapshotSeconds": 5,
+    "logOpen": false,
+    "logLibraryOpen": false
+  }
+}

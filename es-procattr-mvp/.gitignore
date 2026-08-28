@@ -1,0 +1,9 @@
+# es-procattr-mvp 项目层忽略（Layer 3，叠加于共享层 Layer 2）
+# 构建产物 / 签名产物一律不入库
+ESProcattr.app/
+*.app/
+.build/
+Package.resolved
+# 运行期事件输出
+procattr*.jsonl
+*.log
