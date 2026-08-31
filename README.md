@@ -1,30 +1,38 @@
 # quest-mvp-lab
 
-A playground for **MVP concepts, tech-selection validations, technical examples, and demos**.
-Each experiment lives in its own directory with a self-contained README.
+A collection of self-contained **MVPs, technology evaluations, technical
+examples, and demos**. Each experiment lives in its own directory and includes
+its own README.
 
 ## Projects
 
 | Project | What it validates | Stack | Status |
 | ------- | ----------------- | ----- | ------ |
-| [`es-mvp/`](es-mvp/) | Directory-scoped AUTH_OPEN enforcement via Endpoint Security muting inversion (ObjC / Rust / Swift comparison) | ObjC · Rust · Swift | Done — real-device conclusions in `SPEC.md` §9 |
-| [`es-process-mvp/`](es-process-mvp/) | Process-scoped PDF-open DENY enforcement via process muting inversion + bundleId policy matching (YAML config, two-client discovery + monitor) | Swift | Done — 27 tests + real-device e2e ALL PASS |
-| [`es-procattr-mvp/`](es-procattr-mvp/) | ESF process attribution for AI agents: process gene (pid,pidversion + argv + signing + responsible) → process chain (lineage) + file behavior chain; `(pid,pidversion)` process tree aligned to Santa, argv-based interpreter identity, NOTIFY-only single client | Swift · stdlib-only | Done — 30 tests + real-device e2e ALL PASS |
-| [`m7-chart/`](m7-chart/) | Multi-line stock trend chart (Magnificent 7) with GPUI Component | Rust · gpui 0.2.2 · gpui-component | Done |
-| [`rust-appkit-bridge-mvp/`](rust-appkit-bridge-mvp/) | 7-layer Rust ↔ AppKit bridging (Swift dylib + Rust demo + Swift host) | Rust · Swift · ObjC | Done — `make verify` all green |
-| [`ai-coding-agent-mvp/`](ai-coding-agent-mvp/) | Minimal agentic coding CLI: tool-use loop over an OpenAI-compatible endpoint | Python 3.9+ · stdlib only | Done — 54 tests green, live E2E verified |
-| [`pdf-inspector-mvp/`](pdf-inspector-mvp/) | Minimal Rust re-implementation of firecrawl/pdf-inspector: classify, positioned extraction, reading order, Markdown, embedded-image OCR (macOS Vision). Self-check loop: path inside Figure 11-2 on printed page 257 is invisible to the text layer, recovered only by OCR | Rust · lopdf · objc2/Vision | Done — 38 tests green, `pdfx verify` all PASS |
-| [`deepseek-v4-flash-vision-exp/`](deepseek-v4-flash-vision-exp/) | DeepSeek vision model (`deepseek-v4-flash-vision-exp`) capability validation: understanding / creation / generation probe on local movie posters; base64 + Files API dual image paths; text-driven SVG recreation loop (image → text → SVG → PNG) with XML validation; single-file 3-column compare report. Reproducible via `SPEC.md` | Rust · reqwest · TDD (34 tests) | Done — full pipeline PASS, no image-file generation (text-output understanding model) |
-| [`fluid-motion-demo/`](fluid-motion-demo/) | Apple 平台顶级动效交互落地：弹簧按钮 / Hero 转场 / MeshGradient 活背景 / Metal 液体折射着色器 / 触觉同步 / Liquid Glass 质感。验证「灵动动效设计语言」DESIGN.md 的六配方 | SwiftUI · Metal · SwiftPM | Done — 3 tests + 实测渲染验证（MeshGradient 彩色占比 86%） |
-| [`gmail-mcp-mvp/`](gmail-mcp-mvp/) | OAuth 认证的本地 MCP server 读取 Gmail：直连 GA Gmail REST API（无 Developer Preview 门槛），Desktop client + loopback 授权，只读 3 工具镜像官方 Gmail MCP 命名，Hermes stdio 一键接入 | Python 3.13 · FastMCP(mcp<2) · google-api-python-client · uv | Done — 14 tests（含 MCP wire 协议全链路）ALL PASS，等待真实 token 后 E2E |
+| [`es-mvp/`](es-mvp/) | Directory-scoped `AUTH_OPEN` enforcement using an inverted Endpoint Security muting strategy, with implementations compared across Objective-C, Rust, and Swift | Objective-C · Rust · Swift | Done — conclusions verified on real hardware; see `SPEC.md` §9 |
+| [`es-process-mvp/`](es-process-mvp/) | Process-scoped PDF-open denial using an inverted process-muting strategy and bundle ID policy matching, with YAML configuration and separate discovery and monitoring clients | Swift | Done — 27 tests and real-device E2E validation all pass |
+| [`es-procattr-mvp/`](es-procattr-mvp/) | ESF process attribution for AI agents: a process fingerprint (`pid`, `pidversion`, arguments, signing identity, and responsible process) feeds both a lineage chain and a file-behavior chain; includes a Santa-aligned `(pid, pidversion)` process tree, argument-based interpreter identity, and a single `NOTIFY`-only client | Swift · standard library only | Done — 30 tests and real-device E2E validation all pass |
+| [`m7-chart/`](m7-chart/) | A multi-line stock performance chart for the Magnificent Seven, built with GPUI Component | Rust · GPUI 0.2.2 · gpui-component | Done |
+| [`rust-appkit-bridge-mvp/`](rust-appkit-bridge-mvp/) | A seven-layer Rust-to-AppKit bridge comprising a Swift dynamic library, a Rust demo, and a Swift host | Rust · Swift · Objective-C | Done — `make verify` passes |
+| [`ai-coding-agent-mvp/`](ai-coding-agent-mvp/) | A minimal agentic coding CLI with a tool-calling loop backed by an OpenAI-compatible endpoint | Python 3.9+ · standard library only | Done — all 54 tests pass; live E2E verified |
+| [`pdf-inspector-mvp/`](pdf-inspector-mvp/) | A minimal Rust reimplementation of `firecrawl/pdf-inspector` with document classification, positioned text extraction, reading-order recovery, Markdown output, and embedded-image OCR through macOS Vision. Its self-check demonstrates that a path in Figure 11-2 on printed page 257 is absent from the text layer and recoverable only through OCR | Rust · lopdf · objc2/Vision | Done — all 38 tests and `pdfx verify` pass |
+| [`deepseek-v4-flash-vision-exp/`](deepseek-v4-flash-vision-exp/) | An evaluation of the `deepseek-v4-flash-vision-exp` model across image understanding, creation, and generation tasks using local movie posters. Exercises both base64 and Files API inputs, plus a text-driven reconstruction loop (`image -> text -> SVG -> PNG`) with XML validation and a self-contained three-column comparison report. Fully reproducible from `SPEC.md` | Rust · reqwest · TDD (34 tests) | Done — the full pipeline passes; the model understands images but does not generate image files |
+| [`fluid-motion-demo/`](fluid-motion-demo/) | A production-grade motion and interaction system for Apple platforms featuring spring-loaded buttons, hero transitions, an animated `MeshGradient` background, a Metal liquid-refraction shader, synchronized haptics, and a Liquid Glass aesthetic. Validates the six recipes in the Fluid Motion Design Language `DESIGN.md` | SwiftUI · Metal · SwiftPM | Done — all 3 tests pass; rendering verified with 86% color coverage in the `MeshGradient` |
+| [`gmail-mcp-mvp/`](gmail-mcp-mvp/) | An OAuth-authenticated local MCP server for reading Gmail through the generally available Gmail REST API, with no Developer Preview dependency. Includes a desktop client, loopback authorization, three read-only tools that mirror the official Gmail MCP naming scheme, and one-command Hermes stdio integration | Python 3.13 · FastMCP (`mcp<2`) · google-api-python-client · uv | Done — all 14 tests pass, including end-to-end MCP wire-protocol coverage; live E2E awaits a real token |
+| [`web-design-system-extractor-mvp/`](web-design-system-extractor-mvp/) | Evidence-first, multi-viewport webpage capture that produces a Google Labs `DESIGN.md`, DTCG tokens, CSS custom properties, and reviewable DOM, MHTML, HAR, resource, and screenshot evidence; includes default `robots.txt` enforcement, a reproducible capture fingerprint, and offline revalidation | Node.js 20+ · Playwright 1.62.1 · `@google/design.md` 0.4.0 · Ajv 8.20.0 · DTCG 2025.10 | Done — v0.3.0; all 10 tests and all 18 Respan Skill black-box checks pass, including official schema validation and cross-artifact parity |
 
 ## Conventions
 
-- **One directory per MVP/demo.** No shared code between projects — each stands alone.
-- **README per project.** Every project ships a README following GitHub best practices: background, key decisions, build/run/verify commands, and the conclusion.
-- **Keep the index in sync.** Adding a project means updating the table above (and the root `README.md` of this repo).
-- **Bundle IDs** use the `com.nanzhipro.*` prefix when needed. Demo artifacts stay unsigned unless distribution requires otherwise.
+- **One directory per MVP or demo.** Projects do not share code; each one is
+  fully self-contained.
+- **One README per project.** Every project README follows GitHub conventions
+  and covers the background, key decisions, build, run, and verification
+  commands, and the final conclusion.
+- **Keep the index current.** Whenever a project is added, update the table
+  above in the same change.
+- **Bundle IDs.** Use the `com.nanzhipro.*` prefix when a bundle identifier is
+  required. Keep demo artifacts unsigned unless distribution requires signing.
 
 ## Naming
 
-`<topic>-mvp` for concept / tech-selection validation, `<topic>-demo` for example showcases.
+Use `<topic>-mvp` for concept or technology validation and `<topic>-demo` for
+showcase examples.

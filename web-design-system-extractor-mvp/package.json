@@ -1,0 +1,35 @@
+{
+  "name": "@nanzhipro/web-design-system-extractor-mvp",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Evidence-first extraction of a rendered web page into DESIGN.md and DTCG design tokens.",
+  "type": "module",
+  "bin": {
+    "web-ds-extract": "./bin/web-ds-extract.mjs",
+    "web-ds-validate": "./bin/web-ds-validate.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "setup": "playwright install chromium",
+    "extract": "node ./bin/web-ds-extract.mjs",
+    "validate": "node ./bin/web-ds-validate.mjs",
+    "test": "node --test --test-concurrency=1 ./test/*.test.mjs",
+    "test:unit": "node --test --test-concurrency=1 ./test/unit.test.mjs",
+    "test:e2e": "node --test --test-concurrency=1 ./test/e2e.test.mjs",
+    "verify": "npm run test",
+    "design:lint": "designmd lint"
+  },
+  "dependencies": {
+    "@google/design.md": "0.4.0",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "culori": "^4.0.2",
+    "playwright": "1.62.1",
+    "pngjs": "7.0.0",
+    "robots-parser": "3.0.1",
+    "yaml": "2.9.0"
+  },
+  "license": "UNLICENSED"
+}
