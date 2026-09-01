@@ -1,0 +1,7 @@
+# Rust 构建产物（Cargo.lock 必须提交，勿忽略）
+/target
+# 签名产物与敏感资产（仅本机测试用，绝不进库）
+*.app
+*.provisionprofile
+# e2e 临时输出与实测采集数据（可用 testdata/README.md 中的命令重新采集，不入库）
+*.jsonl

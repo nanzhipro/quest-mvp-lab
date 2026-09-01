@@ -24,6 +24,13 @@ DerivedData/
 target/
 .build/
 
+# 依赖目录 / 虚拟环境（可用包管理器重建，一律不入库）
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
 # ── 企业数据资产护栏（禁止入库）──
 # 签名证书 / 密钥 / 描述文件一律不得进入 quest-mvp-lab 任何项目
 *.p12

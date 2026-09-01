@@ -7,11 +7,12 @@ two reusable design system artifacts:
 - a Google Labs `DESIGN.md` alpha document, validated with
   `@google/design.md` 0.4.0;
 - DTCG 2025.10 JSON design tokens with an official `$schema` declaration,
-  plus equivalent CSS custom properties.
+  plus browser-validated equivalent CSS custom properties.
 
-The current version is `0.3.0`. Every run uses the built-in DTCG validator. For
-stricter release and CI workflows, you can also require validation against the
-official live JSON Schema.
+The current version is `0.4.0`. Every run uses the built-in DTCG validator,
+typed `DESIGN.md` bindings, one-to-one DTCG-to-CSS parity, and Chromium
+computed-style probes. For stricter release and CI workflows, you can also
+require validation against the official live JSON Schema.
 
 This MVP demonstrates that a rendered page can be converted into an auditable
 design system without claiming that a single capture can reconstruct the
@@ -31,10 +32,12 @@ tokens without provenance. This project validates a more rigorous pipeline:
    resources, and final pixel output.
 5. Inspect visible computed styles, accessible CSSOM, open Shadow DOM, pseudo-
    elements, motion, typography, geometry, assets, and contrast pairs.
-6. Normalize observations into deterministic token groups with provenance.
-7. Generate `DESIGN.md`, then fail the run if the document, tokens, capture
-   coverage, archives, or screenshots do not pass validation.
-8. Revalidate saved output without loading the live page again.
+6. Normalize observations into deterministic DTCG token groups with provenance.
+7. Bind agent-facing `DESIGN.md` values to exact typed DTCG paths and compile
+   `tokens.css` from the same token tree.
+8. Fail the run if the document, tokens, CSS values, browser consumption,
+   capture coverage, archives, or screenshots do not pass validation.
+9. Revalidate saved output without loading the live page again.
 
 ### Capture Scope
 
@@ -90,13 +93,16 @@ DOM/CSSOM probe
   `-- observable WCAG contrast pairs
         |
         v
-Normalization and provenance
+Canonical normalization and provenance
         |
-        +--> DESIGN.md (Google Labs alpha structure)
-        +--> design.tokens.json (DTCG 2025.10 + $schema)
-        +--> tokens.css
+        +--> design.tokens.json (exact DTCG 2025.10 values + $schema)
+        +--> DESIGN.md (agent semantics bound to typed DTCG paths)
+        +--> tokens.css (compiled from DTCG)
         +--> raw-inventory.json
         `--> manifest.json (capture fingerprint + file hashes)
+        |
+        v
+Typed DESIGN/DTCG bindings + DTCG/CSS parity + Chromium consumption
         |
         v
 Built-in structural/evidence validation + optional official live schema gate
@@ -214,9 +220,9 @@ only when the target owner has explicitly authorized the override.
 
 | Artifact | Purpose |
 | --- | --- |
-| `DESIGN.md` | A compact, agent-readable design system description with the eight canonical sections and alpha frontmatter. |
-| `design.tokens.json` | DTCG 2025.10 `$schema`, typed color/dimension/typography/source-variable tokens, aliases, and provenance extensions. |
-| `tokens.css` | CSS custom properties generated from the DTCG token hierarchy. |
+| `DESIGN.md` | The primary agent-facing design specification, with the eight canonical sections and alpha frontmatter. |
+| `design.tokens.json` | The source of truth for exact values: DTCG 2025.10 `$schema`, typed color/dimension/typography/source-variable tokens, aliases, and provenance extensions. |
+| `tokens.css` | A disposable, reproducible CSS compilation of every DTCG token. It is accepted only after structural, value, and Chromium consumption gates pass. |
 | `raw-inventory.json` | Merged observations, per-viewport coverage, media queries, fonts, assets, component patterns, and contrast evidence. |
 | `VALIDATION.md` / `validation.json` | Human-readable and machine-readable checks, including non-fatal warnings. |
 | `manifest.json` | Run status and grade, robots decision, runtime capture fingerprint, summaries, checksums, sizes, and the full output file inventory. |
@@ -237,9 +243,10 @@ npm run verify
 The current suite includes eight unit tests and two end-to-end tests. The main
 E2E test starts a local responsive fixture and exercises CSS, motion, lazy
 loading, an open Shadow Root, canvas detection, resource archiving, MHTML,
-screenshots, DTCG generation, Google `DESIGN.md` validation, and offline
-revalidation. The second E2E test verifies that a `robots.txt` denial stops the
-run before Chromium starts.
+screenshots, DTCG generation, typed Google `DESIGN.md` bindings, DTCG-to-CSS
+parity, per-token Chromium consumption, and offline revalidation. The second
+E2E test verifies that a `robots.txt` denial stops the run before Chromium
+starts.
 
 Run a narrower check when needed:
 
@@ -272,7 +279,17 @@ also fetches that schema and validates the output with Ajv; either a fetch
 failure or a schema violation fails the run. Screenshot checks reject blank or
 implausibly small images.
 
-## Respan Validation Baseline
+The cross-artifact gates are deliberately non-interchangeable. `DESIGN.md`
+provides semantic roles and component guidance; `design.tokens.json` owns exact
+machine values; screenshots are the final visual authority. Validation records
+the typed DTCG path and CSS variable for every normative frontmatter primitive.
+It also requires every DTCG token to map to exactly one CSS custom property and
+compares all generated values and aliases against direct DTCG-derived values in
+Chromium. `tokens.css` is never an independent source of truth.
+
+## Production-Site Validation Baselines
+
+### Respan: Historical v0.3.0 Baseline
 
 The gitignored local directory `artifacts/respan-ai-2026-08-31-release/`
 contains the artifacts from the v0.3.0 black-box validation of the packaged
@@ -303,6 +320,74 @@ This baseline demonstrates that the approach works on a long, responsive
 production page. It is not a permanent golden snapshot: page content and
 third-party requests may change between runs.
 
+The v0.3.0 validator did not test DTCG-to-CSS value parity or browser
+consumption. This retained capture is useful evidence, but its historical PASS
+is not sufficient for v0.4.0 acceptance.
+
+### Firecrawl: Historical v0.3.0 Baseline
+
+The gitignored local directory `artifacts/firecrawl-dev-2026-08-31-release/`
+contains a second v0.3.0 black-box capture of the packaged Agent Skill, this
+time against `https://www.firecrawl.dev/`:
+
+| Result | Observed value |
+| --- | --- |
+| Overall validation | PASS, grade `complete-for-declared-scope`, 18/18 checks, 8 warnings |
+| Capture fingerprint | Node v22.22.3, Playwright 1.62.1, Chromium 151.0.7922.34, UTC, DPR 1 |
+| Robots policy | HTTP 200, allowed for `CodexWebDesignExtractor/0.3`, not ignored |
+| Official DTCG 2025.10 schema | PASS, 0 errors |
+| Google `DESIGN.md` 0.4.0 gate | 0 errors, 1 accessibility warning, 1 informational finding |
+| `DESIGN.md` / DTCG parity | PASS; all normative Google token values map to observed DTCG primitives |
+| DTCG output | 165 tokens, 3 valid references |
+| Desktop document | `1440x16770`; 4,038 visible of 5,355 discovered elements; not truncated |
+| Mobile document | `390x21348`; 3,344 visible of 4,896 discovered elements; not truncated |
+| Page snapshots | Desktop MHTML 1,508,424 bytes; mobile MHTML 1,382,414 bytes |
+| Network evidence | 109 visual resources archived; 339 responses, 25 failed requests, and 0 unsafe requests blocked |
+| Evidence volume | 130 files, approximately 12.5 MiB including `manifest.json` |
+
+The warnings preserve a real 3.34:1 contrast issue for white text on the brand
+orange, image-readiness timeouts in both profiles, a 28-pixel late height
+change on desktop, failed analytics and route-prefetch requests, and 33 desktop
+plus 24 mobile canvas elements whose semantics are observable only as pixels.
+No image request failed. Manual review confirmed that both long screenshots
+show the expected Firecrawl page continuously from the hero through the FAQ and
+footer.
+
+Like the Respan result, this is a dated capture baseline rather than a permanent
+golden snapshot.
+
+The v0.4.0 CSS gate now rejects this historical `tokens.css` with 39 errors: 37
+compound colors were serialized as `[object Object]`, and two font stacks used
+invalid doubled quotes. The DTCG and `DESIGN.md` files remain valid evidence;
+the CSS convenience output is not accepted.
+
+### Firecrawl: v0.4.0 Release Baseline
+
+The gitignored local directory
+`artifacts/firecrawl-dev-2026-08-31-v0.4.0-release/` is a fresh packaged-Skill
+capture against `https://www.firecrawl.dev/`:
+
+| Result | Observed value |
+| --- | --- |
+| Overall validation | PASS, grade `complete-for-declared-scope`, 20/20 checks, 8 warnings |
+| Capture fingerprint | Node v22.22.3, Playwright 1.62.1, Chromium 151.0.7922.34, UTC, DPR 1 |
+| Robots policy | HTTP 200, allowed for `CodexWebDesignExtractor/0.4`, not ignored |
+| Official DTCG 2025.10 schema | PASS, 0 errors |
+| Google `DESIGN.md` 0.4.0 gate | 0 errors, 1 accessibility warning, 1 informational finding |
+| Typed `DESIGN.md` bindings | PASS; 72 normative values bound to compatible DTCG paths and 7 component references resolved |
+| DTCG-to-CSS parity | PASS; 165 tokens map one-to-one to 165 CSS custom properties |
+| Chromium CSS consumption | PASS; all 165 token values and aliases match direct DTCG-derived computed styles |
+| Desktop document | `1440x16770`; 4,038 visible of 5,355 discovered elements; not truncated |
+| Mobile document | `390x21348`; 3,344 visible of 4,896 discovered elements; not truncated |
+| Page snapshots | Desktop MHTML 1,508,468 bytes; mobile MHTML 1,382,442 bytes |
+| Network evidence | 342 responses, 29 failed requests, and 0 unsafe requests blocked |
+
+The warnings preserve the observed 3.34:1 primary-button contrast issue, image
+readiness timeouts, the desktop late-height change, failed analytics and
+prefetch traffic, and screenshot-only canvas elements. Manual review confirmed
+that the desktop and mobile captures show the requested Firecrawl page without
+a bot wall, error page, blank region, or unrelated redirect.
+
 ## Security and Trust Boundaries
 
 Use this tool only for public pages or targets that you are explicitly
@@ -322,7 +407,7 @@ authorized to capture.
 - Archived visual resources use URL-derived filenames, include SHA-256 body
   digests in their metadata, and are subject to per-resource and per-viewport
   size limits.
-- `robots.txt` is parsed for `CodexWebDesignExtractor/0.3` and enforced before
+- `robots.txt` is parsed for `CodexWebDesignExtractor/0.4` and enforced before
   Chromium starts. By default, an explicit denial, an HTTP 401/403 response, or
   an HTTP 5xx response blocks capture; HTTP 404/410 is treated as no policy
   file. A fetch or parsing failure is recorded as `check-failed` and currently
@@ -406,7 +491,7 @@ src/page-probe.mjs      in-page rendered-style probe
 src/normalize.mjs       DTCG tokens, provenance, contrast, and CSS output
 src/google-design.mjs   Google Labs alpha frontmatter construction
 src/render.mjs          DESIGN.md and validation report rendering
-src/verify.mjs          local/live DTCG, DESIGN.md, archive, and PNG gates
+src/verify.mjs          DTCG, DESIGN.md bindings, CSS/browser, archive, and PNG gates
 src/revalidate.mjs      retained-output validation and manifest refresh
 test/                   unit and local E2E coverage
 ```
@@ -414,10 +499,10 @@ test/                   unit and local E2E coverage
 ## Conclusion
 
 This MVP provides an end-to-end, auditable path from a URL to capture evidence,
-a design system, design tokens, and machine-verifiable results. Version 0.3.0
-adds default `robots.txt` enforcement, a strict official-schema mode, a
-reproducible runtime fingerprint, and independent revalidation of retained
-evidence. The Respan run demonstrates the approach on a real responsive page,
-while the capture contract and explicit warnings keep the result precise: it
+a design system, design tokens, and machine-verifiable results. Version 0.4.0
+makes DTCG exact values the canonical machine source, binds `DESIGN.md` roles to
+typed token paths, and validates the complete CSS compilation in Chromium.
+The production runs demonstrate the approach on real responsive pages, while
+the capture contract and explicit warnings keep the result precise: it
 reconstructs what Chromium observed under a declared profile, not a private
 design source or every state in an application.

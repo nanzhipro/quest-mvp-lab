@@ -1,0 +1,9 @@
+.venv/
+models/
+__pycache__/
+*.pyc
+.pytest_cache/
+# 由 scripts/build_dataset.py 从 data/seeds/ 生成的拆分产物（可重建，不入库）
+data/train.jsonl
+data/val.jsonl
+data/test.jsonl

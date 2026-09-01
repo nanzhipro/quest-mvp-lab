@@ -9,7 +9,7 @@ import { renderDesignMarkdown, renderValidationMarkdown } from "./render.mjs";
 import { assertSafeTargetUrl, redactUrl } from "./url-safety.mjs";
 import { verifyExtraction } from "./verify.mjs";
 
-export const TOOL_VERSION = "0.3.0";
+export const TOOL_VERSION = "0.4.0";
 
 export async function executeExtraction(options) {
     if (await pathExists(options.outputDir)) {
@@ -49,6 +49,7 @@ export async function executeExtraction(options) {
             path.join(options.outputDir, "DESIGN.md"),
             renderDesignMarkdown({
                 raw: artifacts.raw,
+                tokens: artifacts.tokens,
                 targetUrl: redactUrl(targetUrl.href),
                 capturedAt,
                 toolVersion: TOOL_VERSION,

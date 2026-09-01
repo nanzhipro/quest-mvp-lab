@@ -11,7 +11,7 @@ import { assertSafeTargetUrl, redactUrl } from "./url-safety.mjs";
 const ARCHIVED_RESOURCE_TYPES = new Set(["stylesheet", "image", "font", "media"]);
 const require = createRequire(import.meta.url);
 const PLAYWRIGHT_VERSION = require("playwright/package.json").version;
-const ROBOTS_USER_AGENT = "CodexWebDesignExtractor/0.3";
+const ROBOTS_USER_AGENT = "CodexWebDesignExtractor/0.4";
 
 function sha256(value) {
     return crypto.createHash("sha256").update(value).digest("hex");

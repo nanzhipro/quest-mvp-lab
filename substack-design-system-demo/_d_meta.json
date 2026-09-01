@@ -1,0 +1,25 @@
+{
+  "type": "design",
+  "title": "Substack Design System Lab",
+  "prompt": "使用抽取出的 DESIGN.md 创建覆盖尽可能完整的设计系统测试页面",
+  "designSystems": [],
+  "primaryDesignSystem": null,
+  "assets": {
+    "Substack Design System Lab": {
+      "versions": [
+        {
+          "path": "index.html",
+          "createdAt": "2026-09-01T08:15:44.075Z",
+          "status": "needs-review",
+          "subtitle": "88-token interactive validation console",
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          }
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-09-01T08:15:44.078Z",
+  "updatedAt": "2026-09-01T08:24:31.049Z"
+}

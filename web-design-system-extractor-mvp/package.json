@@ -1,6 +1,6 @@
 {
   "name": "@nanzhipro/web-design-system-extractor-mvp",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "description": "Evidence-first extraction of a rendered web page into DESIGN.md and DTCG design tokens.",
   "type": "module",

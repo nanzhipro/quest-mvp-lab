@@ -69,7 +69,7 @@ function displayRadius(value) {
     return value;
 }
 
-export function renderDesignMarkdown({ raw, targetUrl, capturedAt, toolVersion }) {
+export function renderDesignMarkdown({ raw, tokens, targetUrl, capturedAt, toolVersion }) {
     const title = safeText(raw.metadata.title || "Extracted Web Design System", 120).replace(/\\\|/g, "|");
     const direction = inferVisualDirection(raw);
     const colors = raw.observed.colors
@@ -108,7 +108,7 @@ export function renderDesignMarkdown({ raw, targetUrl, capturedAt, toolVersion }
         )
         .filter((item) => !/^--(?:tw|radix|framer|motion)-/i.test(item.name))
         .slice(0, 40);
-    const googleDesignSystem = buildGoogleDesignSystem(raw, title);
+    const googleDesignSystem = buildGoogleDesignSystem(raw, title, tokens);
     const frontmatter = renderGoogleFrontmatter(googleDesignSystem);
 
     const lines = [
@@ -122,7 +122,7 @@ export function renderDesignMarkdown({ raw, targetUrl, capturedAt, toolVersion }
         "",
         `The captured surface is **${direction.theme}**, uses **${direction.shape}** geometry, and is **${direction.motion}**. This statement is ${direction.confidence}.`,
         "",
-        "Use the screenshots as the visual authority. Use `design.tokens.json` for richer DTCG primitives, `tokens.css` for CSS consumption, and `raw-inventory.json` to audit provenance.",
+        "Use this document as the agent-facing design specification, `design.tokens.json` as the source of truth for exact token values, and the screenshots as the final visual authority. `tokens.css` is a validated compilation of the DTCG tokens; `raw-inventory.json` preserves provenance.",
         "",
         "### Capture Contract",
         "",

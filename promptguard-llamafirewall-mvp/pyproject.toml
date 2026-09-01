@@ -1,0 +1,31 @@
+[project]
+name = "promptguard-llamafirewall-mvp"
+version = "0.1.0"
+description = "Local deployment and validation of Meta PromptGuard 2 (86M) and LlamaFirewall for prompt-injection / jailbreak detection in agent scenarios"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "torch>=2.6",
+    "transformers>=4.48",
+    # llamafirewall 1.0.3 imports HfFolder, which huggingface_hub 1.0 removed
+    "huggingface-hub>=0.30,<1.0",
+    "llamafirewall>=1.0",
+]
+
+[project.scripts]
+pgscan = "promptguard_mvp.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.uv.build-backend]
+module-name = "promptguard_mvp"
+
+[build-system]
+requires = ["uv_build>=0.11.32,<0.12.0"]
+build-backend = "uv_build"

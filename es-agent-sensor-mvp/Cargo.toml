@@ -1,0 +1,30 @@
+[package]
+name = "es-agent-sensor"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "Endpoint Security (NOTIFY-only) sensor for AI-agent behavior observation"
+
+[lib]
+name = "es_agent_sensor"
+path = "src/lib.rs"
+
+[[bin]]
+name = "es-agent-sensor"
+path = "src/main.rs"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+crossbeam-channel = "0.5"
+libc = "0.2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+signal-hook = "0.3"
+thiserror = "2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+ulid = "1"
+
+[build-dependencies]
+cc = "1"

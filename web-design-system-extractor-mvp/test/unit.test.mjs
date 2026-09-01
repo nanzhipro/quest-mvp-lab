@@ -5,7 +5,13 @@ import { parseArgs, parseViewportSpec } from "../src/args.mjs";
 import { buildArtifacts, contrastRatio, parseCssColor, parseCssDimension, parsePixelDimension } from "../src/normalize.mjs";
 import { renderDesignMarkdown } from "../src/render.mjs";
 import { isPrivateAddress, parseHttpUrl, redactUrl } from "../src/url-safety.mjs";
-import { validateDesignTokenParity, validateDtcg, validateGoogleDesignMarkdown } from "../src/verify.mjs";
+import {
+    validateCssBrowserConsumption,
+    validateCssTokenParity,
+    validateDesignTokenParity,
+    validateDtcg,
+    validateGoogleDesignMarkdown,
+} from "../src/verify.mjs";
 
 test("URL parsing rejects unsupported schemes and embedded credentials", () => {
     assert.equal(parseHttpUrl("https://example.com/path").hostname, "example.com");
@@ -148,6 +154,14 @@ function fixtureCapture(name, width) {
                 },
             ],
             cssVariables: [{ name: "--brand", value: "#ff0080", count: 1, samples: ["inline-style"] }],
+            computedVariables: {
+                html: [
+                    { name: "--accent-violet", value: "color(display-p3 0.4 0.2 0.8 / 1)" },
+                    { name: "--container-width", value: "960px" },
+                ],
+                body: [],
+                main: [],
+            },
             mediaQueries: ["(max-width: 600px)"],
             fonts: [{ family: "Inter", style: "normal", weight: "400", stretch: "normal", status: "loaded" }],
             assets: [{ url: "https://example.com/logo.svg", type: "image", count: 1, samples: ["img"] }],
@@ -174,7 +188,7 @@ function fixtureCapture(name, width) {
     };
 }
 
-test("artifact builder emits valid DTCG tokens and safe DESIGN.md", () => {
+test("artifact builder emits mutually consumable DTCG, DESIGN.md, and CSS artifacts", async () => {
     const metadata = {
         title: "Example <script>alert(1)</script>",
         sourceUrl: "https://example.com/",
@@ -189,9 +203,24 @@ test("artifact builder emits valid DTCG tokens and safe DESIGN.md", () => {
         "https://www.designtokens.org/schemas/2025.10/format.json",
     );
     assert.match(artifacts.css, /--color-palette-hex-ffffff/);
+    assert.match(artifacts.css, /--source-color-accent-violet: #[0-9a-f]{6};/);
+    assert.match(artifacts.css, /--typography-font-family-stack-01: Inter, "Helvetica Neue", sans-serif;/);
+    assert.doesNotMatch(artifacts.css, /\[object Object\]|""Helvetica Neue""/);
+    assert.deepEqual(artifacts.tokens.typography.fontFamily["stack-01"].$value, [
+        "Inter",
+        "Helvetica Neue",
+        "sans-serif",
+    ]);
     assert.equal(artifacts.tokens.color.palette["hex-010203"], undefined);
+    const cssParity = validateCssTokenParity(artifacts.tokens, artifacts.css);
+    assert.equal(cssParity.passed, true, cssParity.errors.join("\n"));
+    assert.equal(cssParity.tokenCount, cssParity.cssVariableCount);
+    const browserValidation = await validateCssBrowserConsumption(artifacts.tokens, artifacts.css);
+    assert.equal(browserValidation.passed, true, browserValidation.errors.join("\n"));
+    assert.equal(browserValidation.probeCount, cssParity.tokenCount);
     const markdown = renderDesignMarkdown({
         raw: artifacts.raw,
+        tokens: artifacts.tokens,
         targetUrl: metadata.sourceUrl,
         capturedAt: metadata.capturedAt,
         toolVersion: "test",
@@ -214,6 +243,27 @@ test("artifact builder emits valid DTCG tokens and safe DESIGN.md", () => {
     assert.equal(googleValidation.summary.errors, 0);
     const parity = validateDesignTokenParity(googleValidation.frontmatter, artifacts.tokens);
     assert.equal(parity.passed, true, parity.errors.join("\n"));
+    assert.ok(parity.bindingCount > 0);
+    assert.ok(parity.bindings.every((binding) => binding.cssVariable.startsWith("--")));
+
+    const wrongTypedPath = structuredClone(googleValidation.frontmatter);
+    wrongTypedPath.spacing = { wrong: "24px" };
+    const wrongTypedPathParity = validateDesignTokenParity(wrongTypedPath, artifacts.tokens);
+    assert.equal(wrongTypedPathParity.passed, false);
+    assert.match(wrongTypedPathParity.errors.join("\n"), /dimension\.spacing/);
+
+    const brokenObjectCss = artifacts.css.replace(
+        /(--source-color-accent-violet:\s*)[^;]+/,
+        "$1[object Object]",
+    );
+    const brokenObjectValidation = validateCssTokenParity(artifacts.tokens, brokenObjectCss);
+    assert.equal(brokenObjectValidation.passed, false);
+    assert.match(brokenObjectValidation.errors.join("\n"), /non-serializable/);
+
+    const brokenFontCss = artifacts.css.replace('Inter, "Helvetica Neue", sans-serif', 'Inter, ""Helvetica Neue"", sans-serif');
+    const brokenFontValidation = validateCssTokenParity(artifacts.tokens, brokenFontCss);
+    assert.equal(brokenFontValidation.passed, false);
+    assert.match(brokenFontValidation.errors.join("\n"), /fontFamily/);
 });
 
 test("Google DESIGN.md validation rejects warning-only legacy output and wrong section order", () => {

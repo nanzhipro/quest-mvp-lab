@@ -4,3 +4,5 @@
 DerivedData/
 *.app
 Package.resolved
+# 预编译着色器（scripts/compile_shaders.sh 可重建，不入库）
+*.metallib

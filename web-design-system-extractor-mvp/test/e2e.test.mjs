@@ -163,6 +163,14 @@ test("end-to-end extraction captures responsive evidence and passes validation",
     assert.match(design, /### Confidence and Known Limits/);
     assert.equal(result.validation.googleDesignValidation.passed, true);
     assert.equal(result.validation.googleDesignValidation.summary.errors, 0);
+    assert.equal(result.validation.designTokenParity.passed, true);
+    assert.ok(result.validation.designTokenParity.bindingCount > 0);
+    assert.equal(result.validation.cssTokenParity.passed, true);
+    assert.equal(result.validation.cssTokenParity.tokenCount, result.validation.cssTokenParity.cssVariableCount);
+    assert.equal(result.validation.cssBrowserValidation.passed, true);
+    assert.equal(result.validation.cssBrowserValidation.probeCount, result.validation.cssTokenParity.tokenCount);
+    const css = await fs.readFile(path.join(outputDir, "tokens.css"), "utf8");
+    assert.doesNotMatch(css, /\[object Object\]|""[^"\n]+""/);
 
     const revalidated = await revalidateExtraction(outputDir);
     assert.equal(revalidated.validation.passed, true);

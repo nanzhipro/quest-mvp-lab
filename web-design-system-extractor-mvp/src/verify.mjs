@@ -3,6 +3,7 @@ import path from "node:path";
 import { lint } from "@google/design.md/linter";
 import Ajv from "ajv";
 import addFormats from "ajv-formats";
+import { chromium } from "playwright";
 import { PNG } from "pngjs";
 import { parse as parseYaml } from "yaml";
 
@@ -288,29 +289,48 @@ export function validateGoogleDesignMarkdown(markdown) {
     };
 }
 
-function collectPrimitiveTokenValues(tokens) {
-    const values = new Map();
-    function visit(node, inheritedType) {
+function collectDtcgTokenEntries(tokens) {
+    const entries = new Map();
+    function visit(node, pathParts = [], inheritedType) {
         if (!node || typeof node !== "object" || Array.isArray(node)) {
             return;
         }
         const type = node.$type ?? inheritedType;
         if (Object.hasOwn(node, "$value")) {
-            if (typeof node.$value !== "string" || !/^\{[^{}]+\}$/.test(node.$value)) {
-                const entries = values.get(type) ?? [];
-                entries.push(node.$value);
-                values.set(type, entries);
-            }
+            const tokenPath = pathParts.join(".");
+            entries.set(tokenPath, { path: tokenPath, type, value: node.$value });
             return;
         }
         for (const [key, child] of Object.entries(node)) {
             if (!key.startsWith("$")) {
-                visit(child, type);
+                visit(child, [...pathParts, key], type);
             }
         }
     }
-    visit(tokens, undefined);
-    return values;
+    visit(tokens);
+    return entries;
+}
+
+function resolveDtcgToken(entries, tokenPath, seen = new Set()) {
+    if (seen.has(tokenPath)) {
+        return null;
+    }
+    seen.add(tokenPath);
+    const entry = entries.get(tokenPath);
+    if (!entry) {
+        return null;
+    }
+    if (typeof entry.value === "string" && /^\{[^{}]+\}$/.test(entry.value)) {
+        return resolveDtcgToken(entries, entry.value.slice(1, -1), seen);
+    }
+    return entry;
+}
+
+function cssVariableName(tokenPath) {
+    return `--${tokenPath
+        .split(".")
+        .map((part) => part.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase())
+        .join("-")}`;
 }
 
 function dtcgColorHex(value) {
@@ -325,56 +345,320 @@ function dtcgColorHex(value) {
 
 function normalizeFontFamily(value) {
     const parts = Array.isArray(value) ? value : String(value).split(",");
-    return parts.map((part) => String(part).trim().replace(/^["']|["']$/g, "").toLowerCase()).filter(Boolean).join("|");
+    return parts
+        .map((part) => String(part).trim().replace(/^(["'])(.*)\1$/, "$2").trim().toLowerCase())
+        .filter(Boolean)
+        .join("|");
 }
 
 export function validateDesignTokenParity(frontmatter, tokens) {
     const errors = [];
-    const values = collectPrimitiveTokenValues(tokens);
-    const colors = new Set((values.get("color") ?? []).map(dtcgColorHex).filter(Boolean));
-    const dimensions = new Set(
-        (values.get("dimension") ?? []).map((value) =>
-            value && typeof value.value === "number" && value.unit ? `${value.value}${value.unit}` : null,
-        ).filter(Boolean),
-    );
-    const fontFamilies = new Set((values.get("fontFamily") ?? []).map(normalizeFontFamily));
-    const fontWeights = new Set(values.get("fontWeight") ?? []);
+    const bindings = [];
+    const references = [];
+    const entries = collectDtcgTokenEntries(tokens);
+
+    function equivalent(type, observed, canonical) {
+        if (type === "color") {
+            return parseCssColor(observed)?.hex === dtcgColorHex(canonical);
+        }
+        if (type === "dimension") {
+            const parsed = parseCssDimension(observed);
+            return Boolean(
+                parsed && canonical && parsed.value === canonical.value && parsed.unit === canonical.unit,
+            );
+        }
+        if (type === "fontFamily") {
+            return normalizeFontFamily(observed) === normalizeFontFamily(canonical);
+        }
+        if (type === "fontWeight") {
+            return Number(observed) === Number(canonical);
+        }
+        return false;
+    }
+
+    function bind(designPath, observed, type, prefixes) {
+        const match = Array.from(entries.values()).find((entry) => {
+            if (entry.type !== type || !prefixes.some((prefix) => entry.path.startsWith(prefix))) {
+                return false;
+            }
+            const resolved = resolveDtcgToken(entries, entry.path);
+            return resolved && equivalent(type, observed, resolved.value);
+        });
+        if (!match) {
+            errors.push(`${designPath}=${observed} has no matching ${type} token in ${prefixes.join(" or ")}`);
+            return;
+        }
+        bindings.push({ designPath, dtcgPath: match.path, cssVariable: cssVariableName(match.path) });
+    }
 
     for (const [name, value] of Object.entries(frontmatter?.colors ?? {})) {
-        const parsed = parseCssColor(value);
-        if (!parsed || !colors.has(parsed.hex)) {
-            errors.push(`colors.${name}=${value} has no observed DTCG color primitive`);
-        }
+        bind(`colors.${name}`, value, "color", ["color.semantic.", "source.color.", "color.palette."]);
     }
-    for (const group of ["spacing", "rounded"]) {
-        for (const [name, value] of Object.entries(frontmatter?.[group] ?? {})) {
-            const parsed = parseCssDimension(value);
-            const normalized = parsed ? `${parsed.value}${parsed.unit}` : null;
-            if (!normalized || !dimensions.has(normalized)) {
-                errors.push(`${group}.${name}=${value} has no observed DTCG dimension primitive`);
-            }
-        }
+    for (const [name, value] of Object.entries(frontmatter?.spacing ?? {})) {
+        bind(`spacing.${name}`, value, "dimension", ["dimension.spacing."]);
+    }
+    for (const [name, value] of Object.entries(frontmatter?.rounded ?? {})) {
+        bind(`rounded.${name}`, value, "dimension", ["dimension.radius."]);
     }
     for (const [name, typography] of Object.entries(frontmatter?.typography ?? {})) {
-        if (!fontFamilies.has(normalizeFontFamily(typography.fontFamily))) {
-            errors.push(`typography.${name}.fontFamily has no observed DTCG font-family primitive`);
+        bind(`typography.${name}.fontFamily`, typography.fontFamily, "fontFamily", ["typography.fontFamily."]);
+        if (typography.fontWeight !== undefined) {
+            bind(`typography.${name}.fontWeight`, typography.fontWeight, "fontWeight", ["typography.fontWeight."]);
         }
-        if (typography.fontWeight !== undefined && !fontWeights.has(Number(typography.fontWeight))) {
-            errors.push(`typography.${name}.fontWeight has no observed DTCG font-weight primitive`);
-        }
-        for (const property of ["fontSize", "lineHeight", "letterSpacing"]) {
+        for (const [property, prefix] of [
+            ["fontSize", "dimension.fontSize."],
+            ["lineHeight", "dimension.lineHeight."],
+            ["letterSpacing", "dimension.letterSpacing."],
+        ]) {
             const value = typography[property];
-            if (value === undefined || typeof value === "number") {
+            if (value === undefined) {
                 continue;
             }
-            const parsed = parseCssDimension(value);
-            const normalized = parsed ? `${parsed.value}${parsed.unit}` : null;
-            if (!normalized || !dimensions.has(normalized)) {
-                errors.push(`typography.${name}.${property}=${value} has no observed DTCG dimension primitive`);
+            bind(`typography.${name}.${property}`, value, "dimension", [prefix]);
+        }
+    }
+
+    for (const [componentName, component] of Object.entries(frontmatter?.components ?? {})) {
+        for (const [property, value] of Object.entries(component ?? {})) {
+            if (typeof value !== "string" || !/^\{[^{}]+\}$/.test(value)) {
+                continue;
+            }
+            const target = value.slice(1, -1);
+            const parts = target.split(".");
+            let resolved = frontmatter;
+            for (const part of parts) {
+                resolved = resolved?.[part];
+            }
+            if (resolved === undefined) {
+                errors.push(`components.${componentName}.${property} references missing DESIGN.md value ${target}`);
+            } else {
+                references.push({ designPath: `components.${componentName}.${property}`, target });
             }
         }
     }
-    return { passed: errors.length === 0, errors };
+    return { passed: errors.length === 0, bindingCount: bindings.length, bindings, references, errors };
+}
+
+function parseCssCustomProperties(css) {
+    const declarations = new Map();
+    const errors = [];
+    for (const line of css.split(/\r?\n/)) {
+        const match = /^\s*(--[a-zA-Z0-9_-]+)\s*:\s*(.*?)\s*;\s*$/.exec(line);
+        if (!match) {
+            continue;
+        }
+        if (declarations.has(match[1])) {
+            errors.push(`Duplicate CSS custom property ${match[1]}`);
+        }
+        declarations.set(match[1], match[2]);
+    }
+    return { declarations, errors };
+}
+
+function parseCssFontFamily(value) {
+    const parts = [];
+    let current = "";
+    let quote = null;
+    let escaped = false;
+    for (const character of value) {
+        if (quote) {
+            if (escaped) {
+                current += character;
+                escaped = false;
+            } else if (character === "\\") {
+                escaped = true;
+            } else if (character === quote) {
+                quote = null;
+            } else {
+                current += character;
+            }
+            continue;
+        }
+        if (character === '"' || character === "'") {
+            if (current.trim().length > 0) {
+                return null;
+            }
+            quote = character;
+        } else if (character === ",") {
+            const part = current.trim();
+            if (!part) {
+                return null;
+            }
+            parts.push(part);
+            current = "";
+        } else {
+            current += character;
+        }
+    }
+    const finalPart = current.trim();
+    if (quote || escaped || !finalPart) {
+        return null;
+    }
+    parts.push(finalPart);
+    return parts;
+}
+
+function cssString(value) {
+    return `"${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
+}
+
+function validationCssValue(type, value) {
+    if (type === "color") {
+        if (!value || value.colorSpace !== "srgb" || !Array.isArray(value.components) || value.components.length !== 3) {
+            return null;
+        }
+        return `color(srgb ${value.components.join(" ")} / ${value.alpha ?? 1})`;
+    }
+    if (type === "dimension" && value && typeof value.value === "number" && value.unit) {
+        return `${value.value}${value.unit}`;
+    }
+    if (type === "fontFamily") {
+        const parts = Array.isArray(value) ? value : [value];
+        if (parts.length === 0 || parts.some((part) => typeof part !== "string" || part.trim().length === 0)) {
+            return null;
+        }
+        return parts
+            .map((part) => part.trim().replace(/^(["'])(.*)\1$/, "$2").trim())
+            .map((part) => (/\s/.test(part) ? cssString(part) : part))
+            .join(", ");
+    }
+    if (type === "fontWeight" && (typeof value === "number" || typeof value === "string")) {
+        return String(value);
+    }
+    return null;
+}
+
+export function validateCssTokenParity(tokens, css) {
+    const entries = collectDtcgTokenEntries(tokens);
+    const { declarations, errors } = parseCssCustomProperties(css);
+    const expectedNames = new Set();
+
+    for (const entry of entries.values()) {
+        const cssName = cssVariableName(entry.path);
+        expectedNames.add(cssName);
+        const actual = declarations.get(cssName);
+        if (actual === undefined) {
+            errors.push(`${entry.path} is missing CSS custom property ${cssName}`);
+            continue;
+        }
+        if (/\[object Object\]|\b(?:undefined|NaN)\b/.test(actual)) {
+            errors.push(`${cssName} contains a non-serializable value: ${actual}`);
+            continue;
+        }
+        if (typeof entry.value === "string" && /^\{[^{}]+\}$/.test(entry.value)) {
+            const expected = `var(${cssVariableName(entry.value.slice(1, -1))})`;
+            if (actual !== expected) {
+                errors.push(`${cssName}=${actual} does not preserve DTCG alias ${expected}`);
+            }
+            continue;
+        }
+        if (entry.type === "color") {
+            if (parseCssColor(actual)?.hex !== dtcgColorHex(entry.value)) {
+                errors.push(`${cssName}=${actual} does not equal its DTCG color value`);
+            }
+        } else if (entry.type === "dimension") {
+            const parsed = parseCssDimension(actual);
+            if (!parsed || parsed.value !== entry.value?.value || parsed.unit !== entry.value?.unit) {
+                errors.push(`${cssName}=${actual} does not equal its DTCG dimension value`);
+            }
+        } else if (entry.type === "fontFamily") {
+            const parsed = parseCssFontFamily(actual);
+            if (!parsed || normalizeFontFamily(parsed) !== normalizeFontFamily(entry.value)) {
+                errors.push(`${cssName}=${actual} does not equal its DTCG fontFamily value`);
+            }
+        } else if (entry.type === "fontWeight") {
+            if (String(entry.value) !== actual) {
+                errors.push(`${cssName}=${actual} does not equal its DTCG fontWeight value`);
+            }
+        } else {
+            errors.push(`${entry.path} uses unsupported CSS output type ${entry.type ?? "unknown"}`);
+        }
+    }
+
+    for (const name of declarations.keys()) {
+        if (!expectedNames.has(name)) {
+            errors.push(`CSS custom property ${name} has no matching DTCG token`);
+        }
+    }
+
+    return {
+        passed: errors.length === 0,
+        tokenCount: entries.size,
+        cssVariableCount: declarations.size,
+        errors,
+    };
+}
+
+export async function validateCssBrowserConsumption(tokens, css) {
+    const entries = collectDtcgTokenEntries(tokens);
+    const errors = [];
+    const probes = [];
+    for (const entry of entries.values()) {
+        const resolved = resolveDtcgToken(entries, entry.path);
+        if (!resolved) {
+            errors.push(`${entry.path} could not be resolved for browser validation`);
+            continue;
+        }
+        const expected = validationCssValue(entry.type, resolved.value);
+        const property = {
+            color: "color",
+            dimension: "margin-left",
+            fontFamily: "font-family",
+            fontWeight: "font-weight",
+        }[entry.type];
+        if (!property || expected === null) {
+            errors.push(`${entry.path} cannot be represented in a browser consumption probe`);
+            continue;
+        }
+        probes.push({
+            tokenPath: entry.path,
+            type: entry.type,
+            cssVariable: cssVariableName(entry.path),
+            property,
+            expected,
+        });
+    }
+
+    let browser;
+    try {
+        browser = await chromium.launch({ headless: true });
+        const page = await browser.newPage();
+        await page.setContent("<!doctype html><html><head></head><body></body></html>");
+        await page.addStyleTag({ content: css });
+        const results = await page.evaluate((items) => {
+            const container = document.createElement("div");
+            container.style.cssText = "position:absolute;left:-100000px;top:0";
+            document.body.append(container);
+            return items.map((item) => {
+                const actual = document.createElement("div");
+                const expected = document.createElement("div");
+                actual.style.setProperty(item.property, `var(${item.cssVariable})`);
+                expected.style.setProperty(item.property, item.expected);
+                container.append(actual, expected);
+                return {
+                    tokenPath: item.tokenPath,
+                    type: item.type,
+                    actual: getComputedStyle(actual).getPropertyValue(item.property).trim(),
+                    expected: getComputedStyle(expected).getPropertyValue(item.property).trim(),
+                };
+            });
+        }, probes);
+        for (const result of results) {
+            const matches =
+                result.type === "color"
+                    ? parseCssColor(result.actual)?.hex === parseCssColor(result.expected)?.hex
+                    : result.actual === result.expected;
+            if (!matches) {
+                errors.push(`${result.tokenPath} computed as '${result.actual}', expected '${result.expected}'`);
+            }
+        }
+    } catch (error) {
+        errors.push(`Chromium CSS validation failed: ${error instanceof Error ? error.message : String(error)}`);
+    } finally {
+        await browser?.close();
+    }
+
+    return { passed: errors.length === 0, probeCount: probes.length, errors };
 }
 
 async function fileExists(filePath) {
@@ -428,9 +712,31 @@ export async function verifyExtraction(outputDir, captures, tokens, { requireLiv
     }
     const designTokenParity = validateDesignTokenParity(googleDesignValidation.frontmatter, tokens);
     add(
-        "DESIGN.md and DTCG observed-value parity",
+        "DESIGN.md to DTCG typed-path bindings",
         designTokenParity.passed,
-        designTokenParity.passed ? "all normative Google token values map to observed DTCG primitives" : designTokenParity.errors.join("; "),
+        designTokenParity.passed
+            ? `${designTokenParity.bindingCount} normative values bound to typed DTCG paths; ${designTokenParity.references.length} component references resolved`
+            : designTokenParity.errors.join("; "),
+    );
+
+    const css = await fs.readFile(path.join(outputDir, "tokens.css"), "utf8");
+    const cssTokenParity = validateCssTokenParity(tokens, css);
+    add(
+        "DTCG to CSS structural and value parity",
+        cssTokenParity.passed,
+        cssTokenParity.passed
+            ? `${cssTokenParity.tokenCount} DTCG tokens map one-to-one to ${cssTokenParity.cssVariableCount} CSS custom properties`
+            : cssTokenParity.errors.slice(0, 12).join("; "),
+    );
+    const cssBrowserValidation = cssTokenParity.passed
+        ? await validateCssBrowserConsumption(tokens, css)
+        : { passed: false, probeCount: 0, errors: ["Skipped because DTCG to CSS parity failed"] };
+    add(
+        "CSS custom properties consumed by Chromium",
+        cssBrowserValidation.passed,
+        cssBrowserValidation.passed
+            ? `${cssBrowserValidation.probeCount} token values and aliases matched direct DTCG-derived computed styles`
+            : cssBrowserValidation.errors.slice(0, 12).join("; "),
     );
 
     for (const capture of captures) {
@@ -515,5 +821,7 @@ export async function verifyExtraction(outputDir, captures, tokens, { requireLiv
         officialDtcgSchema,
         googleDesignValidation,
         designTokenParity,
+        cssTokenParity,
+        cssBrowserValidation,
     };
 }

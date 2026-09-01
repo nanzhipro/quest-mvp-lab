@@ -1,0 +1,12 @@
+# Local preview and QA artifacts
+.DS_Store
+node_modules/
+screenshots/*.tmp.png
+
+# Shareable-project safety guard
+*.app
+*.dylib
+*.p12
+*.cer
+*.mobileprovision
+embedded.provisionprofile

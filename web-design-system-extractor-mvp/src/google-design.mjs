@@ -33,6 +33,120 @@ function dimensionKey(value) {
     return `px-${Number(value.toFixed(4)).toString().replace(".", "-")}`;
 }
 
+function dtcgColorHex(value) {
+    if (!value || value.colorSpace !== "srgb" || !Array.isArray(value.components) || value.components.length !== 3) {
+        return null;
+    }
+    const bytes = value.components.map((component) => Math.round(component * 255));
+    const alpha = Math.round((value.alpha ?? 1) * 255);
+    const body = bytes.map((byte) => byte.toString(16).padStart(2, "0")).join("");
+    return `#${body}${alpha < 255 ? alpha.toString(16).padStart(2, "0") : ""}`;
+}
+
+function normalizeFontFamily(value) {
+    const parts = Array.isArray(value) ? value : String(value).split(",");
+    return parts
+        .map((part) => String(part).trim().replace(/^(["'])(.*)\1$/, "$2").trim().toLowerCase())
+        .filter(Boolean)
+        .join("|");
+}
+
+function renderFontFamily(value) {
+    const parts = Array.isArray(value) ? value : [value];
+    return parts
+        .map((part) => String(part).trim().replace(/^(["'])(.*)\1$/, "$2").trim())
+        .map((part) => (/\s/.test(part) ? `"${part.replace(/"/g, '\\"')}"` : part))
+        .join(", ");
+}
+
+function primitiveTokenValues(group, inheritedType, result = []) {
+    if (!group || typeof group !== "object" || Array.isArray(group)) {
+        return result;
+    }
+    const type = group.$type ?? inheritedType;
+    if (Object.hasOwn(group, "$value")) {
+        if (typeof group.$value !== "string" || !/^\{[^{}]+\}$/.test(group.$value)) {
+            result.push({ type, value: group.$value });
+        }
+        return result;
+    }
+    for (const [name, child] of Object.entries(group)) {
+        if (!name.startsWith("$")) {
+            primitiveTokenValues(child, type, result);
+        }
+    }
+    return result;
+}
+
+function canonicalTokenValue(group, type, observedValue) {
+    for (const token of primitiveTokenValues(group, type)) {
+        if (token.type !== type) {
+            continue;
+        }
+        if (type === "color") {
+            const observed = parseCssColor(observedValue);
+            const canonical = dtcgColorHex(token.value);
+            if (observed && canonical && observed.hex === canonical) {
+                return canonical;
+            }
+        } else if (type === "dimension") {
+            const observed = isCssDimension(observedValue) ? observedValue.trim() : null;
+            const canonical =
+                token.value && typeof token.value.value === "number" && token.value.unit
+                    ? `${token.value.value}${token.value.unit}`
+                    : null;
+            if (observed && canonical && observed === canonical) {
+                return canonical;
+            }
+        } else if (type === "fontFamily" && normalizeFontFamily(observedValue) === normalizeFontFamily(token.value)) {
+            return renderFontFamily(token.value);
+        } else if (type === "fontWeight" && Number(observedValue) === Number(token.value)) {
+            return token.value;
+        }
+    }
+    return null;
+}
+
+function canonicalizeTypography(typography, tokens) {
+    const result = {};
+    for (const [name, observed] of Object.entries(typography)) {
+        const fontFamily = canonicalTokenValue(tokens?.typography?.fontFamily, "fontFamily", observed.fontFamily);
+        const fontSize = canonicalTokenValue(tokens?.dimension?.fontSize, "dimension", observed.fontSize);
+        if (!fontFamily || !fontSize) {
+            continue;
+        }
+        const canonical = { fontFamily, fontSize };
+        if (observed.fontWeight !== undefined) {
+            const fontWeight = canonicalTokenValue(tokens?.typography?.fontWeight, "fontWeight", observed.fontWeight);
+            if (fontWeight !== null) {
+                canonical.fontWeight = fontWeight;
+            }
+        }
+        for (const [property, group] of [
+            ["lineHeight", tokens?.dimension?.lineHeight],
+            ["letterSpacing", tokens?.dimension?.letterSpacing],
+        ]) {
+            if (observed[property] !== undefined) {
+                const value = canonicalTokenValue(group, "dimension", observed[property]);
+                if (value !== null) {
+                    canonical[property] = value;
+                }
+            }
+        }
+        result[name] = canonical;
+    }
+    return result;
+}
+
+function canonicalizeScale(scale, group) {
+    return Object.fromEntries(
+        Object.entries(scale).flatMap(([name, value]) => {
+            const canonical = canonicalTokenValue(group, "dimension", value);
+            return canonical === null ? [] : [[name, canonical]];
+        }),
+    );
+}
+
 export function collectActiveVariables(raw) {
     const variables = new Map();
     const values = raw.computedVariables?.[0]?.values ?? {};
@@ -231,7 +345,7 @@ function roundedReference(rounded, rawValue) {
     return Object.hasOwn(rounded, name) ? `{rounded.${name}}` : null;
 }
 
-export function buildGoogleDesignSystem(raw, title) {
+export function buildGoogleDesignSystem(raw, title, tokens) {
     const activeVariables = collectActiveVariables(raw);
     const variableMap = new Map(activeVariables.map((item) => [item.name, item.value]));
     const preferredPrimary = findVariableColor(variableMap, [
@@ -258,7 +372,7 @@ export function buildGoogleDesignSystem(raw, title) {
         findRootColor(raw, "color") ??
         findDominantColor(raw, "text", { opaque: true });
 
-    const colors = {};
+    const observedColors = {};
     for (const [name, value] of [
         ["primary", primary],
         ["on-primary", onPrimary],
@@ -266,22 +380,34 @@ export function buildGoogleDesignSystem(raw, title) {
         ["on-surface", onSurface],
     ]) {
         if (value) {
-            colors[name] = value;
+            observedColors[name] = value;
         }
     }
 
-    const typography = buildTypography(raw);
-    const rounded = buildRounded(raw, primaryComponent);
-    const spacing = buildSpacing(raw, primaryComponent);
+    const colorTokens = { color: tokens?.color, source: { color: tokens?.source?.color } };
+    const colors = tokens
+        ? Object.fromEntries(
+              Object.entries(observedColors).flatMap(([name, value]) => {
+                  const canonical = canonicalTokenValue(colorTokens, "color", value);
+                  return canonical === null ? [] : [[name, canonical]];
+              }),
+          )
+        : observedColors;
+    const observedTypography = buildTypography(raw);
+    const observedRounded = buildRounded(raw, primaryComponent);
+    const observedSpacing = buildSpacing(raw, primaryComponent);
+    const typography = tokens ? canonicalizeTypography(observedTypography, tokens) : observedTypography;
+    const rounded = tokens ? canonicalizeScale(observedRounded, tokens.dimension?.radius) : observedRounded;
+    const spacing = tokens ? canonicalizeScale(observedSpacing, tokens.dimension?.spacing) : observedSpacing;
     const components = {};
-    if (surface && onSurface) {
+    if (colors.surface && colors["on-surface"]) {
         components["surface-default"] = {
             backgroundColor: "{colors.surface}",
             textColor: "{colors.on-surface}",
             ...(typography["body-md"] ? { typography: "{typography.body-md}" } : {}),
         };
     }
-    if (primary && onPrimary && primaryComponent) {
+    if (colors.primary && colors["on-primary"] && primaryComponent) {
         components["button-primary"] = {
             backgroundColor: "{colors.primary}",
             textColor: "{colors.on-primary}",

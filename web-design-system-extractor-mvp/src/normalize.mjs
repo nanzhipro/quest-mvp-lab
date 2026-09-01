@@ -122,7 +122,10 @@ function splitFontFamily(value) {
     const expression = /"([^"]+)"|'([^']+)'|([^,]+)/g;
     let match;
     while ((match = expression.exec(value)) !== null) {
-        const family = (match[1] || match[2] || match[3] || "").trim();
+        const family = (match[1] || match[2] || match[3] || "")
+            .trim()
+            .replace(/^(["'])(.*)\1$/, "$2")
+            .trim();
         if (family) {
             families.push(family);
         }
@@ -570,25 +573,52 @@ export function buildArtifacts(captures, metadata) {
     return { tokens, raw, css: renderCssVariables(tokens) };
 }
 
-function cssValue(value, path) {
+function cssString(value) {
+    return `"${value.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
+}
+
+function cssFontFamily(value) {
+    const parts = Array.isArray(value) ? value : [value];
+    if (parts.length === 0 || parts.some((part) => typeof part !== "string" || part.trim().length === 0)) {
+        throw new Error("DTCG fontFamily token must contain one or more non-empty family names");
+    }
+    return parts
+        .map((part) => part.trim().replace(/^(["'])(.*)\1$/, "$2").trim())
+        .map((part) => (/\s/.test(part) ? cssString(part) : part))
+        .join(", ");
+}
+
+function cssValue(value, type) {
     if (typeof value === "string" && value.startsWith("{") && value.endsWith("}")) {
         const target = value.slice(1, -1).split(".").map((part) => part.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase());
         return `var(--${target.join("-")})`;
     }
-    if (path[0] === "color" && value && typeof value === "object") {
+    if (type === "color" && value && typeof value === "object") {
+        if (
+            value.colorSpace !== "srgb" ||
+            !Array.isArray(value.components) ||
+            value.components.length !== 3 ||
+            !value.components.every(Number.isFinite) ||
+            !Number.isFinite(value.alpha)
+        ) {
+            throw new Error("CSS output supports only valid DTCG sRGB color values");
+        }
         const [r, g, b] = value.components.map((component) => Math.round(component * 255));
         if (value.alpha < 1) {
             return `rgba(${r}, ${g}, ${b}, ${Number(value.alpha.toFixed(4))})`;
         }
         return `#${byteToHex(r)}${byteToHex(g)}${byteToHex(b)}`;
     }
-    if (value && typeof value === "object" && typeof value.value === "number" && value.unit) {
+    if (type === "dimension" && value && typeof value === "object" && typeof value.value === "number" && value.unit) {
         return `${value.value}${value.unit}`;
     }
-    if (Array.isArray(value)) {
-        return value.map((part) => (part.includes(" ") ? `"${part}"` : part)).join(", ");
+    if (type === "fontFamily") {
+        return cssFontFamily(value);
     }
-    return String(value);
+    if (type === "fontWeight" && (typeof value === "number" || typeof value === "string")) {
+        return String(value);
+    }
+    throw new Error(`CSS serialization is not implemented for DTCG type ${type ?? "unknown"}`);
 }
 
 export function renderCssVariables(tokens) {
@@ -600,7 +630,7 @@ export function renderCssVariables(tokens) {
         const type = node.$type ?? inheritedType;
         if (Object.hasOwn(node, "$value")) {
             const cssName = path.map((part) => part.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()).join("-");
-            declarations.push(`  --${cssName}: ${cssValue(node.$value, path, type)};`);
+            declarations.push(`  --${cssName}: ${cssValue(node.$value, type)};`);
             return;
         }
         for (const [key, value] of Object.entries(node)) {

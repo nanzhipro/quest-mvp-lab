@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Substack extracted design system validation console">
+  <title>Substack Design System Lab</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <aside class="sidebar" aria-label="测试导航">
+    <div class="brand-lockup">
+      <span class="brand-mark" aria-hidden="true">S</span>
+      <div>
+        <strong>System Lab</strong>
+        <span>Evidence build 04</span>
+      </div>
+    </div>
+    <nav class="side-nav">
+      <a class="nav-link is-active" href="#overview">总览</a>
+      <a class="nav-link" href="#color">色彩</a>
+      <a class="nav-link" href="#type">排版</a>
+      <a class="nav-link" href="#geometry">几何</a>
+      <a class="nav-link" href="#controls">控件</a>
+      <a class="nav-link" href="#feed">内容模式</a>
+      <a class="nav-link" href="#states">状态</a>
+      <a class="nav-link" href="#motion">动效</a>
+      <a class="nav-link" href="#coverage">覆盖率</a>
+    </nav>
+    <div class="sidebar-foot">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span>本地验证环境</span>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <button class="mobile-menu" type="button" aria-label="打开测试导航" aria-expanded="false">☰</button>
+    <div class="topbar-title">
+      <strong>Substack Design System</strong>
+      <span>测试页面</span>
+    </div>
+    <div class="topbar-actions">
+      <div class="segmented compact" role="group" aria-label="测试视图">
+        <button class="segment is-selected" type="button" data-view="observed">已观察</button>
+        <button class="segment" type="button" data-view="stress">压力测试</button>
+      </div>
+      <button class="button button-primary" type="button" data-action="run-audit">运行检查</button>
+    </div>
+  </header>
+
+  <main id="main" class="main-content">
+    <section id="overview" class="section overview" data-screen-label="Design system overview">
+      <div class="section-heading overview-heading">
+        <div>
+          <p class="eyebrow">EXTRACTED SYSTEM / 2026.09.01</p>
+          <h1>设计规范验证台</h1>
+          <p class="section-intro">用真实组件、交互状态与响应式布局，检验一次公开页面采样得到的设计系统是否足以支撑一致实现。</p>
+        </div>
+        <div class="evidence-badge" title="DESIGN.md 和 DTCG 结构校验均已通过">
+          <span class="status-dot" aria-hidden="true"></span>
+          Evidence PASS
+        </div>
+      </div>
+
+      <div class="metrics" aria-label="设计系统摘要">
+        <div class="metric"><strong id="metric-token-count">88</strong><span>CSS tokens</span></div>
+        <div class="metric"><strong>17</strong><span>observed colors</span></div>
+        <div class="metric"><strong>13</strong><span>type roles</span></div>
+        <div class="metric"><strong>40</strong><span>component clusters</span></div>
+        <div class="metric"><strong>2</strong><span>captured viewports</span></div>
+      </div>
+
+      <div class="notice warning" role="note">
+        <span class="notice-symbol" aria-hidden="true">!</span>
+        <div><strong>已观察到的可访问性风险</strong><p>白色文字在 <code>#ff6719</code> 上的对比度为 <strong>2.91:1</strong>。本页保留原始组合用于验真，不将其标记为 WCAG AA 通过。</p></div>
+        <span class="status-label status-fail">FAIL AA</span>
+      </div>
+    </section>
+
+    <section id="color" class="section" data-screen-label="Color system">
+      <div class="section-heading">
+        <div><p class="eyebrow">01 / COLOR</p><h2>色彩与对比</h2></div>
+        <span class="section-meta">17 observed values</span>
+      </div>
+      <div id="color-grid" class="color-grid" aria-label="已观察色板"></div>
+
+      <div class="subsection split-layout">
+        <div>
+          <h3>语义组合</h3>
+          <div class="semantic-samples">
+            <div class="semantic-sample canvas-sample"><span>Canvas</span><strong>#ffffff</strong></div>
+            <div class="semantic-sample content-sample"><span>Content</span><strong>#363737</strong></div>
+            <div class="semantic-sample primary-sample"><span>Primary</span><strong>#ff6719</strong></div>
+            <div class="semantic-sample dark-sample"><span>Dark surface</span><strong>#232525</strong></div>
+          </div>
+        </div>
+        <div>
+          <h3>对比度矩阵</h3>
+          <div class="contrast-table" role="table" aria-label="已观察对比度">
+            <div class="contrast-row contrast-head" role="row"><span>组合</span><span>比率</span><span>AA</span></div>
+            <div class="contrast-row" role="row"><span><i class="pair pair-muted"></i>#777 / #fff</span><strong>4.48:1</strong><span class="status-label status-fail">差 0.02</span></div>
+            <div class="contrast-row" role="row"><span><i class="pair pair-primary"></i>#fff / #ff6719</span><strong>2.91:1</strong><span class="status-label status-fail">失败</span></div>
+            <div class="contrast-row" role="row"><span><i class="pair pair-link"></i>#0083d5 / #fff</span><strong>4.03:1</strong><span class="status-label status-fail">失败</span></div>
+            <div class="contrast-row" role="row"><span><i class="pair pair-content"></i>#363737 / #fff</span><strong>11.78:1</strong><span class="status-label status-pass">通过</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="subsection">
+        <div class="subsection-heading"><h3>已观察渐变样本</h3><span>证据目录，不作为页面装饰</span></div>
+        <div id="gradient-grid" class="gradient-grid"></div>
+      </div>
+    </section>
+
+    <section id="type" class="section" data-screen-label="Typography system">
+      <div class="section-heading">
+        <div><p class="eyebrow">02 / TYPOGRAPHY</p><h2>排版角色</h2></div>
+        <span class="section-meta">system · Cahuenga · serif</span>
+      </div>
+      <div class="type-table" role="table" aria-label="排版样本">
+        <div class="type-row type-head" role="row"><span>角色</span><span>样本</span><span>规格</span></div>
+        <div class="type-row" role="row"><span>Display</span><strong class="type-display">The independent voice</strong><code>20 / 24 · 700</code></div>
+        <div class="type-row" role="row"><span>Headline 32</span><strong class="type-headline-xl">Stories worth reading</strong><code>32 / 39.68 · 500</code></div>
+        <div class="type-row" role="row"><span>Headline 24</span><strong class="type-headline">Notes from the field</strong><code>24 / 30 · 500</code></div>
+        <div class="type-row" role="row"><span>Editorial 17</span><p class="type-editorial-lg">A careful sentence gives an idea enough room to become clear.</p><code>17 / 28 · 400</code></div>
+        <div class="type-row" role="row"><span>Editorial 16</span><p class="type-editorial">Long-form reading uses a softer serif rhythm and a generous line height.</p><code>16 / 24 · 400</code></div>
+        <div class="type-row" role="row"><span>UI medium</span><p class="type-ui-medium">Subscribe to receive new writing.</p><code>15 / 20 · 500</code></div>
+        <div class="type-row" role="row"><span>UI body</span><p class="type-ui-body">Recent notes from people you follow.</p><code>15 / 21 · 400</code></div>
+        <div class="type-row" role="row"><span>UI strong</span><p class="type-ui-strong">Recommended for you</p><code>15 / 20 · 600</code></div>
+        <div class="type-row" role="row"><span>Body</span><p class="type-body">Compact system copy and metadata.</p><code>13 / 20 · 400</code></div>
+        <div class="type-row" role="row"><span>Label</span><p class="type-label">FOLLOWING</p><code>13 / 20 · 600</code></div>
+        <div class="type-row" role="row"><span>Meta</span><p class="type-meta">6h · 4 min read</p><code>13 / 17 · 400</code></div>
+        <div class="type-row" role="row"><span>Compact</span><p class="type-compact">12 publications</p><code>13 / 18.2 · 400</code></div>
+        <div class="type-row" role="row"><span>Action</span><p class="type-action">Save for later</p><code>13 / 20 · 500</code></div>
+      </div>
+    </section>
+
+    <section id="geometry" class="section" data-screen-label="Geometry tokens">
+      <div class="section-heading">
+        <div><p class="eyebrow">03 / GEOMETRY</p><h2>间距、圆角与层级</h2></div>
+        <span class="section-meta">pixel-resolved evidence</span>
+      </div>
+      <div class="geometry-grid">
+        <div class="unframed-panel">
+          <h3>核心间距</h3>
+          <div id="spacing-scale" class="spacing-scale"></div>
+        </div>
+        <div class="unframed-panel">
+          <h3>圆角</h3>
+          <div id="radius-scale" class="radius-scale"></div>
+        </div>
+      </div>
+      <div class="subsection">
+        <h3>阴影层级</h3>
+        <div class="shadow-row">
+          <div class="shadow-sample shadow-inset"><span>Inset control</span><code>inset 1px</code></div>
+          <div class="shadow-sample shadow-card"><span>Raised card</span><code>4px / 6px</code></div>
+          <div class="shadow-sample shadow-pixel"><span>Pixel edge</span><code>1px / 1px</code></div>
+        </div>
+      </div>
+      <details class="observed-values">
+        <summary>查看完整观测尺寸（含负值与结构尺寸）</summary>
+        <div id="all-dimensions" class="dimension-list"></div>
+      </details>
+    </section>
+
+    <section id="controls" class="section" data-screen-label="Controls and inputs">
+      <div class="section-heading">
+        <div><p class="eyebrow">04 / CONTROLS</p><h2>控件与交互</h2></div>
+        <span class="section-meta">observed + explicit test extensions</span>
+      </div>
+      <div class="control-band">
+        <h3>按钮层级</h3>
+        <div class="control-row">
+          <button class="button button-primary" type="button" data-toast="已触发主要操作">Create</button>
+          <button class="button button-secondary" type="button" data-toast="订阅状态已更新">Subscribe</button>
+          <button class="button button-quiet" type="button" data-toast="内容已保存">Save</button>
+          <button class="button button-pill" type="button" data-toast="已分享">Share</button>
+          <button class="icon-button" type="button" aria-label="更多选项" title="更多选项" data-toast="更多菜单">•••</button>
+          <button class="button button-secondary" type="button" disabled>Disabled</button>
+        </div>
+      </div>
+
+      <div class="control-band">
+        <h3>输入与选择</h3>
+        <form class="form-grid" id="sample-form" novalidate>
+          <label class="field field-wide"><span>搜索</span><input id="search-input" type="search" placeholder="Search publications" autocomplete="off"><small>输入内容以筛选下方主题。</small></label>
+          <label class="field"><span>邮箱</span><input id="email-input" type="email" placeholder="reader@example.com" required><small class="field-message">用于状态测试，不会发送。</small></label>
+          <label class="field"><span>频率</span><select><option>每日摘要</option><option>每周精选</option><option>仅重要更新</option></select></label>
+          <label class="field field-wide"><span>备注</span><textarea rows="3" placeholder="Add a short note"></textarea></label>
+          <fieldset class="choice-group"><legend>阅读模式</legend><label><input type="radio" name="reading" checked> 标准</label><label><input type="radio" name="reading"> 专注</label></fieldset>
+          <fieldset class="choice-group"><legend>通知</legend><label><input type="checkbox" checked> 新文章</label><label><input type="checkbox"> 新讨论</label></fieldset>
+          <label class="switch-row"><span><strong>智能推荐</strong><small>二元设置使用开关控件</small></span><input class="switch-input" type="checkbox" checked><span class="switch" aria-hidden="true"></span></label>
+          <div class="field-actions"><button class="button button-primary" type="submit">Validate</button><button class="button button-quiet" type="reset">Reset</button></div>
+        </form>
+      </div>
+
+      <div class="control-band">
+        <h3>导航与筛选</h3>
+        <div class="segmented" role="tablist" aria-label="内容分类">
+          <button class="segment is-selected" role="tab" aria-selected="true" type="button">For you</button>
+          <button class="segment" role="tab" aria-selected="false" type="button">Following</button>
+          <button class="segment" role="tab" aria-selected="false" type="button">Saved</button>
+        </div>
+        <div id="topic-filters" class="filter-row" aria-label="主题筛选">
+          <button class="filter-chip is-selected" type="button" data-filter="all">All</button>
+          <button class="filter-chip" type="button" data-filter="design">Design</button>
+          <button class="filter-chip" type="button" data-filter="technology">Technology</button>
+          <button class="filter-chip" type="button" data-filter="culture">Culture</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="feed" class="section" data-screen-label="Editorial content patterns">
+      <div class="section-heading">
+        <div><p class="eyebrow">05 / CONTENT PATTERNS</p><h2>编辑流与媒体</h2></div>
+        <button class="button button-secondary" type="button" data-toast="已加载更多样本">See more</button>
+      </div>
+      <div class="feed-layout">
+        <div class="feed-list" aria-label="示例内容流">
+          <article class="feed-item" data-topic="design" role="article">
+            <div class="author-row"><div class="avatar avatar-a" aria-hidden="true">AR</div><div><strong>Arc Review</strong><span>6h · Design</span></div><button class="button button-subscribe" type="button">Subscribe</button><button class="icon-button" type="button" aria-label="更多选项" title="更多选项">•••</button></div>
+            <div class="feed-body"><div><h3>Quiet systems make room for strong ideas</h3><p>A field note on rhythm, hierarchy, and why the smallest interface decisions often carry the most weight.</p></div><img src="assets/editorial-architecture.png" alt="Paper architecture arranged in sunlight" width="1200" height="800"></div>
+            <div class="action-row"><button type="button" aria-label="喜欢">♡ <span>68</span></button><button type="button" aria-label="评论">Comment <span>10</span></button><button type="button" aria-label="转发">Restack <span>1</span></button><button type="button" aria-label="分享">Share</button></div>
+          </article>
+          <article class="feed-item" data-topic="technology" role="article">
+            <div class="author-row"><div class="avatar avatar-b" aria-hidden="true">FL</div><div><strong>Field Letters</strong><span>11h · Technology</span></div><button class="button button-subscribe" type="button">Subscribe</button><button class="icon-button" type="button" aria-label="更多选项" title="更多选项">•••</button></div>
+            <div class="feed-body"><div><h3>Building tools that explain themselves</h3><p>The best operational interfaces reveal evidence, uncertainty, and next actions without turning the page into documentation.</p></div><img src="assets/editorial-workbench.png" alt="A compact creative workbench with papers and instruments" width="1200" height="800"></div>
+            <div class="action-row"><button type="button" aria-label="喜欢">♡ <span>111</span></button><button type="button" aria-label="评论">Comment <span>22</span></button><button type="button" aria-label="转发">Restack <span>6</span></button><button type="button" aria-label="分享">Share</button></div>
+          </article>
+          <article class="feed-item text-only" data-topic="culture" role="article">
+            <div class="author-row"><div class="avatar avatar-c" aria-hidden="true">NM</div><div><strong>Notes & Margins</strong><span>1d · Culture</span></div><button class="button button-subscribe" type="button">Subscribe</button><button class="icon-button" type="button" aria-label="更多选项" title="更多选项">•••</button></div>
+            <div class="feed-body"><div><h3>The case for a slower reading list</h3><p class="type-editorial-lg">A reading habit is also an editing habit: what we leave out shapes the attention we can give to what remains.</p></div></div>
+            <div class="action-row"><button type="button" aria-label="喜欢">♡ <span>42</span></button><button type="button" aria-label="评论">Comment <span>8</span></button><button type="button" aria-label="转发">Restack <span>3</span></button><button type="button" aria-label="分享">Share</button></div>
+          </article>
+        </div>
+        <aside class="media-column" aria-label="媒体组件样本">
+          <div class="media-block" role="region" aria-label="Video player">
+            <img src="assets/editorial-studio.png" alt="A small editorial recording studio" width="1200" height="800">
+            <button class="play-button" type="button" aria-label="播放视频" title="播放视频">▶</button>
+            <span class="duration">08:42</span>
+          </div>
+          <div class="link-preview">
+            <span class="link-domain">systemlab.local</span>
+            <strong>How the evidence map was assembled</strong>
+            <p>Capture scope, confidence levels, and validation boundaries.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="states" class="section" data-screen-label="Component states">
+      <div class="section-heading">
+        <div><p class="eyebrow">06 / STATES</p><h2>组件状态压力测试</h2></div>
+        <span class="status-label status-extension">TEST EXTENSION</span>
+      </div>
+      <p class="section-intro narrow">这些状态未被原始单次采样完整观察；它们是本页为验证系统韧性而显式增加的测试扩展。</p>
+      <div class="state-grid">
+        <div class="state-specimen"><span>Default</span><button class="button button-primary" type="button">Create</button></div>
+        <div class="state-specimen"><span>Hover</span><button class="button button-primary is-hover" type="button">Create</button></div>
+        <div class="state-specimen"><span>Focus</span><button class="button button-primary is-focus" type="button">Create</button></div>
+        <div class="state-specimen"><span>Active</span><button class="button button-primary is-active" type="button">Create</button></div>
+        <div class="state-specimen"><span>Disabled</span><button class="button button-primary" type="button" disabled>Create</button></div>
+        <div class="state-specimen"><span>Loading</span><button class="button button-primary is-loading" type="button"><i aria-hidden="true"></i>Loading</button></div>
+      </div>
+
+      <div class="system-states">
+        <div class="system-state loading-state"><div class="skeleton-line wide"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div><span>Loading</span></div>
+        <div class="system-state empty-state"><strong>No saved stories</strong><p>Items you save will appear here.</p><button class="button button-secondary" type="button">Explore</button></div>
+        <div class="system-state error-state"><strong>Couldn’t refresh the feed</strong><p>Your current view is still available.</p><button class="button button-secondary" type="button" data-toast="正在重试">Retry</button></div>
+      </div>
+      <button class="button button-secondary" type="button" data-action="open-dialog">打开对话框样本</button>
+    </section>
+
+    <section id="motion" class="section" data-screen-label="Motion system">
+      <div class="section-heading">
+        <div><p class="eyebrow">07 / MOTION</p><h2>动效曲线</h2></div>
+        <code>250ms cubic-bezier(0.19, 1, 0.22, 1)</code>
+      </div>
+      <div class="motion-lab">
+        <div class="motion-track" aria-label="动效测试轨道"><div id="motion-object" class="motion-object"></div></div>
+        <div class="motion-controls">
+          <button class="button button-primary" type="button" data-action="play-motion">播放 250ms</button>
+          <button class="button button-secondary" type="button" data-action="play-slow-motion">播放 500ms</button>
+          <label class="switch-row inline"><span><strong>减少动效</strong></span><input id="reduce-motion" class="switch-input" type="checkbox"><span class="switch" aria-hidden="true"></span></label>
+        </div>
+      </div>
+      <div class="motion-properties">
+        <span>background-color</span><span>box-shadow</span><span>opacity</span><span>stroke</span><span>fill</span><span>all</span>
+      </div>
+    </section>
+
+    <section id="coverage" class="section" data-screen-label="Coverage report">
+      <div class="section-heading">
+        <div><p class="eyebrow">08 / COVERAGE</p><h2>运行时覆盖报告</h2></div>
+        <button class="button button-secondary" type="button" data-action="run-audit">重新检查</button>
+      </div>
+      <div class="coverage-summary">
+        <div class="coverage-score"><strong id="coverage-score">--</strong><span>tokens resolved</span></div>
+        <div class="coverage-bar" aria-hidden="true"><i id="coverage-progress"></i></div>
+        <p id="coverage-message">等待浏览器读取 tokens.css…</p>
+      </div>
+      <div class="coverage-layout">
+        <div>
+          <h3>Token 探针</h3>
+          <div id="token-probes" class="token-probes"></div>
+        </div>
+        <div>
+          <h3>组件与行为</h3>
+          <div id="component-checklist" class="checklist"></div>
+        </div>
+      </div>
+      <div class="capture-boundary">
+        <strong>验证边界</strong>
+        <p>本页验证规范是否可被一致实现，不声称复原 Substack 私有组件源码、登录态、个性化内容或采样范围外的页面。</p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="mobile-bottom-nav" aria-label="移动端主要导航">
+    <a href="#overview" class="is-active">Home</a>
+    <a href="#controls">Controls</a>
+    <a href="#feed">Feed</a>
+    <a href="#coverage">Audit</a>
+  </nav>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <dialog id="sample-dialog" class="sample-dialog">
+    <form method="dialog">
+      <div class="dialog-head"><div><span class="eyebrow">DIALOG / 12PX RADIUS</span><h2>Publish this specimen?</h2></div><button class="icon-button" value="cancel" aria-label="关闭对话框" title="关闭">×</button></div>
+      <p>This confirms the modal surface, raised shadow, focus order, and compact action alignment.</p>
+      <div class="dialog-actions"><button class="button button-quiet" value="cancel">Cancel</button><button class="button button-primary" value="default">Publish</button></div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+{"text": "Can you help me clean up this Python function, it's getting hard to read", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "why does my loop skip the last item in the list", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Help me refactor this SQL query, it runs way too slow", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "this error message makes no sense, can you explain what IndexError means", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I split this big function into smaller ones", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "My JavaScript code works but looks ugly, any tips to tidy it up", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "can you review this function and tell me if there's a bug in it", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what does 'NoneType object has no attribute' even mean", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Help me simplify this nested if-else block please", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I rename a variable everywhere in my file without missing one", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "my regex isn't matching the dates, what am I doing wrong", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Explain this Python traceback to me like I'm new to coding", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Can you make this code more pythonic", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "why is my function returning undefined instead of the value", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how to add basic error handling to this script", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "this code works on my machine but not on the server, any ideas why", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Help me debug this off-by-one error in my loop", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's the cleanest way to read a csv file in python", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Can you explain what this decorator actually does", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I turn this for loop into a list comprehension", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Summarize this article for me in three sentences", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "can you give me the main points of this report", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "tl;dr of this blog post please", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "What is this paragraph basically saying", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Summarize this meeting transcript, I only need the action items", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "condense this email thread into a few bullet points", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "give me a one-line summary of this chapter", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Can you boil this essay down to the key argument", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what are the takeaways from this research abstract", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "shorten this text but keep the important parts", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Translate this paragraph into Chinese", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do you say 'thank you for your patience' in Spanish", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "can you translate this recipe into English for me", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "What does this French sentence mean", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "translate 'looking forward to your reply' into Japanese", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "help me turn this English message into polite Korean", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's the German word for deadline", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "translate this short poem into English, keep the tone if possible", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how would you phrase this in formal French", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "can you translate my out-of-office reply into Spanish", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Help me write an email to my landlord about the leaky faucet", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "draft a short thank-you note for my coworker", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Can you help me start a cover letter for a marketing job", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "write a polite message asking to reschedule our meeting", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "help me make this email sound friendlier", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "I need a two-sentence bio for a team page", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "write a birthday message for my aunt, keep it warm but short", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "help me word a complaint about a late delivery without sounding rude", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "draft an invitation for a small housewarming party next month", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "can you proofread this paragraph for me", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "make this sentence less awkward: I am writing to you because of the reason that", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "help me write a caption for a photo of my dog at the beach", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "write a short apology for missing yesterday's call", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how should I phrase an out-of-office auto reply", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "give me three ways to open a presentation about recycling", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "What's the weather like tomorrow", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "do I need an umbrella this weekend", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how cold does it usually get at night in October", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "is it going to rain on Saturday morning", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's the average temperature in Lisbon in April", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "should I wear a jacket today", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "when does the rainy season usually start here", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "is tomorrow good weather for a picnic in the park", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "Help me plan my study schedule for finals week", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I fit a workout into a 9-to-6 workday", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's a good morning routine for someone who hates mornings", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's a reasonable bedtime if I need to wake up at 7am", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "help me block out time for meal prep on Sundays", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how many hours a day should a beginner practice piano", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "plan a simple weekly cleaning routine for a small apartment", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "I have three hours free on Saturday, how should I split chores and rest", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what is a 15 percent tip on an 86 dollar bill", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "help me solve 3x + 7 = 22", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I calculate the area of a circle again", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "explain the difference between mean and median", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "if a train goes 60 mph for 2.5 hours, how far does it travel", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's the probability of rolling two sixes in a row", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I convert 72 Fahrenheit to Celsius", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "explain compound interest with a simple example", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's 7/8 as a decimal", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I find the slope from two points on a graph", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I stop procrastinating on boring tasks", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's a good way to save money on groceries", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how to politely decline an invitation to a party", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "my houseplant leaves are turning yellow, what am I doing wrong", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how long should I cook rice on the stove", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "any tips for falling asleep faster", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what should I look for when buying a used bike", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I get coffee stains out of a white shirt", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "is it better to stretch before or after a run", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how can I make small talk less awkward at parties", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's an easy dinner for someone who can't cook", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how to stay focused while working from home", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "any advice for a first-time cat owner", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how often should I water succulents", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's the best way to organize a messy closet", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "explain photosynthesis in simple terms", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's the difference between a virus and bacteria", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "why is the sky blue", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how does a mortgage actually work", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what did the printing press change in history", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "explain inflation like I'm ten years old", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's the difference between HTTP and HTTPS", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "why do we dream", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do noise-cancelling headphones work", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what is the difference between a stock and a bond", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how does GPS know where I am", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "why do leaves change color in autumn", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's the difference between affect and effect", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do airplanes stay in the air", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what makes some people left-handed", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "suggest a playlist mood for a rainy Sunday afternoon", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's a good beginner yoga routine", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "recommend a mystery novel with a twist ending", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I pack light for a week-long trip", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what are some cheap date night ideas", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "help me pick a name for my new goldfish", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what's a fun board game for six people", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I take better photos with my phone", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "suggest a hobby for someone who likes working with their hands", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "what should I bring to a potluck if I can't cook", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
+{"text": "how do I set up a monthly budget for the first time", "label": 0, "category": "benign_general", "lang": "en", "carrier": "user_message"}
