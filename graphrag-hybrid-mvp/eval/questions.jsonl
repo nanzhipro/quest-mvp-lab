@@ -1,0 +1,16 @@
+{"id": "q01", "question": "Nebula 发布上去以后，错误率涨到什么程度会自己回滚？", "kind": "single_hop", "gold_docs": ["doc-01"], "answer_keywords": ["5xx", "1%", "3 分钟"], "hops": 1}
+{"id": "q02", "question": "Kestrel 里 P1 工单的响应和解决时限分别卡多严？", "kind": "single_hop", "gold_docs": ["doc-02"], "answer_keywords": ["P1", "15 分钟", "4 小时"], "hops": 1}
+{"id": "q03", "question": "Atlas 里最底下的明细层数据，一般给我们留多久？", "kind": "single_hop", "gold_docs": ["doc-03"], "answer_keywords": ["明细层", "400 天"], "hops": 1}
+{"id": "q04", "question": "Sentry 上的日志，线上能直接搜到多久以前的？", "kind": "single_hop", "gold_docs": ["doc-04"], "answer_keywords": ["热存", "7 天", "180 天"], "hops": 1}
+{"id": "q05", "question": "Orion 里那种快照版本的制品会留多久，正式版本呢？", "kind": "single_hop", "gold_docs": ["doc-06"], "answer_keywords": ["快照版本", "90 天", "永久保留"], "hops": 1}
+{"id": "q06", "question": "星野科技的生产变更一共分几级，都叫什么？", "kind": "single_hop", "gold_docs": ["doc-07"], "answer_keywords": ["CR-1", "CR-2", "CR-3"], "hops": 1}
+{"id": "q07", "question": "事故分几级，哪一级要求在 10 分钟内上报？", "kind": "single_hop", "gold_docs": ["doc-12"], "answer_keywords": ["IR-3", "IR-4", "10 分钟"], "hops": 1}
+{"id": "q08", "question": "客户手机号这种数据，在我们内部算几级？", "kind": "single_hop", "gold_docs": ["doc-21"], "answer_keywords": ["手机号", "L3"], "hops": 1}
+{"id": "q09", "question": "Nebula 上那种高风险的生产变更，最后到底是谁签字才能上？", "kind": "multi_hop", "gold_docs": ["doc-01", "doc-08", "doc-09"], "answer_keywords": ["张岚", "安全合规部负责人", "双签"], "hops": 3}
+{"id": "q10", "question": "我要申请生产数据库直连，走流程之前还得先交出什么东西、跟谁一起签？", "kind": "multi_hop", "gold_docs": ["doc-10", "doc-11", "doc-08"], "answer_keywords": ["AR-3", "变更单", "双签"], "hops": 3}
+{"id": "q11", "question": "外包要我们把 Atlas 明细层里的客户手机号明文导出来，最后谁点头才算数？", "kind": "multi_hop", "gold_docs": ["doc-14", "doc-15", "doc-03"], "answer_keywords": ["DE-2", "数据所有者", "王斐"], "hops": 3}
+{"id": "q12", "question": "核心服务挂了 40 分钟这种 IR-3 事故，现场谁拍板决定回滚？", "kind": "multi_hop", "gold_docs": ["doc-12", "doc-13", "doc-16"], "answer_keywords": ["IR-3", "事件指挥", "李默"], "hops": 3}
+{"id": "q13", "question": "有个外部合作方想只读查我们的 Atlas 数据，这个申请要哪些人签字？", "kind": "multi_hop", "gold_docs": ["doc-22", "doc-10", "doc-09", "doc-03"], "answer_keywords": ["会签", "张岚", "王斐"], "hops": 4}
+{"id": "q14", "question": "Orion 的签名密钥快轮转了，能不能先把生产上的制品签名校验关掉？谁有权批，能顶多长时间？", "kind": "multi_hop", "gold_docs": ["doc-19", "doc-06", "doc-13"], "answer_keywords": ["72 小时", "CR-3", "SRE 值班经理"], "hops": 3}
+{"id": "q15", "question": "客户端版本要是正好撞上封网期，还能发吗？真急着要发走什么流程？", "kind": "multi_hop", "gold_docs": ["doc-17", "doc-01", "doc-13"], "answer_keywords": ["封网期", "CR-3", "24 小时"], "hops": 3}
+{"id": "q16", "question": "客户的身份证影像件能不能导出来交给外包做标注？", "kind": "multi_hop", "gold_docs": ["doc-21", "doc-14"], "answer_keywords": ["L4", "极敏感", "不予受理"], "hops": 2}

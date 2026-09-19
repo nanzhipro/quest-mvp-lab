@@ -1,0 +1,39 @@
+[project]
+name = "graphrag-hybrid-mvp"
+version = "0.1.0"
+description = "Minimal GraphRAG hybrid retrieval MVP: BM25 + dense vectors + an LLM-extracted knowledge graph, fused with RRF and answered by DeepSeek"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastembed>=0.4.0",
+    "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[project.scripts]
+graphrag-mvp = "graphrag_mvp.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/graphrag_mvp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -ra"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+extend-exclude = ["runs", "artifacts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

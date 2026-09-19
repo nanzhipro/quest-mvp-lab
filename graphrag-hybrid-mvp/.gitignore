@@ -1,0 +1,21 @@
+# --- 项目层 gitignore（共享层见 ../.gitignore，本文件自身可独立成立）---------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# 本地配置与密钥
+.env
+.env.local
+
+# 构建产物：索引与运行证据（可由 corpus/ 随时重建）
+artifacts/
+runs/
+
+# 本地缓存：向量模型文件与 LLM 响应缓存（可由 build 重新生成）
+.cache/
+
+# 本地下载的向量模型
+models/
