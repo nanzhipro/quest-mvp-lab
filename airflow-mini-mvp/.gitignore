@@ -1,0 +1,18 @@
+# Project layer (Layer 3) — applies to this project only.
+# Shared layer: quest-mvp-lab/.gitignore (Layer 2). Global: ~/.gitignore_global.
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+dist/
+build/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+
+# Runtime artifacts (miniflow metadata database)
+*.db
+miniflow.db
