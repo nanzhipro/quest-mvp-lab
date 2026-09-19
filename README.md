@@ -23,7 +23,7 @@ decisions, build/run/verify commands, and the final conclusion.
 
 ## Highlights
 
-The experiments cluster around six themes:
+The experiments cluster around ten themes:
 
 - **macOS Endpoint Security.** A progression of ESF (Endpoint Security
   Framework) studies: [`es-mvp/`](es-mvp/) proves directory-scoped `AUTH_OPEN`
@@ -32,6 +32,11 @@ The experiments cluster around six themes:
   process attribution and lineage tracking, and
   [`es-agent-sensor-mvp/`](es-agent-sensor-mvp/) turns it all into a
   production-shaped behavior sensor for AI agents.
+  [`outlook-dlp-mvp/`](outlook-dlp-mvp/) points the same primitives at outbound
+  mail — an `AUTH_CREATE` trigger on Outlook's sync logs, HxStore mail
+  carving, official cel-cpp policy evaluation, and a three-state disposition
+  (audit / approval-with-timeout / block) — and is **local-only** for now (see
+  the note under the project table).
 - **AI agents and prompt-injection defense.**
   [`react-loop-mvp/`](react-loop-mvp/) is a 28-line hand-written ReAct loop with
   no framework at all (stdlib only) and the native tool-calling variant of the
@@ -76,6 +81,20 @@ The experiments cluster around six themes:
   (intent recognition, DAG planning, routing, aggregation) over an explicit
   state graph whose `check` node can route work back for repair or escalate to a
   human — with four deterministic specialist agents and nine consistency rules.
+- **LLM wire-level observability.**
+  [`llm-heartbeat-io-mvp/`](llm-heartbeat-io-mvp/) records what a minimal
+  `ping` actually puts on the wire: a recording reverse proxy dumps every
+  request and response body, dissects the assembled system prompt block by
+  block with CJK-aware token estimates reconciled against the provider's
+  `usage`, and runs a controlled A/B that prices the project-context injection
+  (one heartbeat = 154,340 B / 38,718 prompt tokens vs 90 B / 31 tokens for a
+  bare call).
+- **Engineering practice.**
+  [`ai-course-engineering-mvp/`](ai-course-engineering-mvp/) is the lab's only
+  teaching artifact: four offline exercises (preserve behaviour, migrate a ring
+  queue, retry idempotently, verify both sides of a delivery claim) shipped
+  with a contract suite that passes on the reference implementation and fails
+  on a deliberately faulty one.
 - **Retrieval and knowledge engineering.**
   [`graphrag-hybrid-mvp/`](graphrag-hybrid-mvp/) builds one Chinese document
   corpus into four retrieval channels at once — BM25, Chinese ONNX embeddings,
@@ -112,6 +131,12 @@ The experiments cluster around six themes:
 | [`sandbox-center-mvp/`](sandbox-center-mvp/) | The tool-call sandbox chain of a desktop AI agent: Electron main hosts a resident Rust `sandbox-center` (policy authority, session ledger, sha256-chained audit) and spawns a one-shot `sandbox-cli` per tool call, which materialises a Seatbelt profile, runs `/usr/bin/sandbox-exec → zsh → python3/node`, reclaims kernel denials by profile tag from the unified log, and retries once when the center auto-grants | Rust · Electron · Seatbelt (SBPL) | Done — 39 unit + 13 real-kernel e2e tests and an 8-scenario Electron self-test (plus 7 UI assertions and audit-chain verification) all pass; write-escape, delete-protection and network-egress denials are enforced by the kernel and recorded in a tamper-evident audit chain |
 | [`supervisor-graph-mvp/`](supervisor-graph-mvp/) | An orchestration layer made of two readable pieces: a lightweight-model Supervisor whose duties stop at intent recognition, DAG planning, routing and aggregation, and an explicit state graph (`intake → classify → plan → dispatch → check` with a repair cycle, a finalize edge and an escalate edge). Four deterministic specialist agents (classification / policy / evidence / remediation) keep the domain answers reproducible while nine consistency rules turn planning defects, missing evidence and fabricated citations into concrete repair targets or an explicit human escalation; ships five scenarios, an offline scripted replay, and a single-file drill-down report of every run | Python 3.9+ · standard library only | Done — 203 offline tests pass; live 5-scenario run on the lightweight `deepseek-flash` model (14 calls / 11,380 tokens) produced allow / review / block / escalate correctly, and the scripted runs exercise the repair cycle, the synthesised-specialist path and the escalation path; see `SPEC.md` |
 
+> **Local-only project.** [`outlook-dlp-mvp/`](outlook-dlp-mvp/) is developed and
+> verified on a real machine but is not published here yet: its sources carry
+> customer-specific bundle identifiers, log subsystems and test fixtures that
+> must be de-identified (and the app re-signed) before they can leave the local
+> lab. Everything else in the table is in this repository.
+
 ## Repository Structure
 
 ```
@@ -120,6 +145,7 @@ quest-mvp-lab/
 ├── es-process-mvp/                    # Process-scoped ES denial
 ├── es-procattr-mvp/                   # ESF process attribution for AI agents
 ├── es-agent-sensor-mvp/               # NOTIFY-only ES behavior sensor (Rust)
+├── outlook-dlp-mvp/                   # Outbound-mail DLP interception (local-only, not published)
 ├── ai-coding-agent-mvp/               # Minimal agentic coding CLI (Python)
 ├── react-loop-mvp/                    # Hand-written ReAct loop + native tool-calling contrast
 ├── agent-guardrails-mvp/              # Five deterministic guardrails around agent tool calls (Python)
@@ -133,11 +159,11 @@ quest-mvp-lab/
 ├── deepseek-v4-flash-vision-exp/      # Vision-model evaluation pipeline
 ├── rust-appkit-bridge-mvp/            # Rust ↔ AppKit seven-layer bridge
 ├── airflow-mini-mvp/                  # Toy Airflow re-implementation (Python, stdlib-only)
-├── ai-course-engineering-mvp/          # Offline AI-assisted engineering exercises
-├── llm-heartbeat-io-mvp/               # Wire-level LLM heartbeat capture + input/output dissection
-├── graphrag-hybrid-mvp/                # Four-channel GraphRAG hybrid retrieval + ablation (Python)
-├── sandbox-center-mvp/                 # Resident sandbox-center + per-call sandbox-cli + Seatbelt enforcement
-├── supervisor-graph-mvp/               # Lightweight Supervisor + explicit state graph orchestration (Python)
+├── ai-course-engineering-mvp/         # Offline AI-assisted engineering exercises
+├── llm-heartbeat-io-mvp/              # Wire-level LLM heartbeat capture + input/output dissection
+├── graphrag-hybrid-mvp/               # Four-channel GraphRAG hybrid retrieval + ablation (Python)
+├── sandbox-center-mvp/                # Resident sandbox-center + per-call sandbox-cli + Seatbelt enforcement
+├── supervisor-graph-mvp/              # Lightweight Supervisor + explicit state graph orchestration (Python)
 └── README.md                          # You are here
 ```
 
