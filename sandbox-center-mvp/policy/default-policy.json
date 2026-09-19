@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "default",
+  "read": {
+    "allow": ["/"]
+  },
+  "write": {
+    "default": "deny",
+    "allow": ["${WORKSPACE}", "${APP_HOME}/cache-demo", "${TMPDIR}"]
+  },
+  "delete": {
+    "default": "deny",
+    "allow": ["${WORKSPACE}/.sc-trash", "${APP_HOME}/trash"]
+  },
+  "network": {
+    "mode": "loopback-only",
+    "unix_socket_outbound": true
+  },
+  "auto_grant": [
+    {
+      "root": "${APP_HOME}/cache-demo",
+      "operations": ["write", "delete"],
+      "reason": "regenerable cache owned by the agent"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "name": "workbuddy-like",
+  "read": {
+    "allow": ["/"]
+  },
+  "write": {
+    "default": "allow",
+    "allow": []
+  },
+  "delete": {
+    "default": "deny",
+    "allow": ["/private/tmp", "/private/var/tmp", "/dev"]
+  },
+  "network": {
+    "mode": "loopback-only",
+    "unix_socket_outbound": true
+  },
+  "auto_grant": []
+}

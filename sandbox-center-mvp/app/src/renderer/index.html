@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:;"
+    />
+    <title>sandbox-center MVP</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo">◲</span>
+        <div>
+          <h1>sandbox-center <span class="dim">MVP</span></h1>
+          <p class="subtitle">
+            Electron main + renderer → 常驻 sandbox-center → 每次工具调用派生 sandbox-cli →
+            <code>sandbox-exec</code> → <code>zsh</code> → <code>python3/node</code>
+          </p>
+        </div>
+      </div>
+      <div class="status" id="status">
+        <span class="pill pill-idle" id="center-pill">center: connecting…</span>
+        <span class="pill pill-muted" id="policy-pill">policy —</span>
+        <span class="pill pill-muted" id="rules-pill">rules —</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel scenarios">
+        <h2>场景 <span class="dim">scenarios</span></h2>
+        <div class="scenario-list" id="scenario-list"></div>
+        <h2 class="spaced">自定义命令 <span class="dim">custom</span></h2>
+        <form class="runner" id="runner-form">
+          <input
+            id="command-input"
+            type="text"
+            spellcheck="false"
+            placeholder="echo hello > inside.txt"
+            autocomplete="off"
+          />
+          <button type="submit" id="run-button">运行</button>
+          <button type="button" id="cancel-button" class="ghost" disabled>停止</button>
+        </form>
+        <p class="hint">
+          命令在 Seatbelt 沙箱内执行：写操作只允许工作区 / 缓存目录，删除默认拒绝（除
+          <code>.sc-trash</code>），出网默认拒绝（除 localhost）。
+        </p>
+      </section>
+
+      <section class="panel console">
+        <h2>
+          工具调用输出 <span class="dim">stdout / stderr</span>
+          <span class="run-state" id="run-state">idle</span>
+        </h2>
+        <pre class="terminal" id="terminal"></pre>
+      </section>
+
+      <section class="panel side">
+        <h2>事件 <span class="dim">SC_EVENT</span></h2>
+        <ul class="events" id="events"></ul>
+        <h2 class="spaced">策略快照 <span class="dim">effective policy</span></h2>
+        <dl class="policy" id="policy"></dl>
+      </section>
+
+      <section class="panel audit">
+        <h2>
+          审计链 <span class="dim">audit-YYYY-MM-DD.jsonl · sha256 chained</span>
+        </h2>
+        <table class="audit-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ts</th>
+              <th>kind</th>
+              <th>session</th>
+              <th>data</th>
+            </tr>
+          </thead>
+          <tbody id="audit-body"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "name": "strict",
+  "read": {
+    "allow": [
+      "/"
+    ]
+  },
+  "write": {
+    "default": "deny",
+    "allow": [
+      "${WORKSPACE}",
+      "${TMPDIR}"
+    ]
+  },
+  "delete": {
+    "default": "deny",
+    "allow": [
+      "${WORKSPACE}/.sc-trash"
+    ]
+  },
+  "network": {
+    "mode": "deny",
+    "unix_socket_outbound": false
+  },
+  "auto_grant": []
+}

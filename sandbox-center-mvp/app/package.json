@@ -1,0 +1,15 @@
+{
+  "name": "sandbox-center-mvp-app",
+  "productName": "Sandbox Center MVP",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Electron shell for the sandbox-center MVP: main process + helper/renderer + resident sandbox-center + per-tool-call sandbox-cli",
+  "main": "src/main/index.js",
+  "scripts": {
+    "start": "electron .",
+    "verify": "electron . --self-test"
+  },
+  "devDependencies": {
+    "electron": "40.10.2"
+  }
+}

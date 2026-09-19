@@ -1,0 +1,18 @@
+[package]
+name = "sandbox-cli"
+description = "One-shot per-tool-call sandbox entry: profile materialisation + sandbox-exec + violation reclamation"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "sandbox-cli"
+path = "src/main.rs"
+
+[dependencies]
+sandbox-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true

@@ -1,0 +1,12 @@
+# Rust
+core/target/
+
+# Electron
+app/node_modules/
+app/artifacts/
+
+# Verification artifacts (screenshot, demo app home)
+.verify/
+
+# Local scratch
+*.sb
