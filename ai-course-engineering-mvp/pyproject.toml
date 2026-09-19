@@ -1,0 +1,6 @@
+[project]
+name = "ai-course-engineering-mvp"
+version = "0.1.0"
+description = "Offline exercises for evidence-based AI-assisted software changes"
+requires-python = ">=3.10"
+dependencies = []
