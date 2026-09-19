@@ -1,0 +1,40 @@
+{
+  "description": "Hand-authored scripted model used by `react-loop --fake` (offline demo, no API key). Every `content` string below is the literal text a model must emit to drive the hand-written ReAct loop; the `native` half is the same trajectory expressed with tool_calls. No token usage is recorded here on purpose — the offline demo must not pretend to be a real billing record.",
+  "task": "quest-mvp-lab 里做「目录级 AUTH_OPEN」的那个项目，它的规范文档是哪一份？那份规范的实测结论是什么？",
+  "react": [
+    {
+      "content": "Thought: 我需要先定位做「目录级 AUTH_OPEN」的项目，先检索文档库。\nAction: search_docs\nAction Input: 目录级 AUTH_OPEN\n"
+    },
+    {
+      "content": "Thought: 命中的 es-mvp 正文说规范文档是 es-mvp/SPEC.md 的 §9，我需要拿到那份规范的结论。\nAction: search_docs\nAction Input: SPEC.md §9 结论\n"
+    },
+    {
+      "content": "Thought: 我已经收集到足够事实。\nFinal Answer: 项目是 es-mvp（目录级 AUTH_OPEN 反向静音）；规范文档是 es-mvp/SPEC.md，结论写在其 §9：反向静音在真机 macOS 26.5.2 上验证通过，三份实现（Objective-C / Rust / Swift）判定一致，且反向静音比正向静音更稳——正向静音依赖「未列入白名单即拦截」的隐含语义，路径规范化出现偏差就会漏放或误拦。"
+    }
+  ],
+  "native": [
+    {
+      "content": "我需要先在文档库里检索这个项目。",
+      "tool_calls": [
+        {
+          "id": "call_demo_1",
+          "name": "search_docs",
+          "arguments": "{\"query\": \"目录级 AUTH_OPEN\"}"
+        }
+      ]
+    },
+    {
+      "content": "命中 es-mvp，正文指向 es-mvp/SPEC.md 的 §9，我去取那份规范的结论。",
+      "tool_calls": [
+        {
+          "id": "call_demo_2",
+          "name": "search_docs",
+          "arguments": "{\"query\": \"SPEC.md §9 结论\"}"
+        }
+      ]
+    },
+    {
+      "content": "项目是 es-mvp（目录级 AUTH_OPEN 反向静音）；规范文档是 es-mvp/SPEC.md，结论在其 §9：反向静音在真机 macOS 26.5.2 上验证通过，Objective-C / Rust / Swift 三份实现判定一致；反向静音比正向静音更稳，因为正向静音依赖「未列入白名单即拦截」的隐含语义，路径规范化偏差会导致漏放或误拦。"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "id": "es-mvp",
+    "title": "es-mvp 目录级 AUTH_OPEN 反向静音",
+    "tags": ["es", "endpoint-security", "auth_open", "muting", "macos"],
+    "text": "es-mvp 用 Endpoint Security 的 AUTH_OPEN 事件做目录级拦截：对目标目录下的文件打开做拦截判定。策略上采用反向静音（inverted muting）——先全量静音，再对目标路径打开，从而避开正向静音的语义陷阱。同一策略给出了 Objective-C、Rust、Swift 三份实现。完整规范与实测见仓库内的 es-mvp/SPEC.md，结论写在该文件的 §9。"
+  },
+  {
+    "id": "es-mvp-spec-9",
+    "title": "es-mvp/SPEC.md §9 实测结论",
+    "tags": ["spec", "结论", "es-mvp", "es"],
+    "text": "SPEC.md §9 记录三条结论：一、反向静音在真实硬件（macOS 26.5.2）上验证通过，目录级 AUTH_OPEN 的拦截结果与预期一致；二、三种语言实现的判定结果完全一致，差异只体现在构建与运行形态；三、反向静音比正向静音更稳，因为正向静音依赖『未列入白名单即拦截』的隐含语义，一旦路径规范化（符号链接、相对路径）出现偏差就会漏放或误拦。"
+  },
+  {
+    "id": "es-process-mvp",
+    "title": "es-process-mvp 进程级 PDF 打开拒绝",
+    "tags": ["es", "endpoint-security", "pdf", "yaml"],
+    "text": "es-process-mvp 把目录级拦截收窄到进程级：按 bundle id 与进程路径做策略匹配，用 YAML 描述规则，拒绝指定进程打开 PDF。发现客户端与监控客户端分离，27 个单元测试与真机 E2E 全部通过。"
+  },
+  {
+    "id": "sandbox-center-mvp",
+    "title": "sandbox-center-mvp 工具调用沙箱链",
+    "tags": ["sandbox", "seatbelt", "audit", "agent"],
+    "text": "sandbox-center-mvp 复刻桌面 Agent 工具调用的进程架构：Electron 主进程托管常驻的 Rust sandbox-center（策略权威、会话账本、sha256 链式审计），每次工具调用派生一次性 sandbox-cli，由它落地 Seatbelt 配置并执行 /usr/bin/sandbox-exec，再把内核拒绝记录回收到审计链。39 个单元测试 + 13 个真内核 e2e 通过。"
+  },
+  {
+    "id": "airflow-mini-mvp",
+    "title": "airflow-mini-mvp 纯标准库重实现 Airflow 内核",
+    "tags": ["python", "airflow", "dag", "orchestration"],
+    "text": "airflow-mini-mvp 用不到千行纯标准库 Python 复刻 Airflow 的核心心智模型：DAG 上下文管理器与 >> 布线、cron/时间间隔调度与 catchup、TaskInstance 状态机与重试、XCom、Sequential/Local 执行器、SQLite 元数据库，以及 miniflow CLI。49 个测试通过。"
+  },
+  {
+    "id": "llm-heartbeat-io-mvp",
+    "title": "llm-heartbeat-io-mvp 字节级心跳抓取",
+    "tags": ["llm", "capture", "tokens", "deepseek"],
+    "text": "llm-heartbeat-io-mvp 用本地录制反向代理抓住一次最小心跳（ping）在两端的全部字节：请求体、响应体、token 账单、系统提示词区块解剖。实测一句 ping 的 Agent 负载为 154,340 字节 / 38,718 输入 token，而裸模型调用只有 90 字节 / 31 token；前缀完全一致时缓存命中 99.5%。"
+  },
+  {
+    "id": "promptguard-llamafirewall-mvp",
+    "title": "promptguard-llamafirewall-mvp 注入检测基准",
+    "tags": ["security", "prompt-injection", "benchmark"],
+    "text": "promptguard-llamafirewall-mvp 在本地部署 Meta PromptGuard 2（86M）与 LlamaFirewall，针对 Agent 的用户消息面与工具结果面做越狱/间接注入检测，含 19 条中英标注语料与逐引擎准确率评测：两个引擎攻击召回率 100%，框架 0.9 阈值下准确率 94.7%。"
+  },
+  {
+    "id": "deepseek-v4-flash-vision-exp",
+    "title": "deepseek-v4-flash-vision-exp 视觉能力评测",
+    "tags": ["deepseek", "vision", "evaluation"],
+    "text": "deepseek-v4-flash-vision-exp 评测该视觉模型在图像理解、创建、生成三类任务上的表现，验证 base64 与 Files API 两种输入方式，并跑通『图像→文本→SVG→PNG』的重建闭环。结论：模型能理解图像，但不能生成图像文件。"
+  },
+  {
+    "id": "lab-conventions",
+    "title": "quest-mvp-lab 项目约定",
+    "tags": ["约定", "readme", "bundle-id"],
+    "text": "quest-mvp-lab 约定：一个目录一个 MVP，项目之间不共享代码；每个项目必须自带 README，覆盖背景、关键决策、构建/运行/验证命令与结论；项目索引表与目录树在同一次改动里同步更新；需要 bundle id 时使用 com.nanzhipro.* 前缀；任何企业数据资产（品牌字样、公司 bundle id、签名证书、描述文件、内部地址）都不得进入本仓库。"
+  }
+]

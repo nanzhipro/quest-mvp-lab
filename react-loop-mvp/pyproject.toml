@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "react-loop-mvp"
+version = "0.1.0"
+description = "A hand-written ~20-line ReAct loop against DeepSeek, plus the native tool-calling variant it replaces"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = []          # runtime dependencies: none, on purpose (stdlib only)
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.scripts]
+react-loop = "react_loop_mvp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+react_loop_mvp = ["data/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+src = ["src", "tests"]
+# README/SPEC quote the core loop verbatim from source, and `test_readme_quotes_the_actual_loop`
+# asserts byte equality — so ruff must not "tidy" fenced code blocks in Markdown.
+exclude = ["*.md"]
+
+[tool.ruff.lint]
+# No `UP`: pyupgrade would rewrite typing.List/Optional into syntax the py39 target cannot parse.
+select = ["E", "F", "I", "B", "SIM", "RUF"]
+# RUF001-003 flag "ambiguous" unicode (full-width ：，（）。). This project is written in
+# Chinese on purpose — full-width punctuation is intent, not a typo.
+ignore = ["RUF001", "RUF002", "RUF003"]

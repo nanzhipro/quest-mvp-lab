@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReAct 全链路调用 · react-loop-mvp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@400&family=Noto+Sans+TC:wght@400;500;600&family=Noto+Serif+TC:wght@400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --color-paper: #faf9f5;
+      --color-paper-2: #e8e6dc;
+      --color-ink: #141413;
+      --color-muted: #5e5d59;
+      --color-soft: #87867f;
+      --color-accent: #d97757;
+      --color-accent-tint: rgba(217,119,87,0.08);
+      --color-link: #5d6c7b;
+      --color-rule: rgba(20,20,19,0.12);
+      --font-sans: 'Geist', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+      --font-serif: 'Instrument Serif', 'Noto Serif SC', 'Songti SC', 'Noto Serif TC', serif;
+      --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, monospace;
+      --motion-fast: 160ms;
+      --motion-step: 480ms;
+      --motion-hold: 720ms;
+      --motion-total: 4320ms;
+      --motion-ease: cubic-bezier(.2,.8,.2,1);
+    }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 48px 32px;
+      color: var(--color-ink);
+      background: var(--color-paper);
+      font-family: var(--font-sans);
+    }
+    [data-motion-root] { width: min(100%, 1400px); }
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--color-muted);
+      font: 500 12px/1.4 var(--font-mono);
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+    h1 { margin: 0 0 8px; font: 400 32px/1.15 var(--font-serif); }
+    .subtitle {
+      margin: 0 0 24px;
+      max-width: 78ch;
+      color: var(--color-muted);
+      font: 400 13px/1.6 var(--font-sans);
+    }
+    .subtitle code { font: 400 12px/1 var(--font-mono); color: var(--color-ink); }
+    figure { margin: 0; }
+    svg { display: block; width: 100%; min-width: 1120px; height: auto; }
+
+    /* Static source is complete. Only an initialized enhancement hides items. */
+    .motion-ready [data-motion-item] {
+      opacity: .12;
+      transform: translateY(8px);
+      transform-box: fill-box;
+      transform-origin: center;
+      transition: opacity var(--motion-step) var(--motion-ease),
+                  transform var(--motion-step) var(--motion-ease);
+    }
+    .motion-ready [data-motion-item].is-visible,
+    .motion-ready[data-frame="end"] [data-motion-item],
+    .motion-ready[data-frame="static"] [data-motion-item] {
+      opacity: 1;
+      transform: none;
+    }
+    .draw-path {
+      fill: none;
+      stroke: var(--color-accent);
+      stroke-width: 3;
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      pointer-events: none;
+    }
+    .motion-ready .draw-path.is-visible {
+      animation: draw-path var(--motion-step) linear forwards;
+    }
+    .flow-token { opacity: 0; pointer-events: none; }
+    .motion-ready.is-playing .flow-token.is-visible {
+      opacity: 1;
+      animation: token-flow 3.2s linear 1 forwards;
+    }
+    .motion-ready[data-motion-mode="loop"].is-playing .flow-token.is-visible {
+      animation-iteration-count: infinite;
+    }
+    @keyframes draw-path { to { stroke-dashoffset: 0; } }
+    @keyframes token-flow {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(240px); }
+    }
+
+    [data-motion-controls] {
+      display: none;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--color-rule);
+    }
+    .motion-ready [data-motion-controls] { display: flex; }
+    [data-motion-controls][hidden] { display: none !important; }
+    [data-motion-controls] button {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid var(--color-muted);
+      border-radius: 4px;
+      color: var(--color-ink);
+      background: var(--color-paper);
+      font: 600 12px/1 var(--font-sans);
+      cursor: pointer;
+    }
+    [data-motion-controls] button:hover { border-color: var(--color-accent); }
+    [data-motion-controls] button:focus-visible {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+    [data-motion-controls] button:disabled { cursor: not-allowed; opacity: .45; }
+    [data-motion-status-visible] {
+      margin-left: auto;
+      color: var(--color-muted);
+      font: 500 12px/1.4 var(--font-mono);
+    }
+    .keyboard-help { color: var(--color-soft); font: 400 12px/1.4 var(--font-mono); }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+      border: 0;
+    }
+    noscript p {
+      margin: 12px 0 0;
+      color: var(--color-muted);
+      font: 500 12px/1.4 var(--font-mono);
+    }
+
+    html[data-motion="static"] [data-motion-controls],
+    html[data-motion="static"] [data-motion-decorative] { display: none !important; }
+    html[data-motion="static"] [data-motion-item] {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+      transition: none !important;
+    }
+    html[data-motion="step"] [data-motion-controls],
+    html[data-motion="step"] [data-motion-decorative] { display: none !important; }
+    html[data-motion="step"] [data-motion-item] {
+      animation: none !important;
+      transition: none !important;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+      [data-motion-item] { opacity: 1 !important; transform: none !important; }
+      [data-motion-decorative] { display: none !important; }
+      [data-motion-controls] { display: none !important; }
+    }
+    @media print {
+      [data-motion-controls], [data-motion-decorative] { display: none !important; }
+      [data-motion-item] {
+        opacity: 1 !important;
+        transform: none !important;
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* ---- Drill-down: CSS-only tabs (no JavaScript) ---- */
+    .drilldown { margin-top: 40px; border-top: 1px solid var(--color-rule); padding-top: 24px; }
+    .drilldown h2 {
+      margin: 0 0 4px;
+      font: 400 20px/1.2 var(--font-serif);
+    }
+    .drilldown .hint { margin: 0 0 16px; color: var(--color-muted); font: 400 12px/1.6 var(--font-sans); }
+    .tab-input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+    .tab-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .tab-row label {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 8px 16px;
+      border: 1px solid var(--color-rule);
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--color-muted);
+      font: 500 13px/1.2 var(--font-sans);
+      cursor: pointer;
+    }
+    .tab-row label:hover { border-color: var(--color-muted); color: var(--color-ink); }
+    #drill-1:checked ~ .tab-row label[for="drill-1"],
+    #drill-2:checked ~ .tab-row label[for="drill-2"],
+    #drill-3:checked ~ .tab-row label[for="drill-3"] {
+      border-color: var(--color-accent);
+      background: var(--color-accent-tint);
+      color: var(--color-ink);
+      font-weight: 600;
+    }
+    #drill-1:focus-visible ~ .tab-row label[for="drill-1"],
+    #drill-2:focus-visible ~ .tab-row label[for="drill-2"],
+    #drill-3:focus-visible ~ .tab-row label[for="drill-3"] {
+      outline: 3px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+    .tab-panel { display: none; }
+    #drill-1:checked ~ .tab-panels [data-panel="1"],
+    #drill-2:checked ~ .tab-panels [data-panel="2"],
+    #drill-3:checked ~ .tab-panels [data-panel="3"] { display: block; }
+    .panel-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 24px; align-items: start; }
+    .card {
+      padding: 20px;
+      border: 1px solid var(--color-rule);
+      border-radius: 6px;
+      background: #ffffff;
+    }
+    .card h3 { margin: 0 0 12px; font: 600 13px/1.3 var(--font-sans); }
+    .card .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .card .card-header h3 { margin: 0; }
+    .card-dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+    .card-dot.coral { background: var(--color-accent); }
+    .card-dot.ink { background: var(--color-ink); }
+    .card-dot.muted { background: var(--color-muted); }
+    .card-dot.link { background: var(--color-link); }
+    dl.facts { margin: 0; }
+    dl.facts dt {
+      margin-top: 12px;
+      color: var(--color-ink);
+      font: 600 12px/1.4 var(--font-sans);
+    }
+    dl.facts dt:first-child { margin-top: 0; }
+    dl.facts dd { margin: 4px 0 0; color: var(--color-muted); font: 400 12.5px/1.65 var(--font-sans); }
+    dl.facts dd code, p code, li code {
+      padding: 1px 4px;
+      border-radius: 4px;
+      background: var(--color-paper-2);
+      color: var(--color-ink);
+      font: 400 11.5px/1.4 var(--font-mono);
+    }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 4px; }
+    th, td { padding: 8px 8px 8px 0; text-align: left; border-bottom: 1px solid var(--color-rule); }
+    th {
+      color: var(--color-soft);
+      font: 500 11px/1.4 var(--font-mono);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    td { font: 400 12.5px/1.5 var(--font-sans); color: var(--color-ink); }
+    td.num { font: 500 12.5px/1.5 var(--font-mono); }
+    tr.total td { border-bottom: 0; font-weight: 600; }
+    pre {
+      margin: 0;
+      padding: 16px;
+      overflow-x: auto;
+      border: 1px solid var(--color-rule);
+      border-radius: 6px;
+      background: var(--color-paper-2);
+      color: var(--color-ink);
+      font: 400 11.5px/1.6 var(--font-mono);
+    }
+    blockquote {
+      margin: 16px 0 0;
+      padding-left: 16px;
+      border-left: 2px solid var(--color-accent);
+      color: var(--color-muted);
+      font: 400 italic 14px/1.6 var(--font-serif);
+    }
+    footer.colophon {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid var(--color-rule);
+      color: var(--color-soft);
+      font: 400 11.5px/1.7 var(--font-mono);
+    }
+    @media (max-width: 900px) {
+      .panel-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Replace template-motion in IDs and prose when copying this file. -->
+  <main data-motion-root data-motion-mode="step" data-step-count="6" data-step-current="6" data-frame="static" data-static-frame="complete">
+    <p class="eyebrow">Sequence · deepseek-chat · react loop</p>
+    <h1>一次 ReAct 调用，从头到尾</h1>
+    <p class="subtitle">
+      两跳问答的真实链路：循环拼出请求体 → DeepSeek 回一个 Action → 工具执行、把 Observation 回填进同一根字符串 →
+      再问一次 → 收下 Final Answer。数字取自
+      <code>runs/20260916_173649_live/react/</code> 的 <code>wire.jsonl</code> 与 <code>result.json</code>。
+    </p>
+
+    <figure>
+      <svg viewBox="0 0 1400 864" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="full-chain-title full-chain-desc">
+        <title id="full-chain-title">ReAct 全链路调用</title>
+        <desc id="full-chain-desc">时序图：一次两跳的 ReAct 调用在循环、DeepSeek 客户端、DeepSeek 接口与工具注册表四个参与者之间往返，并标注每一步进入模型的请求体由什么组成、两次往返各消耗多少 token 与延迟。</desc>
+        <defs>
+          <marker id="full-chain-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#5e5d59"/>
+          </marker>
+          <marker id="full-chain-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#d97757"/>
+          </marker>
+          <marker id="full-chain-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="#5d6c7b"/>
+          </marker>
+        </defs>
+        <rect width="1400" height="864" fill="#faf9f5"/>
+
+        <g data-motion-item data-step="1" aria-label="步骤 1：循环拼出请求体">
+          <!-- ① 拼 prompt -->
+          <path d="M200 208 H264 V228 H200" fill="none" stroke="#5e5d59" stroke-width="1" marker-end="url(#full-chain-arrow)"/>
+          <rect x="296" y="206" width="144" height="24" rx="2" fill="#faf9f5"/>
+          <text x="304" y="222" fill="#141413" font-size="12" font-weight="500" font-family="'Geist', 'PingFang SC', sans-serif">拼 prompt（378 字符）</text>
+        </g>
+
+        <g data-motion-item data-step="2" aria-label="步骤 2：第一次调用模型，DeepSeek 返回 Action">
+          <!-- ② CALL complete() -->
+          <path d="M200 256 H544" fill="none" stroke="#5e5d59" stroke-width="1" marker-end="url(#full-chain-arrow)"/>
+          <rect x="310" y="238" width="128" height="12" rx="2" fill="#faf9f5"/>
+          <text x="374" y="246" fill="#5e5d59" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">CALL · complete()</text>
+          <!-- ③ POST -->
+          <path d="M544 304 H888" fill="none" stroke="#5d6c7b" stroke-width="1" marker-end="url(#full-chain-arrow-link)"/>
+          <rect x="604" y="264" width="224" height="32" rx="2" fill="#faf9f5"/>
+          <text x="716" y="276" fill="#5d6c7b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">POST /CHAT/COMPLETIONS</text>
+          <text x="716" y="290" fill="#5e5d59" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Bearer · stream false · 236 prompt tok</text>
+        </g>
+
+        <g data-motion-item data-step="3" aria-label="步骤 3：DeepSeek 回话，模型给出 Action">
+          <!-- ④ 200 -->
+          <path d="M888 352 H544" fill="none" stroke="#5d6c7b" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#full-chain-arrow-link)"/>
+          <rect x="660" y="334" width="112" height="12" rx="2" fill="#faf9f5"/>
+          <text x="716" y="342" fill="#5d6c7b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">200 {CONTENT, USAGE}</text>
+          <!-- ⑤ Completion -->
+          <path d="M544 400 H200" fill="none" stroke="#5e5d59" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#full-chain-arrow)"/>
+          <rect x="272" y="378" width="200" height="16" rx="2" fill="#faf9f5"/>
+          <text x="372" y="390" fill="#141413" font-size="12" font-weight="500" font-family="'Geist', 'PingFang SC', sans-serif" text-anchor="middle">模型回复：Thought + Action</text>
+        </g>
+
+        <g data-motion-item data-step="4" aria-label="步骤 4：循环调用工具，拿到 Observation">
+          <!-- ⑥ 调工具 -->
+          <path d="M200 448 H1232" fill="none" stroke="#5e5d59" stroke-width="1" marker-end="url(#full-chain-arrow)"/>
+          <rect x="980" y="430" width="160" height="12" rx="2" fill="#faf9f5"/>
+          <text x="1060" y="438" fill="#5e5d59" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">CALL · CALL_TEXT(SEARCH_DOCS)</text>
+          <!-- ⑦ Observation -->
+          <path d="M1232 496 H200" fill="none" stroke="#5e5d59" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#full-chain-arrow)"/>
+          <rect x="974" y="474" width="180" height="16" rx="2" fill="#faf9f5"/>
+          <text x="1064" y="486" fill="#141413" font-size="12" font-weight="500" font-family="'Geist', 'PingFang SC', sans-serif" text-anchor="middle">Observation（759 字符）</text>
+        </g>
+
+        <g data-motion-item data-step="5" aria-label="步骤 5：回填观察，轨迹变长后第二次调用">
+          <!-- ⑧ 回填 -->
+          <path d="M200 544 H264 V564 H200" fill="none" stroke="#d97757" stroke-width="1.2" marker-end="url(#full-chain-arrow-accent)"/>
+          <rect x="296" y="528" width="136" height="32" rx="2" fill="#faf9f5"/>
+          <text x="304" y="542" fill="#141413" font-size="12" font-weight="500" font-family="'Geist', 'PingFang SC', sans-serif">回填观察，轨迹变长</text>
+          <text x="304" y="556" fill="#5e5d59" font-size="9" font-family="'Geist Mono', monospace">prompt 236 → 691 tok</text>
+          <!-- ⑨ 第二次 CALL -->
+          <path d="M200 592 H544" fill="none" stroke="#5e5d59" stroke-width="1" marker-end="url(#full-chain-arrow)"/>
+          <rect x="318" y="574" width="108" height="12" rx="2" fill="#faf9f5"/>
+          <text x="372" y="582" fill="#5e5d59" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">CALL · COMPLETE() #2</text>
+          <!-- ⑩ 第二次 POST -->
+          <path d="M544 640 H888" fill="none" stroke="#5d6c7b" stroke-width="1" marker-end="url(#full-chain-arrow-link)"/>
+          <rect x="636" y="600" width="160" height="32" rx="2" fill="#faf9f5"/>
+          <text x="716" y="612" fill="#5d6c7b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">POST /CHAT/COMPLETIONS</text>
+          <text x="716" y="626" fill="#5e5d59" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">691 prompt tok · cache hit 128</text>
+        </g>
+
+        <g data-motion-item data-step="6" aria-label="步骤 6：收下 Final Answer，落盘三件产物">
+          <!-- ⑪ 200 -->
+          <path d="M888 688 H544" fill="none" stroke="#5d6c7b" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#full-chain-arrow-link)"/>
+          <rect x="660" y="670" width="112" height="12" rx="2" fill="#faf9f5"/>
+          <text x="716" y="678" fill="#5d6c7b" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">200 {CONTENT, USAGE}</text>
+          <!-- ⑫ Final Answer -->
+          <path d="M544 736 H200" fill="none" stroke="#141413" stroke-width="1.2" marker-end="url(#full-chain-arrow)"/>
+          <rect x="272" y="718" width="200" height="12" rx="2" fill="#faf9f5"/>
+          <text x="372" y="726" fill="#141413" font-size="9" font-weight="600" font-family="'Geist Mono', monospace" text-anchor="middle">FINAL ANSWER → RESULT.JSON</text>
+        </g>
+
+        <!-- Lifelines (persistent) -->
+        <line x1="200" y1="160" x2="200" y2="760" stroke="rgba(20,20,19,0.20)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="544" y1="160" x2="544" y2="760" stroke="rgba(20,20,19,0.20)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="888" y1="160" x2="888" y2="760" stroke="rgba(20,20,19,0.20)" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="1232" y1="160" x2="1232" y2="760" stroke="rgba(20,20,19,0.20)" stroke-width="1" stroke-dasharray="3,3"/>
+
+        <!-- Activation bars (persistent) -->
+        <rect x="196" y="200" width="8" height="544" fill="rgba(20,20,19,0.06)" stroke="#5e5d59" stroke-width="0.8"/>
+        <rect x="540" y="248" width="8" height="160" fill="rgba(20,20,19,0.06)" stroke="#5e5d59" stroke-width="0.8"/>
+        <rect x="540" y="584" width="8" height="160" fill="rgba(20,20,19,0.06)" stroke="#5e5d59" stroke-width="0.8"/>
+        <rect x="884" y="296" width="8" height="56" fill="rgba(20,20,19,0.06)" stroke="#5e5d59" stroke-width="0.8"/>
+        <rect x="884" y="632" width="8" height="56" fill="rgba(20,20,19,0.06)" stroke="#5e5d59" stroke-width="0.8"/>
+        <rect x="1228" y="440" width="8" height="56" fill="rgba(20,20,19,0.06)" stroke="#5e5d59" stroke-width="0.8"/>
+
+        <!-- Actor boxes -->
+        <g>
+          <rect x="88" y="96" width="224" height="64" rx="6" fill="#faf9f5"/>
+          <rect x="88" y="96" width="224" height="64" rx="6" fill="rgba(217,119,87,0.08)" stroke="#d97757" stroke-width="1.2"/>
+          <rect x="96" y="102" width="40" height="12" rx="2" fill="transparent" stroke="rgba(217,119,87,0.40)" stroke-width="0.8"/>
+          <text x="116" y="111" fill="rgba(217,119,87,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LOOP</text>
+          <text x="200" y="140" fill="#141413" font-size="12" font-weight="600" font-family="'Geist', 'PingFang SC', sans-serif" text-anchor="middle">ReAct 循环</text>
+          <text x="200" y="154" fill="#5e5d59" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">react.py · 28 行</text>
+        </g>
+        <g>
+          <rect x="432" y="96" width="224" height="64" rx="6" fill="#faf9f5"/>
+          <rect x="432" y="96" width="224" height="64" rx="6" fill="#ffffff" stroke="#141413" stroke-width="1"/>
+          <rect x="440" y="102" width="40" height="12" rx="2" fill="transparent" stroke="rgba(20,20,19,0.40)" stroke-width="0.8"/>
+          <text x="460" y="111" fill="rgba(20,20,19,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CLIENT</text>
+          <text x="544" y="140" fill="#141413" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">DeepSeekClient</text>
+          <text x="544" y="154" fill="#5e5d59" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">urllib · retry 3 · 60s</text>
+        </g>
+        <g>
+          <rect x="776" y="96" width="224" height="64" rx="6" fill="#faf9f5"/>
+          <rect x="776" y="96" width="224" height="64" rx="6" fill="rgba(20,20,19,0.03)" stroke="rgba(20,20,19,0.30)" stroke-width="1"/>
+          <rect x="784" y="102" width="44" height="12" rx="2" fill="transparent" stroke="rgba(20,20,19,0.40)" stroke-width="0.8"/>
+          <text x="806" y="111" fill="rgba(20,20,19,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">EXTERNAL</text>
+          <text x="888" y="140" fill="#141413" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">api.deepseek.com</text>
+          <text x="888" y="154" fill="#5e5d59" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">POST /chat/completions</text>
+        </g>
+        <g>
+          <rect x="1120" y="96" width="224" height="64" rx="6" fill="#faf9f5"/>
+          <rect x="1120" y="96" width="224" height="64" rx="6" fill="rgba(20,20,19,0.05)" stroke="#5e5d59" stroke-width="1"/>
+          <rect x="1128" y="102" width="40" height="12" rx="2" fill="transparent" stroke="rgba(20,20,19,0.40)" stroke-width="0.8"/>
+          <text x="1148" y="111" fill="rgba(20,20,19,0.80)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TOOLS</text>
+          <text x="1232" y="140" fill="#141413" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">ToolRegistry</text>
+          <text x="1232" y="154" fill="#5e5d59" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">calculator · search_docs</text>
+        </g>
+
+        <!-- Editorial callout (1 max in use) -->
+        <text x="1344" y="52" fill="#141413" font-size="14" font-style="italic" font-family="'Instrument Serif', 'Noto Serif SC', serif" text-anchor="end">循环只有一个字符串在长，框架没替你做别的</text>
+        <path d="M1080 60 Q 700 66 320 88" fill="none" stroke="rgba(20,20,19,0.40)" stroke-width="1" stroke-dasharray="4,3"/>
+        <circle cx="316" cy="90" r="2" fill="#141413"/>
+
+        <!-- Legend strip -->
+        <line x1="56" y1="792" x2="1344" y2="792" stroke="rgba(20,20,19,0.10)" stroke-width="0.8"/>
+        <g font-family="'Geist Mono', monospace" font-size="8" fill="#5e5d59" letter-spacing="0.14em">
+          <line x1="56" y1="806" x2="96" y2="806" stroke="#5e5d59" stroke-width="1"/>
+          <path d="M96 806 H104" fill="none" stroke="#5e5d59" stroke-width="1" marker-end="url(#full-chain-arrow)"/>
+          <text x="112" y="810">CALL</text>
+
+          <line x1="286" y1="806" x2="326" y2="806" stroke="#5e5d59" stroke-width="1" stroke-dasharray="5,4"/>
+          <path d="M326 806 H334" fill="none" stroke="#5e5d59" stroke-width="1" marker-end="url(#full-chain-arrow)"/>
+          <text x="342" y="810">RETURN</text>
+
+          <line x1="516" y1="806" x2="556" y2="806" stroke="#5d6c7b" stroke-width="1"/>
+          <path d="M556 806 H564" fill="none" stroke="#5d6c7b" stroke-width="1" marker-end="url(#full-chain-arrow-link)"/>
+          <text x="572" y="810">HTTP · API</text>
+
+          <path d="M746 806 H770 V816 H746" fill="none" stroke="#5e5d59" stroke-width="1" marker-end="url(#full-chain-arrow)"/>
+          <text x="780" y="810">SELF · IN-LOOP STATE</text>
+
+          <line x1="1016" y1="806" x2="1056" y2="806" stroke="#d97757" stroke-width="1.2"/>
+          <path d="M1056 806 H1064" fill="none" stroke="#d97757" stroke-width="1.2" marker-end="url(#full-chain-arrow-accent)"/>
+          <text x="1072" y="810">FOCAL · REACT CORE</text>
+        </g>
+      </svg>
+    </figure>
+
+    <div data-motion-controls role="group" aria-label="Diagram playback controls">
+      <button type="button" data-motion-action="prev">Previous</button>
+      <button type="button" data-motion-action="play" aria-pressed="false">Play</button>
+      <button type="button" data-motion-action="pause" aria-pressed="true">Pause</button>
+      <button type="button" data-motion-action="next">Next</button>
+      <button type="button" data-motion-action="replay">Replay</button>
+      <span class="keyboard-help">←/→ step · Space play/pause · R replay · Home/End jump</span>
+      <span data-motion-status-visible aria-hidden="true">Step <span data-motion-step-label>6</span> of 6</span>
+    </div>
+    <p class="sr-only" data-motion-status role="status" aria-live="polite" aria-atomic="true"></p>
+    <noscript><p>Animation controls require JavaScript. The complete final diagram is shown above.</p></noscript>
+
+    <section class="drilldown">
+      <h2>点开看原始数据</h2>
+      <p class="hint">三个页签纯 CSS 切换，不需要 JavaScript；图中每一个数字都能在这里找到出处。</p>
+      <input class="tab-input" type="radio" name="drill" id="drill-1" checked>
+      <input class="tab-input" type="radio" name="drill" id="drill-2">
+      <input class="tab-input" type="radio" name="drill" id="drill-3">
+      <div class="tab-row">
+        <label for="drill-1">① 模型组成 · 请求体</label>
+        <label for="drill-2">② 两次真实往返</label>
+        <label for="drill-3">③ 工具与两种协议</label>
+      </div>
+      <div class="tab-panels">
+        <article class="tab-panel" data-panel="1">
+          <div class="panel-grid">
+            <div class="card">
+              <div class="card-header"><span class="card-dot coral"></span><h3>模型这一侧看到的全部输入</h3></div>
+              <dl class="facts">
+                <dt>system 消息 —— 协议约定（<code>react.py</code> · <code>SYSTEM_PROMPT</code>）</dt>
+                <dd>三条硬约束：每轮只许一组 Action / 绝不自己写 Observation / 事实够了就输出 Final Answer。</dd>
+                <dt>user 消息 —— 拼出来的那一根字符串（<code>build_prompt()</code>）</dt>
+                <dd>两行工具目录（<code>ToolSpec.catalog_line()</code>）＋ 输出格式约定（<code>TASK_TEMPLATE</code>）＋ 问题。
+                  第一次 378 字符；此后每次工具返回都追加一行 <code>Observation:</code>，并以 <code>Thought:</code> 结尾提示模型继续。</dd>
+                <dt>采样参数</dt>
+                <dd><code>temperature 0.0</code>（可复现）、<code>stream false</code>；<code>max_tokens</code> 不发送，保持服务端默认。</dd>
+                <dt>native 模式的差别</dt>
+                <dd>同样两个工具，但以 <code>tools[]</code>（JSON schema）随每次请求发送，并带 <code>tool_choice: "auto"</code>。</dd>
+                <dt>密钥</dt>
+                <dd>只从环境变量 <code>DEEPSEEK_API_KEY</code> 读；<code>Authorization: Bearer …</code> 由客户端加上，落进 <code>wire.jsonl</code> 的只有请求体。</dd>
+              </dl>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-dot ink"></span><h3>第一次 POST 的请求体（结构）</h3></div>
+<pre>{
+  "model": "deepseek-chat",
+  "messages": [
+    {"role": "system",
+     "content": "你是一个 ReAct 智能体。三条硬约束：…"},
+    {"role": "user",
+     "content": "可用工具（每轮只能用一个）：\n
+                 - calculator[expression]: …\n
+                 - search_docs[query]: …\n
+                 Thought / Action / Action Input 格式约定…\n
+                 问题：…"}
+  ],
+  "temperature": 0.0,
+  "stream": false
+}</pre>
+              <blockquote>两轮之间变化的只有 user 消息的那根字符串——system 与参数一个字节都没动。</blockquote>
+            </div>
+          </div>
+        </article>
+
+        <article class="tab-panel" data-panel="2">
+          <div class="panel-grid">
+            <div class="card">
+              <div class="card-header"><span class="card-dot link"></span><h3>两次往返的账单（实测）</h3></div>
+              <table>
+                <thead><tr><th>轮次</th><th>prompt tok</th><th>cache hit</th><th>延迟</th><th>本轮产出</th></tr></thead>
+                <tbody>
+                  <tr><td>第 1 次 POST</td><td class="num">236</td><td class="num">0</td><td class="num">732 ms</td><td>Thought + Action: search_docs</td></tr>
+                  <tr><td>第 2 次 POST</td><td class="num">691</td><td class="num">128</td><td class="num">1,453 ms</td><td>Final Answer</td></tr>
+                  <tr class="total"><td>合计</td><td class="num">927</td><td class="num">—</td><td class="num">2,189 ms</td><td>1 次工具调用 · completion 232 tok</td></tr>
+                </tbody>
+              </table>
+              <p class="hint">全部取自 <code>wire.jsonl</code> 的 <code>usage</code> 与 <code>latency_ms</code>。
+                第二次的 prompt 变贵，是因为前缀里多了模型回复与 759 字符的 Observation；即便如此，前 128 token 仍命中 DeepSeek 的前缀缓存。</p>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-dot ink"></span><h3>模型最后给出的答案（已截断）</h3></div>
+              <p>做「目录级 AUTH_OPEN」的项目是 <code>es-mvp</code>（用 Endpoint Security 的 AUTH_OPEN 事件做目录级拦截，采用反向静音策略）。它的规范文档是仓库内的 <code>es-mvp/SPEC.md</code>，实测结论写在该文件的 §9，共三条：一、反向静音在真实硬件（macOS 26.5.2）上验证通过……</p>
+              <p class="hint">原文 316 字符，存于 <code>result.json</code> 的 <code>answer</code> 字段；<code>stopped_reason</code> 为 <code>final_answer</code>，<code>tool_calls</code> 为 1。</p>
+              <blockquote>轨迹里没有一个"计划"对象：下一步完全由上一轮的工具输出决定。</blockquote>
+            </div>
+          </div>
+        </article>
+
+        <article class="tab-panel" data-panel="3">
+          <div class="panel-grid">
+            <div class="card">
+              <div class="card-header"><span class="card-dot muted"></span><h3>工具：一套 handler，两种协议</h3></div>
+              <dl class="facts">
+                <dt>文本协议看到的两行目录（进 prompt）</dt>
+                <dd><code>- calculator[expression]: 计算一个纯算术表达式（支持 + - * / // % ** 与括号）</code><br>
+                    <code>- search_docs[query]: 在本地文档库中检索（返回命中的文档 id、标题与正文片段）</code></dd>
+                <dt>native 模式的等价物（进 tools=）</dt>
+                <dd>同一个 <code>ToolSpec</code> 生成 JSON schema：<code>{"type":"function","function":{"name":"calculator","parameters":{"properties":{"expression":{"type":"string"}},"required":["expression"]}}}</code></dd>
+                <dt>失败不炸循环</dt>
+                <dd>未知工具、缺 <code>Action Input</code>、handler 抛异常 —— 三种情况都变成一条可读的 Observation（<code>ok=false</code>），模型据此自我纠正；观察输出封顶 2000 字符。</dd>
+                <dt>模型自己写 Observation 时</dt>
+                <dd>解析阶段直接在第一个 <code>Observation:</code> 处截断，防止幻觉回填进上下文——这是与"提示词里叮嘱十遍"不同的确定性防线。</dd>
+              </dl>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-dot coral"></span><h3>同一道题，两种协议的代价</h3></div>
+              <table>
+                <thead><tr><th></th><th>手写文本协议</th><th>原生 function calling</th></tr></thead>
+                <tbody>
+                  <tr><td>HTTP 调用</td><td class="num">2</td><td class="num">2</td></tr>
+                  <tr><td>工具调用</td><td class="num">1</td><td class="num">2（同轮并行）</td></tr>
+                  <tr><td>prompt tok</td><td class="num">927</td><td class="num">1,828</td></tr>
+                  <tr><td>completion tok</td><td class="num">232</td><td class="num">333</td></tr>
+                  <tr class="total"><td>端到端</td><td class="num">2,189 ms</td><td class="num">2,628 ms</td></tr>
+                </tbody>
+              </table>
+              <p class="hint">同题同对错：原生方案每一轮都要重发 JSON schema 与 assistant/tool 成对消息，输入 token 因此翻倍；
+                它换到的是并行工具调用与 provider 侧的格式保证。</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="colophon">
+      react-loop-mvp · quest-mvp-lab ｜ 证据目录 runs/20260916_173649_live/（react · react_mixed · native）｜
+      数字取自 wire.jsonl 与 result.json ｜ 序列图：diagram-design，Anthropic skin
+    </footer>
+  </main>
+
+  <script data-diagram-controls>
+    (() => {
+      const params = new URLSearchParams(location.search);
+      const staticOverride = params.get('motion') === 'static' || document.documentElement.dataset.motion === 'static';
+      const requestedStep = params.get('step');
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)');
+      document.fonts.ready.then(() => { document.documentElement.dataset.fontsReady = 'true'; });
+
+      document.querySelectorAll('[data-motion-root]').forEach((root) => {
+        const count = Number(root.dataset.stepCount);
+        const hold = parseFloat(getComputedStyle(root).getPropertyValue('--motion-hold')) || 720;
+        const parsedStep = requestedStep !== null && /^\d+$/.test(requestedStep) ? Number(requestedStep) : null;
+        const exactStep = params.get('motion') === 'step' && Number.isSafeInteger(parsedStep) && parsedStep >= 0 && parsedStep <= count ? parsedStep : null;
+        const items = [...root.querySelectorAll('[data-motion-item]')];
+        const labels = Array.from({ length: count + 1 }, (_, index) => index === 0
+          ? 'Ready'
+          : items.filter((item) => !item.hasAttribute('data-motion-decorative') && Number(item.dataset.step) === index)
+              .map((item) => item.getAttribute('aria-label')).join('; '));
+        const controls = root.querySelector('[data-motion-controls]');
+        const status = root.querySelector('[data-motion-status]');
+        const visibleStep = root.querySelector('[data-motion-step-label]');
+        let step = count;
+        let timer = 0;
+        let playing = false;
+        let stepBeforeReduce = 0;
+        let resumeAfterReduce = root.dataset.motionMode === 'reveal';
+
+        const buttons = (action) => controls.querySelector(`[data-motion-action="${action}"]`);
+        const clearClock = () => { window.clearTimeout(timer); timer = 0; };
+        const announce = () => { status.textContent = `Step ${step} of ${count}: ${labels[step] || 'Complete'}`; };
+        const setControlsAvailable = (available) => {
+          controls.hidden = !available;
+          controls.setAttribute('aria-hidden', String(!available));
+          controls.dataset.playbackDisabled = String(!available);
+          controls.querySelectorAll('button').forEach((control) => { control.disabled = !available; });
+        };
+
+        function render(next, userInitiated = false) {
+          step = Math.max(0, Math.min(count, next));
+          root.dataset.stepCurrent = String(step);
+          root.dataset.frame = step === count ? 'end' : step === 0 ? 'start' : 'step';
+          items.forEach((item) => {
+            const itemStep = Number(item.dataset.step);
+            item.classList.toggle('is-visible', itemStep <= step);
+            item.classList.toggle('is-current', itemStep === step);
+          });
+          if (visibleStep) visibleStep.textContent = String(step);
+          const unavailable = controls.dataset.playbackDisabled === 'true';
+          buttons('prev').disabled = unavailable || step === 0;
+          buttons('next').disabled = unavailable || step === count;
+          if (userInitiated) announce();
+        }
+
+        function pause(userInitiated = false) {
+          clearClock();
+          playing = false;
+          root.classList.remove('is-playing');
+          buttons('play').setAttribute('aria-pressed', 'false');
+          buttons('pause').setAttribute('aria-pressed', 'true');
+          if (userInitiated) status.textContent = `Paused at step ${step} of ${count}`;
+        }
+
+        function finish() {
+          pause(false);
+          root.dataset.frame = 'end';
+          status.textContent = `Complete · step ${count} of ${count}`;
+        }
+
+        function tick() {
+          if (!playing) return;
+          if (step >= count) { finish(); return; }
+          render(step + 1, false);
+          if (step >= count) { finish(); return; }
+          timer = window.setTimeout(tick, hold);
+        }
+
+        function play(fromStart = false, userInitiated = false) {
+          clearClock();
+          if (fromStart || step >= count) render(0, userInitiated);
+          playing = true;
+          root.classList.add('is-playing');
+          buttons('play').setAttribute('aria-pressed', 'true');
+          buttons('pause').setAttribute('aria-pressed', 'false');
+          timer = window.setTimeout(tick, hold);
+        }
+
+        controls.addEventListener('click', (event) => {
+          const button = event.target.closest('[data-motion-action]');
+          if (!button) return;
+          const action = button.dataset.motionAction;
+          if (action === 'play') play(false, true);
+          if (action === 'pause') pause(true);
+          if (action === 'replay') play(true, true);
+          if (action === 'prev') { pause(false); render(step - 1, true); }
+          if (action === 'next') { pause(false); render(step + 1, true); }
+        });
+
+        root.addEventListener('keydown', (event) => {
+          if (event.target.matches('input, textarea, select, a[href]')) return;
+          const keys = { ArrowLeft: step - 1, ArrowRight: step + 1, Home: 0, End: count };
+          if (event.code === 'Space' && !event.target.closest('button')) {
+            event.preventDefault();
+            playing ? pause(true) : play(false, true);
+            return;
+          }
+          if (!event.ctrlKey && !event.metaKey && !event.altKey && event.key.toLowerCase() === 'r') {
+            event.preventDefault();
+            play(true, true);
+            return;
+          }
+          if (!(event.key in keys)) return;
+          event.preventDefault();
+          pause(false);
+          render(keys[event.key], true);
+        });
+
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'hidden' && playing) pause(false);
+        });
+        reduce.addEventListener('change', (event) => {
+          if (event.matches && root.dataset.motionState !== 'reduced') {
+            stepBeforeReduce = step;
+            resumeAfterReduce = playing;
+          }
+          pause(false);
+          if (event.matches) {
+            setControlsAvailable(false);
+            render(count, false);
+            root.dataset.frame = 'static';
+            root.dataset.motionState = 'reduced';
+            status.textContent = 'Reduced motion · complete static frame · playback controls unavailable';
+          } else if (staticOverride || root.dataset.motionMode === 'none') {
+            setControlsAvailable(false);
+            render(count, false);
+            root.dataset.frame = 'static';
+            root.dataset.motionState = 'static';
+            status.textContent = 'Static frame · complete diagram · playback controls unavailable';
+          } else {
+            delete root.dataset.motionState;
+            if (exactStep !== null) {
+              setControlsAvailable(false);
+              render(exactStep, false);
+              root.dataset.frame = 'step';
+              root.dataset.motionState = 'test';
+              status.textContent = `Test frame · step ${step} of ${count} · playback controls unavailable`;
+            } else {
+              setControlsAvailable(true);
+              render(stepBeforeReduce, false);
+              status.textContent = `Ready · step ${step} of ${count}`;
+              if (resumeAfterReduce && root.dataset.motionMode === 'reveal') {
+                play(false, false);
+              }
+            }
+            resumeAfterReduce = false;
+          }
+        });
+
+        if (staticOverride) {
+          document.documentElement.dataset.motion = 'static';
+          pause(false);
+          setControlsAvailable(false);
+          render(count, false);
+          root.dataset.frame = 'static';
+          root.dataset.motionState = 'static';
+          status.textContent = 'Static frame · complete diagram · playback controls unavailable';
+        } else if (reduce.matches || root.dataset.motionMode === 'none') {
+          pause(false);
+          setControlsAvailable(false);
+          render(count, false);
+          root.dataset.frame = 'static';
+          root.dataset.motionState = reduce.matches ? 'reduced' : 'static';
+          status.textContent = reduce.matches
+            ? 'Reduced motion · complete static frame · playback controls unavailable'
+            : 'Static frame · complete diagram · playback controls unavailable';
+        } else if (exactStep !== null) {
+          document.documentElement.dataset.motion = 'step';
+          pause(false);
+          setControlsAvailable(false);
+          render(exactStep, false);
+          root.dataset.frame = 'step';
+          root.dataset.motionState = 'test';
+          status.textContent = `Test frame · step ${step} of ${count} · playback controls unavailable`;
+        } else if (root.dataset.motionMode === 'reveal') {
+          setControlsAvailable(true);
+          render(0, false);
+          play(false, false);
+        } else {
+          pause(false);
+          setControlsAvailable(true);
+          render(0, false);
+          status.textContent = `Ready · step 0 of ${count}`;
+        }
+        root.classList.add('motion-ready');
+      });
+    })();
+  </script>
+</body>
+</html>
