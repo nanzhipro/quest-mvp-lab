@@ -188,8 +188,15 @@ E2E scripts).
   and covers the background, key decisions, build, run, and verification
   commands, and the final conclusion.
 - **Keep the index current.** Whenever a project is added, updated, or
-  removed, the table and the structure tree above are updated in the same
-  change.
+  removed, its table row, its structure-tree line and the Highlights bullet
+  above are updated in the same change, and the experiment badge is bumped.
+- **Evidence stays local.** Raw captures (`runs/`, `logs/`) and the reports
+  built from them — interactive HTML carrying real request/response payloads —
+  are never committed; the generator and the static exports are. Clone and
+  rebuild beats shipping someone else's traffic.
+- **Local-only projects.** A project that still carries machine-specific
+  identifiers (bundle IDs, signing identities, internal hostnames) is listed in
+  the table with a local-only note and is not linked until it is de-identified.
 - **Bundle IDs.** Use the `com.nanzhipro.*` prefix when a bundle identifier is
   required. Keep demo artifacts unsigned unless distribution requires signing.
 
