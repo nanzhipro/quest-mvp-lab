@@ -1,0 +1,22 @@
+# ──────────────────────────────────────────────────────────────
+# llm-heartbeat-io-mvp — 项目层忽略规则（Layer 3）
+# 层次模型：全局 ~/.gitignore_global < quest-mvp-lab/.gitignore < 本文件
+# 本文件需自给自足：若日后独立成仓，把共享层的通用模式并入此处即可。
+# ──────────────────────────────────────────────────────────────
+
+# 运行证据：真实请求/响应负载（含第三方会话内容），绝不入库
+runs/
+
+# 由 runs/ 派生的交互报告：内嵌真实 payload，同样不入库；
+# 生成器（diagrams/build_explorer.py）与静态导出（.png/.svg）入库。
+diagrams/message-assembly.html
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# macOS / 编辑器
+.DS_Store
+.idea/
+.vscode/
