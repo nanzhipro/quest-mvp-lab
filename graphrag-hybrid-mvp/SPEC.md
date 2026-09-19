@@ -89,7 +89,7 @@ uv run graphrag-mvp ask "公司食堂几点开饭？" --evidence                
 
 | # | 判定 | 证据 |
 | --- | --- | --- |
-| A1 | ✅ | `uv run pytest` → 114 passed（全程离线，无网络下载） |
+| A1 | ✅ | `uv run pytest` → 116 passed（全程离线，无网络下载） |
 | A2 | ✅ | `build`：22 篇 → 108 chunk；292 实体 / 420 关系 / 14 社区（14 条摘要）；`ask` 返回带 `[n]` 引用的答案 |
 | A3 | ✅ | 二次 `build`：`embedded_chunks=0`、`llm_stats.calls=0`、`duration_s=0.05` |
 | A4 | ✅ | 新增一篇文档后仅新 chunk 进入向量与抽取（`tests/test_pipeline.py::test_adding_a_document_only_embeds_the_new_chunks`） |
