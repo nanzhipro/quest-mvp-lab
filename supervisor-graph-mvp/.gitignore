@@ -1,0 +1,16 @@
+# supervisor-graph-mvp — project-local ignore layer.
+# 层次：全局 ~/.gitignore_global < quest-mvp-lab/.gitignore < 本文件。
+# 本文件必须自足：即使本项目被抽出为独立仓库也够用。
+
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# 一次运行一个目录；runs/ 含真实 API 响应与本地路径，不入库（复现命令见 README）
+runs/
+
+.DS_Store

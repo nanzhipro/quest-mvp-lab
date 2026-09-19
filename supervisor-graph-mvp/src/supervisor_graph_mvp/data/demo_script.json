@@ -1,0 +1,237 @@
+{
+  "note": "离线演示脚本：按'一次运行的模型调用顺序'重放。run 内模型只被调用三次（意图识别 / 任务规划 / 结论文本），因此每个剧本最多三条。S2 的计划故意漏掉依赖、S4 的计划故意漏掉一个专业 Agent —— 这两个缺陷会被一致性检查抓住并触发修复环。",
+  "call_order": [
+    "classify",
+    "plan",
+    "narrative"
+  ],
+  "scripts": {
+    "S1-public-allow": [
+      {
+        "json": {
+          "intents": [
+            "data_classification",
+            "policy_applicability",
+            "evidence_verification",
+            "remediation_planning",
+            "compliance_ruling"
+          ],
+          "primary": "compliance_ruling",
+          "reason": "一次外发同时要求级别、策略、证据与处置，并要最终裁决"
+        }
+      },
+      {
+        "json": {
+          "subtasks": [
+            {
+              "id": "t1",
+              "agent": "classification",
+              "goal": "扫描宣传稿，给出敏感级别",
+              "depends_on": []
+            },
+            {
+              "id": "t2",
+              "agent": "evidence",
+              "goal": "核验宣传稿摘要与规则引用",
+              "depends_on": []
+            },
+            {
+              "id": "t3",
+              "agent": "policy",
+              "goal": "判定该外发适用的管控规则",
+              "depends_on": [
+                "t1"
+              ]
+            },
+            {
+              "id": "t4",
+              "agent": "remediation",
+              "goal": "给出放行所需的处置动作",
+              "depends_on": [
+                "t1",
+                "t3"
+              ]
+            }
+          ],
+          "rationale": "策略依赖级别结论，处置依赖级别与决策，证据核验可并行"
+        }
+      },
+      "该文件是已定稿的对外宣传稿，检测器未命中任何敏感特征，级别判定为 P1 [artifact:marketing-deck-2026-0919.txt]。按规则 R-01 属于公开数据外发放行场景 [rule:R-01]，裁决为放行。处置上只需写入审计日志留痕，无需审批或阻断。"
+    ],
+    "S2-plan-gap": [
+      {
+        "json": {
+          "intents": [
+            "data_classification",
+            "policy_applicability",
+            "evidence_verification",
+            "remediation_planning"
+          ],
+          "primary": "compliance_ruling",
+          "reason": "要求级别、适用策略、处置动作并核对证据"
+        }
+      },
+      {
+        "json": {
+          "subtasks": [
+            {
+              "id": "t1",
+              "agent": "classification",
+              "goal": "扫描客户清单，给出敏感级别",
+              "depends_on": []
+            },
+            {
+              "id": "t2",
+              "agent": "evidence",
+              "goal": "核验清单摘要与规则引用",
+              "depends_on": []
+            },
+            {
+              "id": "t3",
+              "agent": "policy",
+              "goal": "判定该外发适用的管控规则与决策",
+              "depends_on": [
+                "t1"
+              ]
+            },
+            {
+              "id": "t4",
+              "agent": "remediation",
+              "goal": "给出处置动作建议",
+              "depends_on": []
+            }
+          ],
+          "rationale": "四个专业任务并列推进（此处刻意漏掉了处置对级别与决策的依赖）"
+        }
+      },
+      "客户联系清单命中手机号与员工工号，级别判定为 P3 [artifact:finance-export-2026-0919.csv]。经企业邮箱发往外部同时命中 R-02 与 R-03 两条规则 [rule:R-02][rule:R-03]，须经数据安全组审批后方可外发。处置动作包含审批、显式水印与导出字段最小化复核。"
+    ],
+    "S3-missing-evidence": [
+      {
+        "json": {
+          "intents": [
+            "data_classification",
+            "evidence_verification",
+            "policy_applicability",
+            "compliance_ruling"
+          ],
+          "primary": "evidence_verification",
+          "reason": "请求声称审批单已走完流程，需要按现有材料核验证据"
+        }
+      },
+      {
+        "json": {
+          "subtasks": [
+            {
+              "id": "t1",
+              "agent": "classification",
+              "goal": "扫描客户清单，给出敏感级别",
+              "depends_on": []
+            },
+            {
+              "id": "t2",
+              "agent": "evidence",
+              "goal": "核验清单摘要、规则引用与审批单",
+              "depends_on": []
+            },
+            {
+              "id": "t3",
+              "agent": "policy",
+              "goal": "判定该外发适用的管控规则",
+              "depends_on": [
+                "t1"
+              ]
+            }
+          ],
+          "rationale": "先确认证据是否齐备，再给策略结论"
+        }
+      }
+    ],
+    "S4-block-p4": [
+      {
+        "json": {
+          "intents": [
+            "data_classification",
+            "policy_applicability",
+            "remediation_planning",
+            "compliance_ruling"
+          ],
+          "primary": "compliance_ruling",
+          "reason": "证件信息外发需要级别、策略与处置，并立即裁决"
+        }
+      },
+      {
+        "json": {
+          "subtasks": [
+            {
+              "id": "t1",
+              "agent": "classification",
+              "goal": "扫描证件信息表，给出敏感级别",
+              "depends_on": []
+            },
+            {
+              "id": "t2",
+              "agent": "policy",
+              "goal": "判定该外发适用的管控规则与决策",
+              "depends_on": [
+                "t1"
+              ]
+            },
+            {
+              "id": "t3",
+              "agent": "remediation",
+              "goal": "给出阻断与通知类处置动作",
+              "depends_on": [
+                "t1",
+                "t2"
+              ]
+            }
+          ],
+          "rationale": "级别 → 策略 → 处置三级串行（此处刻意漏掉证据核验这一个专业 Agent）"
+        }
+      },
+      "证件信息表命中身份证号与银行卡号，级别判定为 P4 核心数据 [artifact:hr-idcard-2026-0919.csv]。发往外部个人邮箱命中 R-04 核心数据禁止外发 [rule:R-04]，同时命中 R-03 个人信息经协作通道外发 [rule:R-03]，裁决为阻断。处置动作为立即阻断该外发通道、通知数据属主与安全组，并复核导出字段是否最小化。"
+    ],
+    "S5-plan-missing-agent": [
+      {
+        "json": {
+          "intents": [
+            "policy_applicability",
+            "evidence_verification",
+            "remediation_planning"
+          ],
+          "primary": "compliance_ruling",
+          "reason": "要求证据核验、策略结论与处置动作"
+        }
+      },
+      {
+        "json": {
+          "subtasks": [
+            {
+              "id": "t1",
+              "agent": "evidence",
+              "goal": "核验清单摘要与规则引用",
+              "depends_on": []
+            },
+            {
+              "id": "t2",
+              "agent": "policy",
+              "goal": "判定该外发适用的管控规则与决策",
+              "depends_on": []
+            },
+            {
+              "id": "t3",
+              "agent": "remediation",
+              "goal": "给出处置动作建议",
+              "depends_on": [
+                "t2"
+              ]
+            }
+          ],
+          "rationale": "先核验证据，再判定策略并生成处置（此处刻意漏掉级别判定这一个专业 Agent）"
+        }
+      },
+      "客户联系清单命中手机号与员工工号，级别判定为 P3 [artifact:finance-export-2026-0919.csv]。经外部云盘外发同时命中 R-02 与 R-03 [rule:R-02][rule:R-03]，须经数据安全组审批。处置动作包含审批、水印与字段最小化复核。"
+    ]
+  }
+}

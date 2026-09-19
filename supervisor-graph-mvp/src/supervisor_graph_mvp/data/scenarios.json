@@ -1,0 +1,143 @@
+{
+  "note": "示例请求：一次外发审查的输入面（资产、通道、去向、证据清单）。sha256 为真实摘要，证据核验会重新计算比对。",
+  "scenarios": [
+    {
+      "id": "S1-public-allow",
+      "title": "公开宣传稿对外发布",
+      "text": "市场部要把秋季发布会宣传稿投给合作媒体，请给出这次外发的合规裁决：敏感级别、适用策略、证据是否齐备、需要什么处置。",
+      "asset": {
+        "path": "marketing-deck-2026-0919.txt",
+        "kind": "文档",
+        "channel": "publish",
+        "destination": "合作媒体投稿邮箱",
+        "destination_type": "external",
+        "owner": "市场部"
+      },
+      "evidence": [
+        {
+          "id": "rule:R-01",
+          "kind": "rule"
+        },
+        {
+          "id": "artifact:marketing-deck-2026-0919.txt",
+          "kind": "artifact",
+          "sha256": "20edcd21057872d1ec11f59909cbdd1ef19d19a16a6a050586479c13df55c626"
+        }
+      ],
+      "notes": "宣传稿为对外定稿，检测器预期全部不命中。"
+    },
+    {
+      "id": "S2-plan-gap",
+      "title": "财务客户导出表经企业邮箱外发",
+      "text": "结算同事要把客户联系清单（含手机号和工号）通过企业邮箱发给合作方，请裁决级别、适用策略与处置动作，并核对证据。",
+      "asset": {
+        "path": "finance-export-2026-0919.csv",
+        "kind": "表格",
+        "channel": "webmail",
+        "destination": "合作方业务邮箱",
+        "destination_type": "external",
+        "owner": "财务共享中心"
+      },
+      "evidence": [
+        {
+          "id": "rule:R-02",
+          "kind": "rule"
+        },
+        {
+          "id": "rule:R-03",
+          "kind": "rule"
+        },
+        {
+          "id": "artifact:finance-export-2026-0919.csv",
+          "kind": "artifact",
+          "sha256": "f483eac97ca4434e89d9e000189265d9d1157b82a1bb417f170cded5357fd81f"
+        }
+      ],
+      "notes": "用于验证规划缺陷：编排缺少必要依赖时，一致性检查应把它兜住。"
+    },
+    {
+      "id": "S3-missing-evidence",
+      "title": "缺少审批单的客户清单外发复核",
+      "text": "同一份客户清单要发给合作方，审批单已经走完流程，请按现有材料给出合规裁决。",
+      "asset": {
+        "path": "finance-export-2026-0919.csv",
+        "kind": "表格",
+        "channel": "webmail",
+        "destination": "合作方业务邮箱",
+        "destination_type": "external",
+        "owner": "财务共享中心"
+      },
+      "evidence": [
+        {
+          "id": "rule:R-03",
+          "kind": "rule"
+        },
+        {
+          "id": "artifact:finance-export-2026-0919.csv",
+          "kind": "artifact",
+          "sha256": "f483eac97ca4434e89d9e000189265d9d1157b82a1bb417f170cded5357fd81f"
+        },
+        {
+          "id": "artifact:approval-ticket-2026-0919.txt",
+          "kind": "artifact",
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "notes": "引用了一份并不存在的审批单，用于验证证据不齐时的修复与升级路径。"
+    },
+    {
+      "id": "S4-block-p4",
+      "title": "身份证与银行卡清单外发",
+      "text": "HR 把员工证件信息表发到了外部邮箱，请立刻给出合规裁决与处置建议。",
+      "asset": {
+        "path": "hr-idcard-2026-0919.csv",
+        "kind": "表格",
+        "channel": "webmail",
+        "destination": "外部个人邮箱",
+        "destination_type": "external",
+        "owner": "人力资源部"
+      },
+      "evidence": [
+        {
+          "id": "rule:R-03",
+          "kind": "rule"
+        },
+        {
+          "id": "rule:R-04",
+          "kind": "rule"
+        },
+        {
+          "id": "artifact:hr-idcard-2026-0919.csv",
+          "kind": "artifact",
+          "sha256": "7defa70508ba0c210ecca69d11b350b512348e7398dc2ca0eba0eb3f5c459dc5"
+        }
+      ],
+      "notes": "预期命中核心数据规则，裁决为阻断。"
+    },
+    {
+      "id": "S5-plan-missing-agent",
+      "title": "规划漏掉级别判定的一条外发请求",
+      "text": "同一份客户清单改走外部云盘，请核验证据并给出裁决与处置。",
+      "asset": {
+        "path": "finance-export-2026-0919.csv",
+        "kind": "表格",
+        "channel": "cloud-drive",
+        "destination": "外部共享云盘",
+        "destination_type": "external",
+        "owner": "财务共享中心"
+      },
+      "evidence": [
+        {
+          "id": "rule:R-03",
+          "kind": "rule"
+        },
+        {
+          "id": "artifact:finance-export-2026-0919.csv",
+          "kind": "artifact",
+          "sha256": "f483eac97ca4434e89d9e000189265d9d1157b82a1bb417f170cded5357fd81f"
+        }
+      ],
+      "notes": "用于验证：规划漏掉一个专业 Agent（级别判定）时，编排层能把它合成出来并把下游在同一轮里重跑。"
+    }
+  ]
+}

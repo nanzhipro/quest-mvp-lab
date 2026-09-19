@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "supervisor-graph-mvp"
+version = "0.1.0"
+description = "A minimal two-piece orchestration layer: a lightweight-model Supervisor (intent → DAG plan → routing → aggregation) running on an explicit state graph"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = []          # runtime dependencies: none, on purpose (stdlib only)
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.scripts]
+supervisor-graph = "supervisor_graph_mvp.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+supervisor_graph_mvp = ["data/*.json", "data/assets/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py39"
+line-length = 100
+src = ["src", "tests"]
+# README/SPEC quote core code verbatim from source; ruff must not "tidy" fenced Markdown blocks.
+exclude = ["*.md"]
+
+[tool.ruff.lint.per-file-ignores]
+# viz.py is a single-file HTML report: most of the module is a verbatim HTML/CSS/JS
+# template, where reflowing to 100 columns would make it unreadable and unverifiable.
+"src/supervisor_graph_mvp/viz.py" = ["E501"]
+
+[tool.ruff.lint]
+# No `UP`: pyupgrade would rewrite typing.List/Optional into syntax the py39 target cannot parse.
+select = ["E", "F", "I", "B", "SIM", "RUF"]
+# RUF001-003 flag "ambiguous" unicode (full-width ：，（）。). This project is written in Chinese on
+# purpose — full-width punctuation is intent, not a typo.
+ignore = ["RUF001", "RUF002", "RUF003"]

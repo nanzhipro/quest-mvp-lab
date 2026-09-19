@@ -1,0 +1,60 @@
+{
+  "detectors": [
+    {
+      "name": "id_card",
+      "label": "身份证号",
+      "level": "P4",
+      "pattern": "[1-9]\\d{5}(19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\\d|3[01])\\d{3}[0-9Xx]",
+      "keep_prefix": 4,
+      "keep_suffix": 2
+    },
+    {
+      "name": "bank_card",
+      "label": "银行卡号",
+      "level": "P4",
+      "pattern": "\\b62\\d{14,17}\\b",
+      "keep_prefix": 4,
+      "keep_suffix": 2
+    },
+    {
+      "name": "api_key",
+      "label": "密钥/令牌",
+      "level": "P4",
+      "pattern": "(sk|ak|ghp|xoxb)-[A-Za-z0-9]{12,}",
+      "keep_prefix": 6,
+      "keep_suffix": 2
+    },
+    {
+      "name": "mobile_phone",
+      "label": "手机号",
+      "level": "P3",
+      "pattern": "\\b1[3-9]\\d{9}\\b",
+      "keep_prefix": 3,
+      "keep_suffix": 2
+    },
+    {
+      "name": "source_code",
+      "label": "源码片段",
+      "level": "P3",
+      "pattern": "(?m)^\\s*(def |func |class |import |package )\\S+",
+      "keep_prefix": 8,
+      "keep_suffix": 0
+    },
+    {
+      "name": "employee_id",
+      "label": "员工工号",
+      "level": "P2",
+      "pattern": "\\bEMP-\\d{5,6}\\b",
+      "keep_prefix": 4,
+      "keep_suffix": 0
+    },
+    {
+      "name": "internal_domain",
+      "label": "内部系统域名",
+      "level": "P2",
+      "pattern": "\\b([a-z0-9-]+\\.)*corp\\.example\\b",
+      "keep_prefix": 6,
+      "keep_suffix": 0
+    }
+  ]
+}

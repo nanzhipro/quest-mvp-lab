@@ -1,0 +1,52 @@
+{
+  "actions": [
+    {
+      "action_id": "A-01",
+      "name": "写入审计日志并留痕",
+      "kind": "audit",
+      "owner": "平台",
+      "sla_hours": 24,
+      "when": [{"op": "always"}]
+    },
+    {
+      "action_id": "A-02",
+      "name": "发起数据安全组审批",
+      "kind": "approval",
+      "owner": "数据安全组",
+      "sla_hours": 4,
+      "when": [{"op": "decision_eq", "value": "review"}]
+    },
+    {
+      "action_id": "A-03",
+      "name": "对外发内容添加显式水印",
+      "kind": "watermark",
+      "owner": "终端安全",
+      "sla_hours": 24,
+      "when": [{"op": "level_gte", "value": "P3"}]
+    },
+    {
+      "action_id": "A-04",
+      "name": "阻断该外发通道",
+      "kind": "block",
+      "owner": "终端安全",
+      "sla_hours": 1,
+      "when": [{"op": "decision_eq", "value": "block"}]
+    },
+    {
+      "action_id": "A-05",
+      "name": "通知数据属主与安全组",
+      "kind": "notify",
+      "owner": "数据安全组",
+      "sla_hours": 1,
+      "when": [{"op": "decision_eq", "value": "block"}]
+    },
+    {
+      "action_id": "A-06",
+      "name": "复核并最小化导出字段",
+      "kind": "minimize",
+      "owner": "数据属主",
+      "sla_hours": 24,
+      "when": [{"op": "level_gte", "value": "P3"}]
+    }
+  ]
+}
