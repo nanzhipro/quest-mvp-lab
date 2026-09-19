@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-guardrails-mvp"
+version = "0.1.0"
+description = "Deterministic guardrails for an AI agent's tool calls: a gate, a budget, taint tracking and a hash-chained audit trail, driven by a real DeepSeek model"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = []          # runtime dependencies: none, on purpose (stdlib only)
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[project.scripts]
+guardrails = "agent_guardrails.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# 默认跳过 live（真实模型、花钱、结果非确定）；要跑就 `pytest -m live`。
+addopts = "-q -m 'not live'"
+# 让 `pytest` 不安装也能跑（源码布局 + 无第三方依赖的必然选择）
+pythonpath = ["src"]
+markers = [
+    "live: end-to-end tests that call the real DeepSeek API (deselect with -m 'not live')",
+]
+
+[tool.ruff]
+target-version = "py39"
+# 110 列（与 monorepo 的 ObjC/C++ 约定一致）：本项目以中文写作，注释与文档字符串
+# 的显示宽度远大于字符数，100 列会把正常的中文句子挤断。
+line-length = 110
+src = ["src", "tests"]
+exclude = ["*.md", "reference"]
+
+[tool.ruff.lint]
+# No `UP`: pyupgrade would rewrite typing.List/Optional into syntax the py39 target cannot parse.
+select = ["E", "F", "I", "B", "SIM", "RUF"]
+# RUF001-003 flag "ambiguous" unicode (full-width ：，（）。). This project is written in
+# Chinese on purpose — full-width punctuation is intent, not a typo.
+ignore = ["RUF001", "RUF002", "RUF003"]
