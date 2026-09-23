@@ -3,8 +3,8 @@
 一个**只读、限域、只走 stdio** 的本地文件系统 MCP Server（Rust）。启动时指定一个工作目录，向 MCP 客户端暴露 3 个工具：目录列表、文本读取、元数据查看。它没有任何写、移动、删除的能力——不是"约定不写"，而是代码里不存在这些 API。
 
 ![Tools](https://img.shields.io/badge/tools-3-blue.svg)
-![Tests](https://img.shields.io/badge/tests-64-brightgreen.svg)
-![Coverage](https://img.shields.io/badge/lines%20coverage-98%25-brightgreen.svg)
+![Tests](https://img.shields.io/badge/tests-66-brightgreen.svg)
+![Coverage](https://img.shields.io/badge/lines%20coverage-99%25-brightgreen.svg)
 ![Transport](https://img.shields.io/badge/transport-stdio%20(local--only)-lightgrey.svg)
 
 ## 能力一览
@@ -171,11 +171,11 @@ readonly-fs-mcp [--root DIR] [--max-read-lines N] [--max-entries N]
 
 | 项目 | 结果 |
 | ---- | ---- |
-| 单元测试（`src/`，含 workspace/tools/server/cli/error） | **49 passed** |
+| 单元测试（`src/`，含 workspace/tools/server/cli/error） | **51 passed** |
 | 端到端（`tests/mcp_stdio.rs`，真进程 + stdio + 官方 client） | **8 passed** |
 | 守卫测试（`tests/guard_read_only.rs`，扫源码） | **7 passed** |
-| 合计 | **64 passed / 0 failed** |
-| 行覆盖率（`cargo llvm-cov --fail-under-lines 95`） | **98.85%**（1388 行中 16 行未覆盖；`main.rs` 100%、`server.rs` 99.49%、`cli.rs` 99.08%、`error.rs` 99.14%、`workspace.rs` 98.86%、`tools.rs` 98.54%） |
+| 合计 | **66 passed / 0 failed** |
+| 行覆盖率（`cargo llvm-cov --fail-under-lines 95`） | **99.01%**（1415 行中 14 行未覆盖；`main.rs` 100%、`server.rs` 99.49%、`error.rs` 99.14%、`cli.rs` 99.08%、`tools.rs` 98.88%、`workspace.rs` 98.86%） |
 | `cargo clippy --all-targets -- -D warnings` | 通过 |
 | `cargo fmt --all --check` | 通过 |
 
@@ -218,4 +218,4 @@ readonly-fs-mcp-mvp/
 
 ## 结论
 
-这个 MVP 证明了：**把"看"和"改"彻底切开，比在一个通用文件工具上加权限开关更可靠**。删除文件的能力不是被限制，而是不存在——源码守卫、类型契约与端到端快照三重证据都指向同一条结论，且整套能力（3 个工具、64 个测试、`cargo llvm-cov` 行覆盖率 97%）落在一个可一键复验的命令里。
+这个 MVP 证明了：**把"看"和"改"彻底切开，比在一个通用文件工具上加权限开关更可靠**。删除文件的能力不是被限制，而是不存在——源码守卫、类型契约与端到端快照三重证据都指向同一条结论，且整套能力（3 个工具、66 个测试、`cargo llvm-cov` 行覆盖率 99.01%）落在一个可一键复验的命令里。

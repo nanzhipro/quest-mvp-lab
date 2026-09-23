@@ -3,7 +3,7 @@
 > 版本：v1.0
 > 项目：`quest-mvp-lab/readonly-fs-mcp-mvp/`
 > 语言/框架：Rust 2024 edition · 官方 MCP SDK `rmcp 3.4` · tokio
-> 状态：已交付（64 测试 / 行覆盖率 98.85% / WorkBuddy stdio 形态接入）
+> 状态：已交付（66 测试 / 行覆盖率 99.01% / WorkBuddy stdio 形态接入）
 
 本文件是实现方契约：只写"必须成立什么、怎么被验证、改一处要连带改哪里"，叙述与背景在 `README.md`。
 
@@ -261,8 +261,9 @@ readonly-fs-mcp [--root DIR] [--max-read-lines N] [--max-entries N]
 
 | 项目 | 数值 |
 | ---- | ---- |
-| 行覆盖率（llvm-cov lines） | 1388 行 / 未覆盖 16 行 = **98.85%** |
-| 区域覆盖率（regions） | 2416 / 未覆盖 53 = 97.81% |
-| 函数覆盖率（functions） | 125 / 未覆盖 7 = 94.40% |
-| 测试 | 49 单元 + 7 守卫 + 8 端到端 = **64**，全绿 |
+| 行覆盖率（llvm-cov lines） | 1415 行 / 未覆盖 14 行 = **99.01%** |
+| 区域覆盖率（regions） | 2470 / 未覆盖 49 = 98.02% |
+| 函数覆盖率（functions） | 128 / 未覆盖 7 = 94.53% |
+| 测试 | 51 单元 + 7 守卫 + 8 端到端 = **66**，全绿 |
+| 未覆盖的 14 行性质 | 防御性分支（如 `file_name()` 在符号链接路径上不存在的兜底、`read_dir` 单项错误）与测试内 panic 分支，无业务路径 |
 | 二进制大小（release，strip + thin LTO） | 3,405,184 B（约 3.2 MiB） |

@@ -675,6 +675,41 @@ mod tests {
     }
 
     #[test]
+    fn list_reports_an_unreadable_requested_directory() {
+        let (_parent, ws) = fixture();
+        // Search permission without read permission: the path still resolves,
+        // but the listing itself cannot be opened.
+        fs::set_permissions(ws.root().join("docs"), fs::Permissions::from_mode(0o111)).unwrap();
+        let error = list_directory(&ws, empty_listing(Some("docs"))).unwrap_err();
+        assert_eq!(error.code(), crate::error::CODE_PERMISSION_DENIED);
+        fs::set_permissions(ws.root().join("docs"), fs::Permissions::from_mode(0o755)).unwrap();
+    }
+
+    #[test]
+    fn kind_other_covers_sockets() {
+        let (_parent, ws) = fixture();
+        let _listener = std::os::unix::net::UnixListener::bind(ws.root().join("ipc.sock")).unwrap();
+
+        let output = listing(&ws, empty_listing(None));
+        let entry = output
+            .entries
+            .iter()
+            .find(|entry| entry.name == "ipc.sock")
+            .expect("the socket is listed");
+        assert_eq!(entry.kind, FileKind::Other);
+
+        let metadata = file_metadata(
+            &ws,
+            FileMetadataParams {
+                path: "ipc.sock".into(),
+            },
+        )
+        .unwrap();
+        assert_eq!(metadata.kind, FileKind::Other);
+        assert_eq!(metadata.looks_like_text, None);
+    }
+
+    #[test]
     fn list_reports_unreadable_subdirectories() {
         let (_parent, ws) = fixture();
         fs::set_permissions(
