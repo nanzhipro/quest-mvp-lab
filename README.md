@@ -4,7 +4,7 @@
 > examples, and demos** — mostly around macOS Endpoint Security, AI agents, and
 > design systems.
 
-![Experiments](https://img.shields.io/badge/experiments-23-blue.svg)
+![Experiments](https://img.shields.io/badge/experiments-24-blue.svg)
 ![Status](https://img.shields.io/badge/status-active-brightgreen.svg)
 ![Platform](https://img.shields.io/badge/focus-macOS%20%C2%B7%20AI%20agents%20%C2%B7%20design%20systems-lightgrey.svg)
 
@@ -54,7 +54,12 @@ The experiments cluster around ten themes:
   [`sandbox-center-mvp/`](sandbox-center-mvp/) reproduces the process architecture
   behind an agent's tool calls — a resident policy center, a one-shot CLI per
   call, and Seatbelt enforcement — with kernel-denial reclamation and a
-  hash-chained audit trail.
+  hash-chained audit trail. [`readonly-fs-mcp-mvp/`](readonly-fs-mcp-mvp/) takes
+  the complementary route: instead of policing a general-purpose file tool, it
+  removes the mutating verbs from the surface entirely. Three read-only MCP tools
+  (`list_directory`, `read_file`, `file_metadata`) over stdio, a workspace root
+  that resolves and confines every path, and a source-scanning guard that fails
+  the build if a write API, a socket or an `unsafe` block ever appears.
 - **Design systems and UI.**
   [`web-design-system-extractor-mvp/`](web-design-system-extractor-mvp/)
   captures any site into an evidence-backed design system, and
@@ -130,6 +135,7 @@ The experiments cluster around ten themes:
 | [`graphrag-hybrid-mvp/`](graphrag-hybrid-mvp/) | Minimal GraphRAG hybrid retrieval over a Chinese corpus: four channels (self-written BM25, Chinese ONNX embeddings, an LLM-extracted entity/relation graph with alias merging and hop expansion, label-propagation community summaries) fused by weighted RRF plus a per-channel floor, answered by DeepSeek with `[n]` citations; includes a 16-question gold set, a channel-ablation harness (doc-level recall@k / all-gold@k / keyword recall / MRR), content-hash caches for incremental rebuilds, and an offline test suite (ScriptedLLM + hashing embedder) | Python 3.11+ · uv · fastembed (ONNX, no torch) · DeepSeek | Done — 116 offline tests pass; live 22-doc/16-question run: hybrid matches the best single channel on document coverage (all-gold 0.750) and beats BM25 on evidence-keyword recall (0.896 vs 0.854), but does **not** dominate single channels on this small corpus — the measured win is the fusion policy (RRF + per-channel floor recovers a multi-hop chain that plain RRF drops); see `SPEC.md` and `README.md` §验证结果 |
 | [`sandbox-center-mvp/`](sandbox-center-mvp/) | The tool-call sandbox chain of a desktop AI agent: Electron main hosts a resident Rust `sandbox-center` (policy authority, session ledger, sha256-chained audit) and spawns a one-shot `sandbox-cli` per tool call, which materialises a Seatbelt profile, runs `/usr/bin/sandbox-exec → zsh → python3/node`, reclaims kernel denials by profile tag from the unified log, and retries once when the center auto-grants | Rust · Electron · Seatbelt (SBPL) | Done — 39 unit + 13 real-kernel e2e tests and an 8-scenario Electron self-test (plus 7 UI assertions and audit-chain verification) all pass; write-escape, delete-protection and network-egress denials are enforced by the kernel and recorded in a tamper-evident audit chain |
 | [`supervisor-graph-mvp/`](supervisor-graph-mvp/) | An orchestration layer made of two readable pieces: a lightweight-model Supervisor whose duties stop at intent recognition, DAG planning, routing and aggregation, and an explicit state graph (`intake → classify → plan → dispatch → check` with a repair cycle, a finalize edge and an escalate edge). Four deterministic specialist agents (classification / policy / evidence / remediation) keep the domain answers reproducible while nine consistency rules turn planning defects, missing evidence and fabricated citations into concrete repair targets or an explicit human escalation; ships five scenarios, an offline scripted replay, and a single-file drill-down report of every run | Python 3.9+ · standard library only | Done — 203 offline tests pass; live 5-scenario run on the lightweight `deepseek-flash` model (14 calls / 11,380 tokens) produced allow / review / block / escalate correctly, and the scripted runs exercise the repair cycle, the synthesised-specialist path and the escalation path; see `SPEC.md` |
+| [`readonly-fs-mcp-mvp/`](readonly-fs-mcp-mvp/) | A read-only, workspace-confined filesystem MCP server for local agents: three tools (`list_directory`, `read_file`, `file_metadata`) over stdio, canonical-path confinement that refuses `..` and out-of-root symlinks, line/byte/entry/depth budgets with explicit `truncated` flags, stable error codes on tool-level errors, and a source-scanning guard that fails the build if a mutating filesystem API, a socket or an `unsafe` block is ever added | Rust · rmcp 3.4 (official MCP SDK) · tokio | Done — 64 tests pass (49 unit + 7 guard + 8 end-to-end over the real stdio wire), 98.85% line coverage; wired into WorkBuddy as a stdio server via `--root` |
 
 > **Local-only project.** [`outlook-dlp-mvp/`](outlook-dlp-mvp/) is developed and
 > verified on a real machine but is not published here yet: its sources carry
@@ -164,6 +170,7 @@ quest-mvp-lab/
 ├── graphrag-hybrid-mvp/               # Four-channel GraphRAG hybrid retrieval + ablation (Python)
 ├── sandbox-center-mvp/                # Resident sandbox-center + per-call sandbox-cli + Seatbelt enforcement
 ├── supervisor-graph-mvp/              # Lightweight Supervisor + explicit state graph orchestration (Python)
+├── readonly-fs-mcp-mvp/               # Read-only, workspace-confined filesystem MCP server (Rust)
 └── README.md                          # You are here
 ```
 
